@@ -1,0 +1,338 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://github.com/subnotes/gemini/raw/schema.json",
+  "type": "object",
+  "properties": {
+    "notebook": {
+      "$ref": "#/definitions/notebook"
+    }
+  },
+  "required": [
+    "notebook"
+  ],
+  "definitions": {
+    "title": {
+      "title": "Title field",
+      "description": "The title of a notebook.",
+      "type": "string",
+      "minLength": 1
+    },
+    "topic": {
+      "title": "Topic field",
+      "description": "The topic of a notebook, subtopic, or subnote.",
+      "type": "string",
+      "minLength": 1
+    },
+    "note": {
+      "title": "Note field",
+      "description": "A note, belonging to a notebook, subtopic, or subnote.",
+      "type": "string",
+      "minLength": 1
+    },
+    "markdown": {
+      "title": "Markdown support field",
+      "description": "Set whether or not text in notes, questions, and answers should be parsed as markdown. When set to true in a notebook it acts as default for notes, questions, and answers.",
+      "type": "boolean"
+    },
+    "time": {
+      "title": "Time field",
+      "description": "Estimated time in seconds that a question will take to answer. When set in a flashcard it acts as default for that flashcard's QAs.",
+      "type": "number",
+      "minimum": 1
+    },
+    "question": {
+      "title": "Question field",
+      "description": "A question in a QA node.",
+      "type": "string",
+      "minLength": 1
+    },
+    "answer": {
+      "title": "Answer field",
+      "description": "An answer to a question in a QA node.",
+      "type": "string",
+      "minLength": 1
+    },
+    "answerRegEx": {
+      "title": "Regular expression answer field",
+      "description": "A regular expression matching an answer in a flashcard.",
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewDate": {
+      "title": "Review date field",
+      "description": "The date of a flashcard review.",
+      "type": "string",
+      "format": "date"
+    },
+    "nextReviewDate": {
+      "title": "Next review date field",
+      "description": "The scheduled date of the next flashcard review.",
+      "type": "string",
+      "format": "date"
+    },
+    "response": {
+      "title": "Response field",
+      "description": "The confidence of a user in their answer to a question on a 0 to 5 scale. 0, 1, and 2 represent incorrect answers. 3, 4, and 5 represent correct answers. 0, had no clue. 1, sounds familiar. 2, I should have known that. 3, that was hard. 4, took me a second. 5, that was easy.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "algorithm": {
+      "title": "Algorithm field",
+      "description": "The name of the algorithm used to calculate the next review date.",
+      "type": "string",
+      "minLength": 1
+    },
+    "algorithmParameter": {
+      "title": "Algorithm parameter field",
+      "description": "A string of parameters that can be used by the algorithm next review.",
+      "type": "string"
+    },
+    "qaNum": {
+      "title": "QA Number field",
+      "description": "The index number of the QA reviewed",
+      "type": "number"
+    },
+    "notebook": {
+      "title": "Notebook node",
+      "type": "object",
+      "properties": {
+        "title": {
+          "$ref": "#/definitions/title"
+        },
+        "topic": {
+          "$ref": "#/definitions/topic"
+        },
+        "note": {
+          "$ref": "#/definitions/note"
+        },
+        "markdown": {
+          "$ref": "#/definitions/markdown"
+        },
+        "subtopics": {
+          "$ref": "#/definitions/subtopics"
+        },
+        "subnotes": {
+          "$ref": "#/definitions/subnotes"
+        },
+        "flashcards": {
+          "$ref": "#/definitions/flashcards"
+        },
+        "tags": {
+          "$ref": "#/definitions/tags"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "subtopic": {
+      "title": "Subtopic node",
+      "type": "object",
+      "properties": {
+        "topic": {
+          "$ref": "#/definitions/topic"
+        },
+        "note": {
+          "$ref": "#/definitions/note"
+        },
+        "subtopics": {
+          "$ref": "#/definitions/subtopics"
+        },
+        "subnotes": {
+          "$ref": "#/definitions/subnotes"
+        },
+        "flashcards": {
+          "$ref": "#/definitions/flashcards"
+        },
+        "markdown": {
+          "$ref": "#/definitions/markdown"
+        },
+        "tags": {
+          "$ref": "#/definitions/tags"
+        }
+      },
+      "required": [
+        "topic"
+      ]
+    },
+    "subtopicPointer": {
+      "title": "JSON Pointer to a subtopic",
+      "type": "string",
+      "pattern": "#/notebook(/subtopics/[0-9]{1,}){1,}$"
+    },
+    "subtopics": {
+      "title": "Array of subtopic nodes",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/subtopic"
+          },
+          {
+            "$ref": "#/definitions/subtopicPointer"
+          }
+        ]
+      }
+    },
+    "subnote": {
+      "title": "Subnote node",
+      "type": "object",
+      "properties": {
+        "note": {
+          "$ref": "#/definitions/note"
+        },
+        "topic": {
+          "$ref": "#/definitions/topic"
+        },
+        "flashcards": {
+          "$ref": "#/definitions/flashcards"
+        },
+        "markdown": {
+          "$ref": "#/definitions/markdown"
+        },
+        "tags": {
+          "$ref": "#/definitions/tags"
+        }
+      },
+      "required": [
+        "note"
+      ]
+    },
+    "subnotePointer": {
+      "title": "JSON Pointer to a subnote",
+      "type": "string",
+      "pattern": "#/notebook(/subtopics/[0-9]{1,}){0,}(/subnotes/[0-9]{1,}){1}$"
+    },
+    "subnotes": {
+      "title": "Array of subnote nodes",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/subnote"
+          },
+          {
+            "$ref": "#/definitions/subnotePointer"
+          }
+        ]
+      }
+    },
+    "tag": {
+      "title": "Tag",
+      "description": "A tag or label that can be applied to different types of nodes",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 25
+    },
+    "tags": {
+      "title": "Array of tags",
+      "items": [
+        {
+          "$ref": "#/definitions/tag"
+        }
+      ]
+    },
+    "flashcard": {
+      "title": "Flashcard node",
+      "type": "object",
+      "properties": {
+        "qa": {
+          "$ref": "#/definitions/qa"
+        },
+        "reviews": {
+          "$ref": "#/definitions/review"
+        },
+        "time": {
+          "$ref": "#/definitions/time"
+        },
+        "markdown": {
+          "$ref": "#/definitions/markdown"
+        },
+        "tags": {
+          "$ref": "#/definitions/tags"
+        }
+      },
+      "required": [
+        "qa"
+      ]
+    },
+    "flashcards": {
+      "title": "Array of flashcards",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/flashcard"
+      }
+    },
+    "qa": {
+      "title": "QA node",
+      "type": "object",
+      "properties": {
+        "question": {
+          "$ref": "#/definitions/question"
+        },
+        "answer": {
+          "$ref": "#/definitions/answer"
+        },
+        "answerRegEx": {
+          "$ref": "#/definitions/answerRegEx"
+        },
+        "time": {
+          "$ref": "#/definitions/time"
+        },
+        "markdown": {
+          "$ref": "#/definitions/markdown"
+        },
+        "tags": {
+          "$ref": "#/definitions/tags"
+        }
+      },
+      "required": [
+        "question",
+        "answer"
+      ]
+    },
+    "qas": {
+      "title": "Array of QA nodes",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/qa"
+      }
+    },
+    "review": {
+      "title": "Review node",
+      "type": "object",
+      "properties": {
+        "reviewDate": {
+          "$ref": "#/definitions/reviewDate"
+        },
+        "nextReviewDate": {
+          "$ref": "#/definitions/nextReviewDate"
+        },
+        "response": {
+          "$ref": "#/definitions/response"
+        },
+        "algorithm": {
+          "$ref": "#/definitions/algorithm"
+        },
+        "algorithmParameter": {
+          "$ref": "#/definitions/algorithmParameter"
+        },
+        "qaNum": {
+          "$ref": "#/definitions/qaNum"
+        }
+      },
+      "required": [
+        "reviewDate",
+        "nextReviewDate",
+        "response",
+        "algorithm",
+        "algorithmParameter"
+      ]
+    },
+    "reviews": {
+      "title": "Array of review nodes",
+      "items": {
+        "$ref": "#/definitions/review"
+      }
+    }
+  }
+}
