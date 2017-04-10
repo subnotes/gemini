@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "https://github.com/subnotes/gemini/raw/schema.json",
+  "id": "https://raw.githubusercontent.com/subnotes/gemini/master/subnotes-schema.json",
   "type": "object",
   "properties": {
     "notebook": {
