@@ -235,8 +235,8 @@
       "title": "Flashcard node",
       "type": "object",
       "properties": {
-        "qa": {
-          "$ref": "#/definitions/qa"
+        "qas": {
+          "$ref": "#/definitions/qas"
         },
         "reviews": {
           "$ref": "#/definitions/review"
