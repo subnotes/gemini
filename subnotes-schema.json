@@ -252,7 +252,7 @@
         }
       },
       "required": [
-        "qa"
+        "qas"
       ]
     },
     "flashcards": {
