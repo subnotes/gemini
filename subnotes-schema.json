@@ -294,7 +294,7 @@
       "title": "Array of QA nodes",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/qas"
+        "$ref": "#/definitions/qa"
       }
     },
     "review": {
