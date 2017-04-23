@@ -1,6 +1,5 @@
 {
   "name": "app",
-  "homepage": "http://subnotes.io/CHANG_THIS_TO_YOUR_NAME_BUT_DONT_COMMIT_IT",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
