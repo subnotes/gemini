@@ -42,9 +42,11 @@ todo: setup merge request / code review workflow
   
 ### vm, deploying app
 * `cd ~/gemini/app`
-* edit `packages.json` so `"homepage":` is set to `https://subnotes.io/<username>` (replace <username> with your first name)
-  * avoid committing this change, will try to fiugre out how to automate this
 * `npm run build`
 * `cp build/* /var/subnotes/<username>/ -rf` (replace <username> with your first name)
 * check it out at subnotes.io/<username>
- 
+```
+red.subnotes.io root = /var/subnotes/chris/
+blue.subnotes.io root = /var/subnotes/jonathan/
+green.subnotes.io root = /var/subnotes/jordan/
+```
