@@ -1,0 +1,129 @@
+{
+  "rootSubnote": "657ef1aa-c86f-46f0-9714-60ab92b319d4",
+  "subnotes": {
+    "657ef1aa-c86f-46f0-9714-60ab92b319d4": {
+      "subtopic": "subtopic - notebook",
+      "note": "note - notebook",
+      "tags": [
+        "tag A",
+        "tag B"
+      ],
+      "subnotes": [
+        "f1d8a6cf-8c61-4e78-a1fc-e2d7abbc6b7c",
+        "e883b435-41aa-4fa4-a9e3-9ab40952f5a7",
+        "61abe1c7-d2c9-4fd8-9404-c992aee0168f"
+      ]
+    },
+    "f1d8a6cf-8c61-4e78-a1fc-e2d7abbc6b7c": {
+      "subtopic": "subtopic - notebook.1",
+      "note": "note - notebook.1",
+      "tags": [
+        "tag A",
+        "tag B"
+      ],
+      "subnotes": [
+        "cca7447e-e6bc-4302-bcb6-6ae9130b48f0",
+        "2f4e4d7b-11e4-40e6-b40d-b6e0ad0d42d8",
+        "867636a0-5858-4a4e-b447-aaa63b68ec2e"
+      ]
+    },
+    "cca7447e-e6bc-4302-bcb6-6ae9130b48f0": {
+      "subtopic": "subtopic - notebook.1.1",
+      "note": "note - notebook.1.1",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "2f4e4d7b-11e4-40e6-b40d-b6e0ad0d42d8": {
+      "subtopic": "subtopic - notebook.1.2",
+      "note": "note - notebook.1.2",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "867636a0-5858-4a4e-b447-aaa63b68ec2e": {
+      "subtopic": "subtopic - notebook.1.3",
+      "note": "note - notebook.1.3",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "e883b435-41aa-4fa4-a9e3-9ab40952f5a7": {
+      "subtopic": "subtopic - notebook.2",
+      "note": "note - notebook.2",
+      "tags": [
+        "tag A",
+        "tag B"
+      ],
+      "subnotes": [
+        "dabba3e6-a9fd-4cf0-9668-51ece5c1453f",
+        "94f2e38d-d273-4f36-a5dd-b12f62437392",
+        "6c715b8e-7bf7-4a81-b5a1-4ba37f4f3453"
+      ]
+    },
+    "dabba3e6-a9fd-4cf0-9668-51ece5c1453f": {
+      "subtopic": "subtopic - notebook.2.1",
+      "note": "note - notebook.2.1",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "94f2e38d-d273-4f36-a5dd-b12f62437392": {
+      "subtopic": "subtopic - notebook.2.2",
+      "note": "note - notebook.2.2",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "6c715b8e-7bf7-4a81-b5a1-4ba37f4f3453": {
+      "subtopic": "subtopic - notebook.2.3",
+      "note": "note - notebook.2.3",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "61abe1c7-d2c9-4fd8-9404-c992aee0168f": {
+      "subtopic": "subtopic - notebook.3",
+      "note": "note - notebook.3",
+      "tags": [
+        "tag A",
+        "tag B"
+      ],
+      "subnotes": [
+        "c67ccb90-b674-4635-8bf2-51f30ebcc4e7",
+        "51b0abde-935f-404b-ae15-cc61430a00dc",
+        "483787ca-47f4-461d-a5aa-38fbefa7aa09"
+      ]
+    },
+    "c67ccb90-b674-4635-8bf2-51f30ebcc4e7": {
+      "subtopic": "subtopic - notebook.3.1",
+      "note": "note - notebook.3.1",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "51b0abde-935f-404b-ae15-cc61430a00dc": {
+      "subtopic": "subtopic - notebook.3.2",
+      "note": "note - notebook.3.2",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    },
+    "483787ca-47f4-461d-a5aa-38fbefa7aa09": {
+      "subtopic": "subtopic - notebook.3.3",
+      "note": "note - notebook.3.3",
+      "tags": [
+        "tag A",
+        "tag B"
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{"notebook":[
+    {"id":1, "parentId":0, "title": "subnote1", "tags": ["red"]},
+    {"id":2, "parentId":0, "title": "subnote2", "tags": ["red", "green"]},
+    {"id":3, "parentId":1, "title": "subnote3", "tags": ["green"]}
+  ]
+}
