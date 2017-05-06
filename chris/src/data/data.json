@@ -1,0 +1,5 @@
+{"notebook":
+    {"subtopic": "subnote1", "tags": ["red"]},
+    {"subtopic": "subnote2", "tags": ["red", "green"]},
+    {"subtopic": "subnote3", "tags": ["green"]}
+}
