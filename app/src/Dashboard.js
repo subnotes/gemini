@@ -5,7 +5,7 @@ function Dashboard(props) {
   return (
     <div>
       <h3>Dashboard</h3>
-      Site currently only supports one notebook, so nothing to see here yet
+      Site currently only supports one (default) notebook called "Gemini Notebook", so nothing to see here... yet.
       {props.files}
     </div>
   )
