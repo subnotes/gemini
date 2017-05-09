@@ -14,6 +14,7 @@ import Logout from './Logout';
 import FlashcardExplorer from './FlashcardExplorer';
 import Review from './Review';
 import ExampleEditor from './ExampleEditor';
+import ExampleSubnote from './ExampleSubnote';
 
 class App extends Component {
   
@@ -23,7 +24,7 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       initialized: false,
-      notebook: {},
+      notebook: false,
       notebookDriveId: "",
       files: [],
     }
@@ -96,7 +97,7 @@ class App extends Component {
       this.setState({notebookDriveId: id});
       var path = 'https://www.googleapis.com/drive/v3/files/' + id + '?alt=media';
       var method = 'GET';
-      window.gapi.client.request({'path': path, 'method': method}).then((response) => {this.setState({notebook: response.result}); console.log(response)});
+      window.gapi.client.request({'path': path, 'method': method}).then((response) => {this.setState({notebook: response.result})});
     }
     else {
       this.createNotebook();
@@ -139,7 +140,7 @@ class App extends Component {
 
   render() {
     return (
-      this.state.loggedIn ? 
+      this.state.loggedIn & this.state.initialized ? 
         (
           <Router>
             <div>
@@ -156,6 +157,7 @@ class App extends Component {
               <Route path="/flashcards" component={FlashcardExplorer}/>
               <Route path="/review" component={Review}/>
               <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
+              <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} {...props} />)}/>
             </div>
           </Router>
         )

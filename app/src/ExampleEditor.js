@@ -25,8 +25,8 @@ class ExampleEditor extends Component {
   }
   
   render () {
-    // should check to see if notebook is loaded yet... I'll add notebookLoaded to Apps state this week.
     return (
+      this.props.notebook ? (
       <div>
         <h3>Example Editor</h3>
         Temporary page to demonstrate viewing and editing a notebook.
@@ -35,6 +35,7 @@ class ExampleEditor extends Component {
           <div>{this.state.msg}</div>
         </div>
       </div>
+    ) : (<h3>loading notebook</h3>)
     )    
   }
 }
