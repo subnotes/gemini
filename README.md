@@ -1,23 +1,13 @@
 # gemini
 OSU Capstone Project
 
-
 ## Dev / Git Workflow
-
-Lots of improvements to be made, but it's a start...
-
-You can develop and test on your own machine, 
-but if using the APIs (authentication/storage)
-you'll probably need to run it on the VM
-
-***PLEASE TALK TO GROUP BEFORE MERGING TO MASTER***  
-todo: setup merge request / code review workflow
 
 ```
 +--------------+         +------------+         +---------------+
 |              |         |            |         |  subnotes.io  |
 | your machine |<------->|   github   |<------->|   gemini VM   |
-|              |         |            |         | supports APIs |
+|              |         |            |         |               |
 +--------------+         +------------+         +---------------+
 ```
 
@@ -40,11 +30,15 @@ todo: setup merge request / code review workflow
   * `create-react-app app`
   * `git pull` sync the app dir with github 
   
-### vm, deploying app
+### vm, deploying app on dev subdomains
+
+> ***not needed like I thought it would be since google APIs work from desktop, but leaving it here just for reference***
+
 * `cd ~/gemini/app`
+* update clientID in App.js with one that works with your subdomain (ask Jordan for a clientID if you want one)
 * `npm run build`
 * `cp build/* /var/subnotes/<username>/ -rf` (replace <username> with your first name)
-* check it out at subnotes.io/<username>
+* check it out at <your_color>.subnotes.io
 ```
 red.subnotes.io root = /var/subnotes/chris/
 blue.subnotes.io root = /var/subnotes/jonathan/
