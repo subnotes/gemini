@@ -47,7 +47,7 @@ class App extends Component {
   }
   
   logoutUser () {
-    window.gapi.auth2.getAuthInstance().signOut().then();
+    window.gapi.auth2.getAuthInstance().signOut().then(this.setState({loggedIn:false, notebook: false}));
   }
   
   updateLoginStatus (isSignedIn) {
