@@ -139,33 +139,37 @@ class App extends Component {
   }
 
   render() {
-    return (
-      this.state.loggedIn & this.state.initialized ? 
-        (
-          <Router>
-            <div>
-              <Logout logoutUser={this.logoutUser}/>
-              <ul>
-                <li><Link to="/">Dashboard</Link></li>
-                <li><Link to="/notebook">Notebook Explorer</Link></li>
-                <li><Link to="/flashcards">Flashcard Explorer</Link></li>
-                <li><Link to="/review">Review</Link></li>
-                <li><Link to="/editor">Example Editor</Link></li>
-              </ul>
-              <Route exact path="/" component={Dashboard} files={this.state.files} listFiles={this.listFiles}/>
-              <Route path="/notebook" component={NotebookExplorer}/>
-              <Route path="/flashcards" component={FlashcardExplorer}/>
-              <Route path="/review" component={Review}/>
-              <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
-              <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} {...props} />)}/>
-            </div>
-          </Router>
-        )
-        :
-        (
-          <Login initialized={this.state.initialized} loginUser={this.loginUser}/>
-        ) 
-    )
+    // if logged in and notebook is loaded
+    if (this.state.loggedIn && this.state.initialized && this.state.notebook)  {
+      return (
+        <Router>
+          <div>
+            <Logout logoutUser={this.logoutUser}/>
+            <ul>
+              <li><Link to="/">Dashboard</Link></li>
+              <li><Link to="/notebook">Notebook Explorer</Link></li>
+              <li><Link to="/flashcards">Flashcard Explorer</Link></li>
+              <li><Link to="/review">Review</Link></li>
+              <li><Link to="/editor">Example Editor</Link></li>
+            </ul>
+            <Route exact path="/" render={(props) => (<Dashboard notebook={this.state.notebook} {...props} />)}/>
+            <Route path="/notebook" component={NotebookExplorer}/>
+            <Route path="/flashcards" component={FlashcardExplorer}/>
+            <Route path="/review" component={Review}/>
+            <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
+            <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} {...props} />)}/>
+          </div>
+        </Router>
+      )
+    }
+    // logged in but notbook is loading
+    else if (this.state.loggedIn && this.state.initialized) {
+      return (<h3>loading notebook</h3>)
+    }
+    // not logged in or initialized yet
+    else {
+      return (<Login initialized={this.state.initialized} loginUser={this.loginUser}/>)
+    }
   }
 }
 
