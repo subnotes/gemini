@@ -20,7 +20,7 @@ class App extends Component {
   
   constructor(props) {
     super(props);
-    this.notebookName = "Gemini Notebook 4";
+    this.notebookName = "Gemini Notebook Z";
     this.state = {
       loggedIn: false,
       initialized: false,
