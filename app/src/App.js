@@ -20,12 +20,13 @@ class App extends Component {
   
   constructor(props) {
     super(props);
-    this.notebookName = "Gemini Notebook Z";
+    this.notebookName = "Gemini Notebook Q";
     this.state = {
       loggedIn: false,
       initialized: false,
       notebook: false,
       notebookDriveId: "",
+      tags: {},
       files: [],
     }
     this.loginUser = this.loginUser.bind(this);
@@ -35,7 +36,7 @@ class App extends Component {
     this.updateNotebook = this.updateNotebook.bind(this);
     this.getDriveFiles = this.getDriveFiles.bind(this);
     this.declareNotebook = this.declareNotebook.bind(this);
-    this.updateNotebookFromElement = this.updateNotebookFromElement.bind(this);
+    this.updateTags = this.updateTags.bind(this);
     //this.createDefaultNotebook = this.createDefaultNotebook.bind(this);
     //this.logGAPI = this.logGAPI.bind(this);
     //this.driveTest = this.driveTest.bind(this);
@@ -62,9 +63,10 @@ class App extends Component {
   // https://developers.google.com/api-client-library/javascript/start/start-js#option-2-use-gapiclientrequest
   // TODO: most or all of these are pretty ugly and are considered tempory. After the midpoint check, we'll clean things up and support multiple subnotes 
   // * GET .../files will return deleted files, need to check that files have not been deleted. 
-  // * Drive also allows for multiple files with the same name, so need to check for that and handle somehow
+  // * Drive API also allows for multiple files with the same name, so need to check for that and handle somehow
   // * make drive function return values and not set state directly, in otherwords use setState function outside of functions that use drive api. type1 functions submit requests to drive api, type2 functions call type1 functions and setState
   // * support multiple notebooks (maybe use a file extension like *.sn)
+  // NOTE: Seems like we should be stringify notebook before uploading it to Google drive in updateNotebook() and parsing it when we download it, but it's working as is, and when I tried doing doing that it broke. Maybe Drive API is taking care of it.
   
   // create "geminiNotebook" file 
   createNotebook () {  
@@ -90,14 +92,14 @@ class App extends Component {
     for (var f = 0; f < this.state.files.length; f++){
       if (this.state.files[f]['name'] === this.notebookName) {
         id = this.state.files[f]['id']
-        console.log("found match with id " + id + "")
+        //console.log("found match with id " + id + "")
       } 
     }
     if (id){
       this.setState({notebookDriveId: id});
       var path = 'https://www.googleapis.com/drive/v3/files/' + id + '?alt=media';
       var method = 'GET';
-      window.gapi.client.request({'path': path, 'method': method}).then((response) => {this.setState({notebook: response.result})});
+      window.gapi.client.request({'path': path, 'method': method}).then((response) => {this.updateNotebook(response.result, false)});
     }
     else {
       this.createNotebook();
@@ -105,35 +107,46 @@ class App extends Component {
   }
   
   // update "geminiNotebook" file (and state) - assumes id is already in state
-  updateNotebook (notebook) {
-    // update in state
+  updateNotebook (notebook, upload=true) {
+    // update in notebook and tags in state
     this.setState({notebook: notebook});
-    // update in google drive
-    var params = {
-      "uploadType" : "media",
+    this.setState({tags: this.updateTags(notebook)});
+    // upload notebook to google drive
+    if(upload){
+      var params = {
+        "uploadType" : "media",
+      }
+      var method = 'PATCH'
+      var path = 'https://www.googleapis.com/upload/drive/v3/files/' + this.state.notebookDriveId
+      window.gapi.client.request({'path': path, 'method': method, 'body': notebook, 'params': params}).then()
     }
-    var method = 'PATCH'
-    var path = 'https://www.googleapis.com/upload/drive/v3/files/' + this.state.notebookDriveId
-    window.gapi.client.request({'path': path, 'method': method, 'body': notebook, 'params': params}).then()
   }
   
-  updateNotebookFromElement (e) {
-    this.updateNotebook(e.target.value);
+  // TODO: get tags from flashcards too (currently only getting from subnotes)
+  updateTags (notebook) {
+    var notebookTags = {}
+    if (typeof notebook.subnotes === 'object') {
+      Object.entries(notebook.subnotes).forEach(([uuid, subnote]) => {
+        if (Array.isArray(subnote.tags)) {
+          subnote.tags.forEach((tag) => {
+            notebookTags[tag] = notebookTags[tag] || []
+            notebookTags[tag].push(uuid)
+          })
+        }
+      })
+      return notebookTags
+    }
   }
-  
-  // download and store "geminiNotebook" file in state
-  
-  // Temporarily keeping for reference  
   
   // on mount
   componentDidMount() {
-    // load google api libraries, initialize them, and set up login status listener (updateLoginStatus), and anything else that should happen on page load ...
+    // load Google API libraries, initialize them, and set up login status listener (updateLoginStatus), and anything else that should happen on page load ...
     window.gapi.load('client:auth2', () => {
       // TODO: remove at least clientId to some external source that gets loaded in
       window.gapi.client.init({discoverDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"], clientId: '38703598827-318fe1f76ju71nedjkudad6gcvteglii.apps.googleusercontent.com', scope: 'https://www.googleapis.com/auth/drive.file'}).then(() => {
         window.gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateLoginStatus); // set up listener for login status change
         this.updateLoginStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get()); // get initial login status
-        setTimeout(this.setState({initialized: true,}), 1000); // let everything know that the libraries have been initialized
+        this.setState({initialized: true,}); // let everything know that the libraries have been initialized
       })
     })
   }
@@ -157,7 +170,7 @@ class App extends Component {
             <Route path="/flashcards" component={FlashcardExplorer}/>
             <Route path="/review" component={Review}/>
             <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
-            <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} {...props} />)}/>
+            <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)}/>
           </div>
         </Router>
       )

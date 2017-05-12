@@ -4,11 +4,11 @@ import {Link} from 'react-router-dom';
 
 function Dashboard(props) {
   
-  if (typeof props.notebook.subnotes != 'undefined') {
+  if (typeof props.notebook.subnotes !== 'undefined') {
     return(
       <div>
         <h3>Dashboard</h3>
-        Site currently only supports one (default) notebook called "Gemini Notebook", so nothing to see here... yet.
+        Site currently only supports one (default) notebook called "Gemini Notebook", which is stored on your Google drive.
         <h4>subnotes in notbook in no particular order</h4>
         <ul>
           {Object.entries(props.notebook.subnotes).map(item => (

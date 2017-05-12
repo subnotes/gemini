@@ -18,7 +18,7 @@ class ExampleEditor extends Component {
        this.props.updateNotebook(JSON.parse(e.target.value))
        this.setState({msg: "notebook updated"})
     }catch(err) {
-      this.setState({msg: "invalid JSON"})
+      this.setState({msg: "invalid JSON : " + err})
     }    
   }
   
