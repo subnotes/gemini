@@ -3,13 +3,19 @@ import React from 'react';
 
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';
+import FlashcardInterface from './interfaces/FlashcardInterface';
 
 // Local flashcard array for testing
 
 // Component for Explorer View
 var FlashcardExplorer = React.createClass({
 	getInitialState: function () {
-		return { };
+		return { flashcards: false};
+	},
+
+	componentWillMount: function () {
+		var flashcards = FlashcardInterface.getFlashcards(this.props.notebook);
+		this.setState({flashcards: flashcards});
 	},
 
 	render: function () {
@@ -17,17 +23,13 @@ var FlashcardExplorer = React.createClass({
 			<div>
 			  <h3>Flashcard Explorer</h3>
 			    <div>
-			      <ol>
-			        <FlashcardContainer 
-				  question="question 1"
-				  answer="answer 1" />
-			        <FlashcardContainer 
-				  question="question 2"
-				  answer="answer 2" />
-			        <FlashcardContainer 
-				  question="question 3"
-				  answer="answer 3" />
-			      </ol>
+			      <ul>
+			      	{this.state.flashcards.map(card => (
+				  <FlashcardContainer
+				    question={card[0].question}
+				    answer={card[0].answer} />
+				  ))}
+			      </ul>
 			    </div>
 			</div>
 		);

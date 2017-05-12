@@ -168,7 +168,7 @@ class App extends Component {
               </ul>
               <Route exact path="/" render={(props) => (<Dashboard notebook={this.state.notebook} {...props} />)}/>
               <Route path="/notebook" render={(props) => (<NotebookExplorer notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
-              <Route path="/flashcards" component={FlashcardExplorer}/>
+              <Route path="/flashcards" render={(props) => (<FlashcardExplorer notebook={this.state.notebook} {...props} /> )} />
               <Route path="/review" component={Review}/>
               <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
               <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)}/>
