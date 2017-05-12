@@ -35,7 +35,7 @@ export default class EditModal extends Component {
     }
 
     handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(-1)); //get last character of tag name, equal to the index of the tags array (WILL BE ISSUES IF WE GET INTO DOUBLE DIGIT TAGS ON A NODE)
+      var tagNum = parseInt(target.name.substr(-1), 10); //get last character of tag name, equal to the index of the tags array (WILL BE ISSUES IF WE GET INTO DOUBLE DIGIT TAGS ON A NODE)
       var tagsCopy = this.state.tags.slice();
       tagsCopy[tagNum] = target.value;
       this.setState({
