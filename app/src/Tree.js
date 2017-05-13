@@ -173,7 +173,7 @@ export default class Tree extends Component {
                 <SortableTree
                     treeData={this.state.treeData}
                     onChange={treeData => this.setState({ treeData })}
-                    onMoveNode={function() {console.log("node moved");}}
+                    onMoveNode={() => this.props.updateNotebook(this.saveTreeData(this.state.treeData))}
                     generateNodeProps={rowInfo => ({
                                 buttons: [
                                     <EditModal
