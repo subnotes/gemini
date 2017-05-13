@@ -1,10 +1,19 @@
 // import node packages
-import React from 'react';
+import React, {Component} from 'react';
+import Tree from './Tree'
 
-const NotebookExplorer = () => {
+class NotebookExplorer extends Component {
+
+  render() {
   return (
-    <h3>Notebook Explorer</h3>
-  )
+    <div>
+      <h3>Notebook Explorer</h3>
+      <Tree
+        notebook={this.props.notebook}
+        updateNotebook={this.props.updateNotebook}
+      />
+    </div>
+  )}
 }
 
 export default NotebookExplorer;
