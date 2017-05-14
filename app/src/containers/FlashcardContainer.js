@@ -2,7 +2,7 @@
 import React from 'react';
 
 // import related presenter
-import Flashcard from '../presenters/Flashcard';    
+import Flashcard from '../presenters/Flashcard';
 
 // Main Container Component
 var FlashcardContainer = React.createClass({
@@ -23,6 +23,16 @@ var FlashcardContainer = React.createClass({
 
     if (this.state.behavior == "review" && this.state.flashcard.qaPairs.length > 1) {
       // Choose random index of question to view here
+    }
+  },
+
+  // Make sure we are displaying the correct flashcard
+  componentWillReceiveProps: function(nextProps) {
+    if(this.props !== nextProps) {
+      this.setState({
+        flashcard: nextProps.flashcard,
+        behavior: nextProps.behavior
+      });
     }
   },
 
