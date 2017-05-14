@@ -11,6 +11,11 @@ var FlashcardExplorer = React.createClass({
     return { flashcards: []};
   },
 
+  handleDeleteCard: function(idx) {
+    console.log(idx);
+    alert("Delete from flashcard manager not yet implemented.");
+  },
+
   componentWillMount: function () {
     var flashcards = FlashcardInterface.getFlashcards(this.props.notebook);
     this.setState({flashcards: flashcards});
@@ -27,7 +32,8 @@ var FlashcardExplorer = React.createClass({
                 <li>
                   <FlashcardContainer
                     flashcard={card}
-                    behavior="manage" />
+                    behavior="manage"
+                    handleDelete={this.handleDeleteCard} />
                 </li>
               ))}
             </ul>

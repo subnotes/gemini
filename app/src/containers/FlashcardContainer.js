@@ -31,7 +31,8 @@ var FlashcardContainer = React.createClass({
       flashcard={this.state.flashcard}
       behavior={this.state.behavior}
       viewIdx={this.state.viewIdx}
-      nextCard={this.props.nextCard} />;
+      nextCard={this.props.nextCard}
+      handleDelete={this.props.handleDelete}/>;
   }
 });
 

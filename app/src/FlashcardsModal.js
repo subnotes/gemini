@@ -25,6 +25,7 @@ export default class FlashcardsModal extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleAddCard = this.handleAddCard.bind(this);
+        this.handleDeleteCard = this.handleDeleteCard.bind(this);
       } //end constructor
 
     //resolve conflicts with incorrect rowInfo causing state to hold values from wrong node
@@ -90,6 +91,13 @@ export default class FlashcardsModal extends Component {
       this.props.updateTreeDataState(newTreeData); //update state of the SortableTree, causing it to re-render
     }
 
+    handleDeleteCard(idx) {
+      console.log("Deleting index: ", idx);
+      var newCardArray = this.state.flashcards;
+      newCardArray.splice(idx, 1);
+      this.setState({flashcards: newCardArray});
+    }
+
     render () {
       var tagArray = [];
       var numTags = 5;
@@ -106,8 +114,8 @@ export default class FlashcardsModal extends Component {
               <li>
                 <FlashcardContainer
                   flashcard={FlashcardInterface.convertTreeCard(card, this.props.rowInfo.id, i)}
-                  behavior="manage" />
-                <button>Delete</button>
+                  behavior="manage"
+                  handleDelete={this.handleDeleteCard}/>
               </li>
             ))}
           </ul>

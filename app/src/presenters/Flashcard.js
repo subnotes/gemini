@@ -18,6 +18,11 @@ var Flashcard = React.createClass({
     this.props.nextCard();
   },
 
+  handleDelete: function() {
+    console.log("Delete pressed on: ", this.props.flashcard.cardIdx);
+    this.props.handleDelete(this.props.flashcard.cardIdx);
+  },
+
   componentWillMount: function () {
     return;
   },
@@ -26,12 +31,15 @@ var Flashcard = React.createClass({
     switch(this.props.behavior) {
       case "manage":
         return(
-          <ul>
-            {this.props.flashcard.qaPairs.map(
-                qaPair => <li> Question: <span>{qaPair.question}</span><br />
-                               Answer: <span>{qaPair.answer}</span> </li>
-                )}
-          </ul>
+          <div>
+            <ul>
+              {this.props.flashcard.qaPairs.map(
+                  qaPair => <li> Question: <span>{qaPair.question}</span><br />
+                                 Answer: <span>{qaPair.answer}</span> </li>
+                  )}
+            </ul>
+            <button onClick={this.handleDelete}>Delete Card</button>
+          </div>
         );
       case "review":
         if (!this.state.answered) {
