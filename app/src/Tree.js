@@ -3,6 +3,7 @@ import SortableTree, { getTreeFromFlatData, changeNodeAtPath, addNodeUnderParent
 import EditModal from './EditModal.js';
 import AddModal from './AddModal.js';
 import DeleteModal from './DeleteModal.js';
+import FlashcardsModal from './FlashcardsModal.js';
 import UUID from 'uuid';
 
 export default class Tree extends Component {
@@ -107,6 +108,7 @@ export default class Tree extends Component {
           rowInfo.node.title = newValues.subtopic;
           rowInfo.node.subtitle = newValues.note;
           rowInfo.node.tags = newValues.tags;
+          rowInfo.node.flashcards = newValues.flashcards;
 
           //return the updated treeData
           return changeNodeAtPath({ treeData: this.state.treeData, path: rowInfo.path, newNode: rowInfo.node, getNodeKey: getNodeKey });
@@ -191,6 +193,12 @@ export default class Tree extends Component {
                                     <DeleteModal
                                       rowInfo={rowInfo}
                                       deleteSubnote={this.deleteSubnote}
+                                      treeData={this.state.treeData}
+                                      updateTreeDataState={this.updateTreeDataState}
+                                    />,
+                                    <FlashcardsModal
+                                      rowInfo={rowInfo}
+                                      replaceSubnote={this.replaceSubnote}
                                       treeData={this.state.treeData}
                                       updateTreeDataState={this.updateTreeDataState}
                                     />,
