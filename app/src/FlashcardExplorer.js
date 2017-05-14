@@ -5,12 +5,10 @@ import React from 'react';
 import FlashcardContainer from './containers/FlashcardContainer';
 import FlashcardInterface from './interfaces/FlashcardInterface';
 
-// Local flashcard array for testing
-
 // Component for Explorer View
 var FlashcardExplorer = React.createClass({
   getInitialState: function () {
-    return { flashcards: false};
+    return { flashcards: []};
   },
 
   componentWillMount: function () {
@@ -19,22 +17,31 @@ var FlashcardExplorer = React.createClass({
   },
 
   render: function () {
-    return (
-      <div>
-        <h3>Flashcard Explorer</h3>
+    if (this.state.flashcards.length > 0) {
+      return (
         <div>
-          <ul>
-            {this.state.flashcards.map(card => (
-              <li>
-                <FlashcardContainer
-                  flashcard={card}
-                  behavior="manage" />
-              </li>
-            ))}
-          </ul>
+          <h3>Flashcard Explorer</h3>
+          <div>
+            <ul>
+              {this.state.flashcards.map(card => (
+                <li>
+                  <FlashcardContainer
+                    flashcard={card}
+                    behavior="manage" />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div>
+          <h3>Flashcard Explorer</h3>
+          There don't appear to be any flashcards in this notebook yet.
+        </div>
+      );
+    }
   }
 });
 
