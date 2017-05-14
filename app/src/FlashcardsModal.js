@@ -107,6 +107,7 @@ export default class FlashcardsModal extends Component {
                 <FlashcardContainer
                   flashcard={FlashcardInterface.convertTreeCard(card, this.props.rowInfo.id, i)}
                   behavior="manage" />
+                <button>Delete</button>
               </li>
             ))}
           </ul>
