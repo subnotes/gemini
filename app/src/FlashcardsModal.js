@@ -15,13 +15,16 @@ export default class FlashcardsModal extends Component {
           note: this.props.rowInfo.node.subtitle,
           tags: this.props.rowInfo.node.tags,
           flashcards: this.props.rowInfo.node.flashcards,
+          newCardQ: "",
+          newCardA: "",
+          newCardTags: []
         };
 
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
+        this.handleAddCard = this.handleAddCard.bind(this);
       } //end constructor
 
     //resolve conflicts with incorrect rowInfo causing state to hold values from wrong node
@@ -56,17 +59,45 @@ export default class FlashcardsModal extends Component {
       var tagsCopy = this.props.rowInfo.node.tags.slice();
       tagsCopy[tagNum] = target.value;
       this.setState({
-        tags: tagsCopy
+        newCardTags: tagsCopy
       });
     }
 
-    handleSave({ target }) {
+    handleAddCard({ target }) {
+      // Make new Flashcard
+      var newCard = {
+        qas: [],
+        tags: []
+      };
+      newCard.qas.push({
+        question: this.state.newCardQ,
+        answer: this.state.newCardA
+      });
+      newCard.tags = this.state.newCardTags;
+
+      // Add new flashcard to array
+      var newCardArray = this.state.flashcards;
+      newCardArray.push(newCard);
+      this.setState({
+        flashcards: newCardArray,
+        newCardQ: "",
+        newCardA: "",
+        newCardTags: []
+      });
+
+      // Create new row object
       var newTreeData = this.props.replaceSubnote(this.props.rowInfo, this.state); //replace subnote and update treeData
       this.props.updateTreeDataState(newTreeData); //update state of the SortableTree, causing it to re-render
-      this.handleCloseModal(); //close the modal window
     }
 
     render () {
+      var tagArray = [];
+      var numTags = 5;
+      for (var i = 0; i < numTags; i++) {
+        var tagLabel = "tag" + i;
+        tagArray.push(<input type="text" name={tagLabel} key={i} onChange={this.handleTagChange}/>);
+      }
+
       var flashcardView = null;
       if (this.state.flashcards.length > 0) {
         flashcardView = (
@@ -81,7 +112,7 @@ export default class FlashcardsModal extends Component {
           </ul>
         );
       } else {
-        flashcardView = <span>There don't seem to be any flashcards in this subnote.</span>;
+        flashcardView = <div>There don't seem to be any flashcards in this subnote.</div>;
       }
 
       return (
@@ -91,9 +122,23 @@ export default class FlashcardsModal extends Component {
              isOpen={this.state.showModal}
              contentLabel="View Flashcards"
           >
-            <h3>{this.props.rowInfo.node.title}</h3>
-            <span>{this.props.rowInfo.node.subtitle}</span>
+            <div>
+              <h3>{this.props.rowInfo.node.title}</h3>
+              <span>{this.props.rowInfo.node.subtitle}</span>
+            </div>
             {flashcardView}
+            <h4>Add New Flashcard</h4>
+            <form>
+              Question:
+              <input type="text" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
+              <br />
+              Answer:
+              <input type="text" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
+              <br />
+              Tags:
+              {tagArray}
+            </form>
+            <button onClick={this.handleAddCard}>Add This Card</button>
             <button onClick={this.handleCloseModal}>Close Flashcards</button>
           </ReactModal>
         </div>
