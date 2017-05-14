@@ -26,7 +26,19 @@ function getFlashcards (notebook) {
   return flashcards;
   
 }
+
+function convertTreeCard (treeCard, noteId, cardIdx) {
+  var flashcard = {
+    noteId: noteId,
+    cardIdx: cardIdx,
+    qaPairs: treeCard.qas,
+    tags: treeCard.tags
+  };
+
+  return flashcard;
+}
   
 module.exports = {
-  getFlashcards: getFlashcards
+  getFlashcards: getFlashcards,
+  convertTreeCard: convertTreeCard
 }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
+import FlashcardContainer from './containers/FlashcardContainer.js';
+import FlashcardInterface from './interfaces/FlashcardInterface.js';
+
 //EditBox adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class FlashcardsModal extends Component {
     constructor(props) {
@@ -64,6 +67,23 @@ export default class FlashcardsModal extends Component {
     }
 
     render () {
+      var flashcardView = null;
+      if (this.state.flashcards.length > 0) {
+        flashcardView = (
+          <ul>
+            {this.state.flashcards.map((card, i) => (
+              <li>
+                <FlashcardContainer
+                  flashcard={FlashcardInterface.convertTreeCard(card, this.props.rowInfo.id, i)}
+                  behavior="manage" />
+              </li>
+            ))}
+          </ul>
+        );
+      } else {
+        flashcardView = <span>There don't seem to be any flashcards in this subnote.</span>;
+      }
+
       return (
         <div>
           <button onClick={this.handleOpenModal}>Flashcards</button>
@@ -73,9 +93,7 @@ export default class FlashcardsModal extends Component {
           >
             <h3>{this.props.rowInfo.node.title}</h3>
             <span>{this.props.rowInfo.node.subtitle}</span>
-            <div>
-              This is where the flashcards will go.
-            </div>
+            {flashcardView}
             <button onClick={this.handleCloseModal}>Close Flashcards</button>
           </ReactModal>
         </div>
