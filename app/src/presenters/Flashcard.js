@@ -2,12 +2,25 @@
 import React from 'react';
 
 function Flashcard(props) {
-  return (
-    <li>
-      Question: <span>{props.question}</span><br />
-      Answer: <span>{props.answer}</span>
-    </li>
-  );
+  switch(props.behavior) {
+    case "manage":
+      return(
+        <ul>
+          {props.flashcard.qaPairs.map(
+              qaPair => <li> Question: <span>{qaPair.question}</span><br />
+                             Answer: <span>{qaPair.answer}</span> </li>
+              )}
+        </ul>
+      );
+    case "review":
+      return;
+    default:
+      return (
+        <span>
+          Something went wrong displaying this flashcard.
+        </span>
+      );
+  }
 }
 
 export default Flashcard;
