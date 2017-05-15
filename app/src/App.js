@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import UUID from 'uuid';
 
 // import our routes/views
 import Dashboard from './Dashboard';
@@ -70,13 +71,26 @@ class App extends Component {
 
   // create "geminiNotebook" file
   createNotebook () {
+    const newUUID = UUID.v4()
+    const newNotebook = { 
+      "rootSubnote": newUUID, 
+      "subnotes": { 
+        [newUUID]: { 
+          "subtopic": "Your new notebook", 
+          "note": "Start taking notes here!", 
+          "flashcards": [], 
+          "tags": [], 
+          "subnotes": [] 
+        }
+      }
+    }
     var metaData = {
       "name": this.notebookName,
       "mimeType": "application/json",
     }
     var method = 'POST'
     var path = 'https://www.googleapis.com/drive/v3/files'
-    window.gapi.client.request({'path': path, 'method': method, 'body': metaData}).then( (response) => {this.setState({ notebookDriveId: response.result.id }); this.updateNotebook({"blank": "notebook"})})
+    window.gapi.client.request({'path': path, 'method': method, 'body': metaData}).then( (response) => {this.setState({ notebookDriveId: response.result.id }); this.updateNotebook(newNotebook)})
   }
 
   // get list of files created by subnotes from Drive

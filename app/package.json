@@ -5,9 +5,9 @@
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-modal": "^1.7.7",
     "react-router-dom": "^4.1.1",
     "react-sortable-tree": "^0.1.17",
-    "react-modal": "^1.7.7",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
