@@ -178,7 +178,6 @@ class App extends Component {
                 <li><Link to="/notebook">Notebook Explorer</Link></li>
                 <li><Link to="/flashcards">Flashcard Explorer</Link></li>
                 <li><Link to="/review">Review</Link></li>
-                <li><Link to="/editor">Example Editor</Link></li>
               </ul>
               <Route exact path="/" render={(props) => (<Dashboard notebook={this.state.notebook} {...props} />)}/>
               <Route path="/notebook" render={(props) => (<NotebookExplorer notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
