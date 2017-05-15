@@ -7,14 +7,20 @@ import {
 } from 'react-router-dom';
 
 // import our routes/views
-import Dashboard from './Dashboard';
-import NotebookExplorer from './NotebookExplorer';
-import Login from './Login';
-import Logout from './Logout';
-import FlashcardExplorer from './FlashcardExplorer';
-import Review from './Review';
-import ExampleEditor from './ExampleEditor';
-import ExampleSubnote from './ExampleSubnote';
+import Dashboard from './components/Dashboard';
+import NotebookExplorer from './components/NotebookExplorer';
+import Login from './components/Login';
+import Logout from './components/Logout';
+import FlashcardExplorer from './components/FlashcardExplorer';
+import Review from './components/Review';
+import ExampleEditor from './components/ExampleEditor'
+import ExampleSubnote from './components/ExampleSubnote'
+
+// import helpers
+import { getDriveConfig } from './configs/driveConfigs'
+import { initializeAuthDrive } from './helpers/googleAPI'
+import { downloadNotebook, uploadNotebook, createNotebook, getSubnotes } from './helpers/googleDrive'
+import { loginUser, logoutUser, setLogInOutHandler, isUserLoggedIn } from './helpers/googleAuth'
 
 class App extends Component {
 
@@ -29,31 +35,27 @@ class App extends Component {
       tags: {},
       files: [],
     }
-    this.loginUser = this.loginUser.bind(this);
-    this.logoutUser = this.logoutUser.bind(this);
-    this.updateLoginStatus = this.updateLoginStatus.bind(this);
+    this.updateLoginStatus = this.updateLoginStatus.bind(this);    
     this.createNotebook = this.createNotebook.bind(this);
     this.updateNotebook = this.updateNotebook.bind(this);
     this.getDriveFiles = this.getDriveFiles.bind(this);
     this.declareNotebook = this.declareNotebook.bind(this);
     this.updateTags = this.updateTags.bind(this);
-    //this.createDefaultNotebook = this.createDefaultNotebook.bind(this);
-    //this.logGAPI = this.logGAPI.bind(this);
-    //this.driveTest = this.driveTest.bind(this);
-  }
-
-  // Google auth2 helper fuctions
-  loginUser () {
-    window.gapi.auth2.getAuthInstance().signIn().then();
-  }
-
-  logoutUser () {
-    window.gapi.auth2.getAuthInstance().signOut().then(this.setState({loggedIn: false, notebook: false, tags: {}}));
+    
   }
 
   updateLoginStatus (isSignedIn) {
+    console.log(isSignedIn)
     this.setState({loggedIn: isSignedIn});
-    isSignedIn && this.getDriveFiles();
+    // on login
+    if (isSignedIn){
+      this.getDriveFiles()
+    }
+    // on logout
+    else {
+      // clean up state
+      this.setState({loggedIn: false, notebook: false, tags: {}, notebookDriveId: ""})
+    }
   }
 
   // Google drive functions
@@ -140,15 +142,14 @@ class App extends Component {
 
   // on mount
   componentDidMount() {
-    // load Google API libraries, initialize them, and set up login status listener (updateLoginStatus), and anything else that should happen on page load ...
-    window.gapi.load('client:auth2', () => {
-      // TODO: remove at least clientId to some external source that gets loaded in
-      window.gapi.client.init({discoverDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"], clientId: '38703598827-318fe1f76ju71nedjkudad6gcvteglii.apps.googleusercontent.com', scope: 'https://www.googleapis.com/auth/drive.file'}).then(() => {
-        window.gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateLoginStatus); // set up listener for login status change
-        this.updateLoginStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get()); // get initial login status
-        this.setState({initialized: true,}); // let everything know that the libraries have been initialized
-      })
-    })
+    initializeAuthDrive(
+      getDriveConfig(), 
+      () => {
+        setLogInOutHandler(this.updateLoginStatus)
+        this.updateLoginStatus(isUserLoggedIn())
+        this.setState({initialized: true})
+      }
+    )
   }
 
   render() {
@@ -158,7 +159,7 @@ class App extends Component {
         <div>
           <Router>
             <div>
-              <Logout logoutUser={this.logoutUser}/>
+              <Logout logoutUser={logoutUser}/>
               <ul>
                 <li><Link to="/">Dashboard</Link></li>
                 <li><Link to="/notebook">Notebook Explorer</Link></li>
@@ -183,7 +184,7 @@ class App extends Component {
     }
     // not logged in or initialized yet
     else {
-      return (<Login initialized={this.state.initialized} loginUser={this.loginUser}/>)
+      return (<Login initialized={this.state.initialized} loginUser={loginUser}/>)
     }
   }
 }
