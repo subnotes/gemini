@@ -9,12 +9,7 @@ function Dashboard(props) {
       <div>
         <h3>Dashboard</h3>
         Site currently only supports one (default) notebook called "Gemini Notebook", which is stored on your Google drive.
-        <h4>subnotes in notbook in no particular order</h4>
-        <ul>
-          {Object.entries(props.notebook.subnotes).map(item => (
-            <li key={item[0]}><Link to={"/subnote/" + item[0]}>{item[1]['subtopic']}</Link></li>
-          ))}
-        </ul>
+        In the future your notebooks would be listed here, but for now select "Notebook Explorer" to view and edit your "Gemini Notebook"
       </div>
     )
   }
