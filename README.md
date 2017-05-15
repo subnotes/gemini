@@ -8,7 +8,7 @@
 
 ## Website (Web App)
 
-http://subnote.io
+http://subnotes.io
 
 ## Intsructions
 
@@ -16,7 +16,7 @@ https://media.oregonstate.edu/media/t/0_e84w00e4
 
 ## Known issues
 
-* "Gemini Notebook" will still be loaded from subnotes.io even if it has been deleted on your drive
-* Under certain circumstances subnotes may lose their flashcards are be unable to add flashcards
+* "Gemini Notebook" will still be loaded from subnotes.io even if it in your drive's "trash"
+* Under certain circumstances subnotes may lose their flashcards and be unable to add new flashcards
 
 
