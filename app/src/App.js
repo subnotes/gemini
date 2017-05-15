@@ -21,7 +21,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.notebookName = "Gemini Notebook Q";
+    this.notebookName = "Gemini Notebook";
     this.state = {
       loggedIn: false,
       initialized: false,
@@ -78,9 +78,9 @@ class App extends Component {
         [newUUID]: { 
           "subtopic": "Your new notebook", 
           "note": "Start taking notes here!", 
-          "flashcards": [], 
-          "tags": [], 
-          "subnotes": [] 
+          "flashcards": new Array(), 
+          "tags": new Array(), 
+          "subnotes": new Array() 
         }
       }
     }
