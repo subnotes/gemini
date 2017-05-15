@@ -35,9 +35,7 @@ OSU Capstone Project
 > ***not needed like I thought it would be since google APIs work from desktop, but leaving it here just for reference***
 
 * `cd ~/gemini/app`
-* update clientID in App.js with one that works with your subdomain (ask Jordan for a clientID if you want one)
-* `npm run build`
-* `cp build/* /var/subnotes/<username>/ -rf` (replace <username> with your first name)
+* `sh deploy.sh`
 * check it out at <your_color>.subnotes.io
 ```
 red.subnotes.io root = /var/subnotes/chris/
