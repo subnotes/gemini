@@ -107,7 +107,7 @@ export default class FlashcardsModal extends Component {
       }
 
       var flashcardView = null;
-      if (this.state.flashcards.length > 0) {
+      if (typeof this.state.flashcards != 'undefined' && this.state.flashcards.length > 0) {
         flashcardView = (
           <ul>
             {this.state.flashcards.map((card, i) => (
