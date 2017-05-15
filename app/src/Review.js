@@ -12,7 +12,9 @@ var Review = React.createClass({
   },
 
   nextCard: function () {
-    this.state.flashcards.push(this.state.flashcards.shift());
+    var newCardArray = this.state.flashcards;
+    newCardArray.push(newCardArray.shift());
+    this.setState({flashcards: newCardArray});
   },
 
   componentWillMount: function() {
