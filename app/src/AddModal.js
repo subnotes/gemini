@@ -61,15 +61,15 @@ export default class AddModal extends Component {
         <div>
           <button onClick={this.handleOpenModal}>Add</button>
           <ReactModal
-             isOpen={this.state.showModal}
-             contentLabel="Add subnote"
+            isOpen={this.state.showModal}
+            contentLabel="Add subnote"
           >
             <form>
               Subtopic:
               <input type="text" name="subtopic" onChange={this.handleChange}/>
               <br />
               Note:
-              <input type="text" name="note" onChange={this.handleChange}/>
+              <textarea rows="10" cols="75" name="note" onChange={this.handleChange}/>
               <br />
               Tags:
               {tagArray}

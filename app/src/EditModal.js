@@ -77,15 +77,15 @@ export default class EditModal extends Component {
         <div>
           <button onClick={this.handleOpenModal}>Edit</button>
           <ReactModal
-             isOpen={this.state.showModal}
-             contentLabel="Edit subnote"
+            isOpen={this.state.showModal}
+            contentLabel="Edit subnote"
           >
             <form>
               Subtopic:
               <input type="text" name="subtopic" defaultValue={this.props.rowInfo.node.title} onChange={this.handleChange}/>
               <br />
               Note:
-              <input type="text" name="note" defaultValue={this.props.rowInfo.node.subtitle} onChange={this.handleChange}/>
+              <textarea rows="10" cols="75" name="note" defaultValue={this.props.rowInfo.node.subtitle} onChange={this.handleChange}/>
               <br />
               Tags:
               {tagArray}

@@ -128,8 +128,8 @@ export default class FlashcardsModal extends Component {
         <div>
           <button onClick={this.handleOpenModal}>Flashcards</button>
           <ReactModal
-             isOpen={this.state.showModal}
-             contentLabel="View Flashcards"
+            isOpen={this.state.showModal}
+            contentLabel="View Flashcards"
           >
             <div>
               <h3>{this.props.rowInfo.node.title}</h3>
@@ -139,10 +139,10 @@ export default class FlashcardsModal extends Component {
             <h4>Add New Flashcard</h4>
             <form>
               Question:
-              <input type="text" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
+              <textarea rows="10" cols="75" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
               <br />
               Answer:
-              <input type="text" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
+              <textarea rows="10" cols="75" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
               <br />
               Tags:
               {tagArray}
