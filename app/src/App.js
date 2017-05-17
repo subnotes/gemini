@@ -72,15 +72,15 @@ class App extends Component {
   // create "geminiNotebook" file
   createNotebook () {
     const newUUID = UUID.v4()
-    const newNotebook = { 
-      "rootSubnote": newUUID, 
-      "subnotes": { 
-        [newUUID]: { 
-          "subtopic": "Your new notebook", 
-          "note": "Start taking notes here!", 
-          "flashcards": new Array(), 
-          "tags": new Array(), 
-          "subnotes": new Array() 
+    const newNotebook = {
+      "rootSubnote": newUUID,
+      "subnotes": {
+        [newUUID]: {
+          "subtopic": "Your new notebook",
+          "note": "Start taking notes here!",
+          "flashcards": [],
+          "tags": [],
+          "subnotes": []
         }
       }
     }

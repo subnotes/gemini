@@ -6,11 +6,12 @@ export default class EditModal extends Component {
     constructor(props) {
         super(props);
 
+        var currentID = this.props.rowInfo.node.id;
         this.state = {
           showModal: false,
           subtopic: this.props.rowInfo.node.title,
           note: this.props.rowInfo.node.subtitle,
-          tags: this.props.rowInfo.node.tags
+          tags: this.props.notebook.subnotes[currentID].tags || []
         };
 
         this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -23,10 +24,11 @@ export default class EditModal extends Component {
     //resolve conflicts with incorrect rowInfo causing state to hold values from wrong node
     componentWillReceiveProps(nextProps) {
       if(this.props !== nextProps) {
+        var currentID = nextProps.rowInfo.node.id;
         this.setState({
           subtopic: nextProps.rowInfo.node.title,
           note: nextProps.rowInfo.node.subtitle,
-          tags: nextProps.rowInfo.node.tags,
+          tags: nextProps.notebook.subnotes[currentID].tags || [],
         });
       }
     }
@@ -47,8 +49,9 @@ export default class EditModal extends Component {
     }
 
     handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(-1), 10); //get last character of tag name, equal to the index of the tags array (WILL BE ISSUES IF WE GET INTO DOUBLE DIGIT TAGS ON A NODE)
-      var tagsCopy = this.props.rowInfo.node.tags.slice();
+      var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
+      var currentID = this.props.rowInfo.node.id;
+      var tagsCopy = this.props.notebook.subnotes[currentID].tags.slice() || [];
       tagsCopy[tagNum] = target.value;
       this.setState({
         tags: tagsCopy
@@ -64,9 +67,9 @@ export default class EditModal extends Component {
     render () {
       var tagArray = [];
       var numTags = 5; //number of tag inputs to display
-      for (var i = 0; i < this.props.rowInfo.node.tags.length; i++) { //prepopulate tags
+      for (var i = 0; i < this.state.tags.length; i++) { //prepopulate tags
         var tagLabel = "tag" + i;
-        tagArray.push(<input type="text" name={tagLabel} key={i} defaultValue={this.props.rowInfo.node.tags[i]} onChange={this.handleTagChange}/>);
+        tagArray.push(<input type="text" name={tagLabel} key={i} defaultValue={this.state.tags[i]} onChange={this.handleTagChange}/>);
       }
       for (i; i < numTags; i++) { //empty tag inputs
         tagLabel = "tag" + i;

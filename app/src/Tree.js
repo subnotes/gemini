@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SortableTree, { getTreeFromFlatData, changeNodeAtPath, addNodeUnderParent, removeNodeAtPath } from 'react-sortable-tree';
+import SortableTree, { getTreeFromFlatData, getFlatDataFromTree, changeNodeAtPath, addNodeUnderParent, removeNodeAtPath } from 'react-sortable-tree';
 import EditModal from './EditModal.js';
 import AddModal from './AddModal.js';
 import DeleteModal from './DeleteModal.js';
@@ -41,8 +41,8 @@ export default class Tree extends Component {
                               parentId: getParentKey(this.props.notebook, i),
                               title: this.props.notebook.subnotes[currentID].subtopic,
                               subtitle: this.props.notebook.subnotes[currentID].note,
-                              tags: this.props.notebook.subnotes[currentID].tags,
-                              flashcards: this.props.notebook.subnotes[currentID].flashcards
+                              tags: this.props.notebook.subnotes[currentID].tags || [],
+                              flashcards: this.props.notebook.subnotes[currentID].flashcards || []
                             });
         }
 
@@ -54,7 +54,7 @@ export default class Tree extends Component {
         function addChildrenToFlat(parentNode, notebookFlat) {
           if ("children" in parentNode) { //if the node has child nodes
             var id = parentNode.id;
-            notebookFlat.subnotes[id].subnotes = [];
+            notebookFlat.subnotes[id].subnotes = []; //create array to hold child subnote IDs
             for (var i = 0; i < parentNode.children.length; i++) {
               //add child IDs to subnotes array of current subnote
               notebookFlat.subnotes[id].subnotes.push(parentNode.children[i].id);
@@ -63,8 +63,8 @@ export default class Tree extends Component {
               notebookFlat.subnotes[childID] = {};
               notebookFlat.subnotes[childID].subtopic = parentNode.children[i].title;
               notebookFlat.subnotes[childID].note = parentNode.children[i].subtitle;
-              notebookFlat.subnotes[childID].tags = parentNode.children[i].tags;
-              notebookFlat.subnotes[childID].flashcards = parentNode.children[i].flashcards;
+              notebookFlat.subnotes[childID].tags = parentNode.children[i].tags || [];
+              notebookFlat.subnotes[childID].flashcards = parentNode.children[i].flashcards || [];
               addChildrenToFlat(parentNode.children[i], notebookFlat);
             }
           }
@@ -105,13 +105,22 @@ export default class Tree extends Component {
           }
 
           //update node information
-          rowInfo.node.title = newValues.subtopic;
-          rowInfo.node.subtitle = newValues.note;
-          rowInfo.node.tags = newValues.tags;
-          rowInfo.node.flashcards = newValues.flashcards;
+          var newNode = {};
+          var currentID = rowInfo.node.id;
+          newNode.id = currentID;
+          newNode.parentId = rowInfo.node.parentId;
+          newNode.title = newValues.subtopic;
+          newNode.subtitle = newValues.note;
+          newNode.tags = newValues.tags;
+          newNode.flashcards = this.props.notebook.subnotes[currentID].flashcards;
+          newNode.expanded = rowInfo.node.expanded || false; //ensures edited node will be expanded if it was previously
+          if (rowInfo.node.children) { //only add children array if the node needs it
+            newNode.children = rowInfo.node.children;
+          }
+
 
           //return the updated treeData
-          return changeNodeAtPath({ treeData: this.state.treeData, path: rowInfo.path, newNode: rowInfo.node, getNodeKey: getNodeKey });
+          return changeNodeAtPath({ treeData: this.state.treeData, path: rowInfo.path, newNode: newNode, getNodeKey: getNodeKey });
         }
         this.replaceSubnote = replaceSubnote.bind(this);
 
@@ -166,10 +175,7 @@ export default class Tree extends Component {
     //Parent-->Child-->Grandchildren
     //Tree-->SortableTree-->edit/add/delete components
     render() {
-      //console.log("treeData:");
-      //console.log(this.state.treeData);
-      //console.log("treeData back to notebook:")
-      //console.log(this.saveTreeData(this.state.treeData));
+      console.log(this.state.treeData);
         return (
             <div style={{ height: 1080 }}>
                 <SortableTree
@@ -180,6 +186,7 @@ export default class Tree extends Component {
                                 buttons: [
                                     <EditModal
                                       rowInfo={rowInfo}
+                                      notebook={this.props.notebook}
                                       replaceSubnote={this.replaceSubnote}
                                       treeData={this.state.treeData}
                                       updateTreeDataState={this.updateTreeDataState}

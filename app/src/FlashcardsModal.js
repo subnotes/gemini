@@ -56,7 +56,7 @@ export default class FlashcardsModal extends Component {
     }
 
     handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(-1), 10); //get last character of tag name, equal to the index of the tags array (WILL BE ISSUES IF WE GET INTO DOUBLE DIGIT TAGS ON A NODE)
+      var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
       var tagsCopy = this.props.rowInfo.node.tags.slice();
       tagsCopy[tagNum] = target.value;
       this.setState({
@@ -95,7 +95,8 @@ export default class FlashcardsModal extends Component {
       console.log("Deleting index: ", idx);
       var newCardArray = this.state.flashcards;
       newCardArray.splice(idx, 1);
-      this.setState({flashcards: newCardArray});
+      //set new state, then update treeData (which causes save to google drive)
+      this.setState({flashcards: newCardArray}, this.props.updateTreeDataState(this.props.replaceSubnote(this.props.rowInfo, this.state)));
     }
 
     render () {
