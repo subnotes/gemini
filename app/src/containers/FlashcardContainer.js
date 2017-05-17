@@ -21,7 +21,7 @@ var FlashcardContainer = React.createClass({
       behavior: this.props.behavior
     });
 
-    if (this.state.behavior == "review" && this.state.flashcard.qaPairs.length > 1) {
+    if (this.state.behavior === "review" && this.state.flashcard.qaPairs.length > 1) {
       // Choose random index of question to view here
     }
   },
