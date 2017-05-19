@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SortableTree, { getTreeFromFlatData, changeNodeAtPath, addNodeUnderParent, removeNodeAtPath } from 'react-sortable-tree';
+import SortableTree, { getTreeFromFlatData } from 'react-sortable-tree';
 import EditModal from './EditModal.js';
 import AddModal from './AddModal.js';
 import DeleteModal from './DeleteModal.js';
