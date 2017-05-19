@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
-//DeleteBox adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
+//DeleteModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class DeleteModal extends Component {
     constructor(props) {
         super(props);
@@ -24,8 +24,7 @@ export default class DeleteModal extends Component {
     }
 
     handleSave({ target }) {
-      var newTree = this.props.deleteSubnote(this.props.rowInfo); //delete subnote and update treeData
-      this.props.updateTreeDataState(newTree); //update state of the SortableTree, causing it to re-render
+      this.props.deleteSubnote(this.props.rowInfo);
       this.handleCloseModal(); //close the modal window
     }
 

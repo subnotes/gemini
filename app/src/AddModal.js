@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
-//AddBox adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
+//AddModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class AddModal extends Component {
     constructor(props) {
         super(props);
@@ -44,8 +44,7 @@ export default class AddModal extends Component {
     }
 
     handleSave({ target }) {
-      var newTree = this.props.addSubnote(this.props.rowInfo, this.state); //add subnote and update treeData
-      this.props.updateTreeDataState(newTree.treeData); //update state of the SortableTree, causing it to re-render
+      this.props.addSubnote(this.props.rowInfo, this.state);
       this.handleCloseModal(); //close the modal window
     }
 

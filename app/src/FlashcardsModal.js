@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 import FlashcardContainer from './containers/FlashcardContainer.js';
 import FlashcardInterface from './interfaces/FlashcardInterface.js';
 
-//EditBox adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
+//FlashcardModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class FlashcardsModal extends Component {
     constructor(props) {
         super(props);
@@ -13,8 +13,8 @@ export default class FlashcardsModal extends Component {
           showModal: false,
           subtopic: this.props.rowInfo.node.title,
           note: this.props.rowInfo.node.subtitle,
-          tags: this.props.rowInfo.node.tags,
-          flashcards: this.props.rowInfo.node.flashcards,
+          tags: this.props.rowInfo.node.tags || [],
+          flashcards: this.props.rowInfo.node.flashcards || [],
           newCardQ: "",
           newCardA: "",
           newCardTags: []
@@ -34,8 +34,8 @@ export default class FlashcardsModal extends Component {
         this.setState({
           subtopic: nextProps.rowInfo.node.title,
           note: nextProps.rowInfo.node.subtitle,
-          tags: nextProps.rowInfo.node.tags,
-          flashcards: nextProps.rowInfo.node.flashcards,
+          tags: nextProps.rowInfo.node.tags || [],
+          flashcards: nextProps.rowInfo.node.flashcards || [],
         });
       }
     }
@@ -86,17 +86,16 @@ export default class FlashcardsModal extends Component {
         newCardTags: []
       });
 
-      // Create new row object
-      var newTreeData = this.props.replaceSubnote(this.props.rowInfo, this.state); //replace subnote and update treeData
-      this.props.updateTreeDataState(newTreeData); //update state of the SortableTree, causing it to re-render
+      // Replace/edit subnote
+      this.props.replaceSubnote(this.props.rowInfo, this.state);
     }
 
     handleDeleteCard(idx) {
       console.log("Deleting index: ", idx);
       var newCardArray = this.state.flashcards;
       newCardArray.splice(idx, 1);
-      //set new state, then update treeData (which causes save to google drive)
-      this.setState({flashcards: newCardArray}, this.props.updateTreeDataState(this.props.replaceSubnote(this.props.rowInfo, this.state)));
+      //set new state, then update notebook (which causes save to google drive)
+      this.setState({flashcards: newCardArray}, this.props.replaceSubnote(this.props.rowInfo, this.state));
     }
 
     render () {
@@ -122,7 +121,7 @@ export default class FlashcardsModal extends Component {
           </ul>
         );
       } else {
-        flashcardView = <div>There don't seem to be any flashcards in this subnote.</div>;
+        flashcardView = <div>There do not seem to be any flashcards in this subnote.</div>;
       }
 
       return (
