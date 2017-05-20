@@ -30,9 +30,12 @@ export function createNotebook(name, callback) {
   window.gapi.client.request({'path': path, 'method': method, 'body': metaData}).then(callback)
 }
 
-// callback is passed 'response', files are stored in 'response.result.files'
-export function getSubnotes(callback) {
-  const method = 'GET';
-  const path = 'https://www.googleapis.com/drive/v3/files';
-  window.gapi.client.request({'path': path, 'method': method}).then(callback);
+// callback is passed 'response', non trashed json files metaData are stored in 'response.result.files'
+export function getFiles(query, callback) {
+  const method = 'GET'
+  const path = 'https://www.googleapis.com/drive/v3/files'
+  const params = {
+    q: query
+  }
+  window.gapi.client.request({'path': path, 'method': method, 'params': params}).then(callback)
 }
