@@ -1,14 +1,6 @@
 // import node packages
 import React from 'react';
 
-function Template(props) {
-  return (
-    <div>
-      <h3>Template</h3>
-    </div>
-  );
-}
-
 class Template extends Component {
 
   constructor (props) {
