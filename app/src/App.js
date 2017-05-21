@@ -30,7 +30,7 @@ class App extends Component {
       loggedIn: false,
       initialized: false,
       library: { 
-        'notebooks': {}
+        notebooks: {}
       }
     }
     this.updateLoginStatus = this.updateLoginStatus.bind(this)    
@@ -38,12 +38,15 @@ class App extends Component {
   }
   
   getSubnotes(){
-    getFiles(
-      "trashed = false and mimeType = 'application/json'", 
-      (response) => {
+    var notebook = {} 
+    getFiles("trashed = false and mimeType = 'application/json'", (response) => {
         Object.entries(response.result.files).forEach(([key,file]) => {
-          if (typeof file.name == 'string' && /\.sn$/.test(file.name)){ // add '&& /\.sn$/.test(file.name)' for file extension
-            this.setState((prevState) => { return {library: {[file.id]: file}}})
+          if (typeof file.name == 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
+            downloadNotebook(file.id, (response) => {
+               notebook = response.result
+               // TODO validate against schema should go here
+               this.setState({ library: { notebooks: { [notebook.uuid]: notebook}}})
+            })
           }
         }) 
       }
