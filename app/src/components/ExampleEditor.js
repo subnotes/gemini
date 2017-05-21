@@ -15,7 +15,7 @@ class ExampleEditor extends Component {
     console.log(e)
     // we would want to check against our schema here, but in this example we're just making sure it's valid json
     try {
-       this.props.updateNotebook(JSON.parse(e.target.value))
+       this.props.updateNotebook(this.props.match.params.notebookid, JSON.parse(e.target.value))
        this.setState({msg: "notebook updated"})
     }catch(err) {
       this.setState({msg: "invalid JSON : " + err})

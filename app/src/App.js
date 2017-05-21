@@ -7,14 +7,12 @@ import {
 } from 'react-router-dom';
 
 // import our routes/views
-import Dashboard from './components/Dashboard';
-import NotebookExplorer from './components/NotebookExplorer';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import FlashcardExplorer from './components/FlashcardExplorer';
-import Review from './components/Review';
 import ExampleEditor from './components/ExampleEditor'
 import ExampleSubnote from './components/ExampleSubnote'
+import ExampleNotebook from './components/ExampleNotebook'
+import ExampleLibrary from './components/ExampleLibrary'
 
 // import helpers
 import { getDriveConfig } from './configs/driveConfigs'
@@ -34,23 +32,28 @@ class App extends Component {
       }
     }
     this.updateLoginStatus = this.updateLoginStatus.bind(this)    
-    this.getSubnotes = this.getSubnotes.bind(this)    
+    this.getSubnotes = this.getSubnotes.bind(this)
+    this.updateNotebook = this.updateNotebook.bind(this)    
   }
   
   getSubnotes(){
     var notebook = {} 
+    // get list of all json files that aren't trashed from user's drive
     getFiles("trashed = false and mimeType = 'application/json'", (response) => {
-        Object.entries(response.result.files).forEach(([key,file]) => {
-          if (typeof file.name == 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
-            downloadNotebook(file.id, (response) => {
-               notebook = response.result
-               // TODO validate against schema should go here
-               this.setState({ library: { notebooks: { [notebook.uuid]: notebook}}})
-            })
-          }
-        }) 
-      }
-    )
+      // loop through list of files
+      Object.entries(response.result.files).forEach(([key,file]) => {
+        // see if file as .sn extention
+        if (typeof file.name == 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
+          // download files with .sn extensions
+          downloadNotebook(file.id, (response) => {
+             notebook = response.result
+             // TODO validate file against schema should go here
+             // store notebook in library
+             this.setState({ library: { notebooks: { [file.id]: {notebook: notebook, fileName: file.name }}}})
+          })
+        }
+      }) 
+    })
   }
 
   updateLoginStatus (isSignedIn) {
@@ -67,6 +70,10 @@ class App extends Component {
     }
   }
 
+  updateNotebook (notebookid, notebook) {
+    this.setState({library: { notebooks: { [notebookid]: notebook }}})
+    console.log("updating notebook " + notebook.fileName + " with id of " + notebookid)
+  }
 
   // on mount
   componentDidMount() {
@@ -82,25 +89,19 @@ class App extends Component {
 
   render() {
     // if logged in and notebook is loaded
-    if (this.state.loggedIn && this.state.initialized && this.state.notebook)  {
+    if (this.state.loggedIn && this.state.initialized && this.state.library)  {
+      // <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<ExampleSubnote notebook={this.state.library.notebooks[props.match.notebookid][props.match.subnoteid]} updateNotebook={this.updateNotebook} {...props} />)}/>
+      // <Route path="/notebook/:notebookid" render={(props) => (<ExampleNotebook notebook={this.state.library.notebooks[props.match.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
       return (
         <div>
           <Router>
             <div>
               <Logout logoutUser={logoutUser}/>
               <ul>
-                <li><Link to="/">Dashboard</Link></li>
-                <li><Link to="/notebook">Notebook Explorer</Link></li>
-                <li><Link to="/flashcards">Flashcard Explorer</Link></li>
-                <li><Link to="/review">Review</Link></li>
-                <li><Link to="/editor">Example Editor</Link></li>
+                <li><Link to="/">Library</Link></li>
               </ul>
-              <Route exact path="/" render={(props) => (<Dashboard notebook={this.state.notebook} {...props} />)}/>
-              <Route path="/notebook" render={(props) => (<NotebookExplorer notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
-              <Route path="/flashcards" component={FlashcardExplorer}/>
-              <Route path="/review" component={Review}/>
-              <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
-              <Route path="/subnote/:id" render={(props) => (<ExampleSubnote notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)}/>
+              <Route exact path="/" render={(props) => (<ExampleLibrary library={this.state.library} {...props} />)}/>
+              <Route path="/notebook/edit/:notebookid" render={(props) => (<ExampleEditor notebook={this.state.library.notebooks[props.match.params.notebookid]['notebook']} updateNotebook={this.updateNotebook} {...props} />)} />
             </div>
           </Router>
         </div>
