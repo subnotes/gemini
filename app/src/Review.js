@@ -6,23 +6,39 @@ import FlashcardContainer from './containers/FlashcardContainer';
 import FlashcardInterface from './interfaces/FlashcardInterface';
 
 // Component for Flashcard Review
-var Review = React.createClass({
-  getInitialState: function () {
-    return { flashcards: [] };
-  },
+class Review extends Component {
 
-  nextCard: function () {
+  constructor (props) {
+    super(props);
+
+    // Member Variables
+    /* Implement this
+    this.propTypes = {
+    };
+     */
+    this.state = {
+      flashcards: [],
+    };
+
+    // Function Bindings
+    this.nextCard = this.nextCard.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
+    this.render = this.render.bind(this);
+
+  } // end constructor
+
+  nextCard () {
     var newCardArray = this.state.flashcards;
     newCardArray.push(newCardArray.shift());
     this.setState({flashcards: newCardArray});
-  },
+  } // end nextCard
 
-  componentWillMount: function() {
+  componentWillMount () {
     var flashcards = FlashcardInterface.getFlashcards(this.props.notebook);
     this.setState( { flashcards: flashcards } );
-  },
+  } // end componentWillMount
 
-  render: function () {
+  render () {
     if (this.state.flashcards.length > 0) {
       return (
         <div>
@@ -43,15 +59,8 @@ var Review = React.createClass({
         </div>
       );
     }
-  }
-});
+  } // end render
 
-function Review(props) {
-  return (
-    <div>
-      <h3>Review</h3>
-    </div>
-  )
 }
 
 export default Review;

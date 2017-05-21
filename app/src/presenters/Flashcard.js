@@ -2,32 +2,42 @@
 import React from 'react';
 
 // Flashcard Presenter component
-var Flashcard = React.createClass({
-  getInitialState: function () {
-    return {
-      answered: false
+class Flashcard extends Component {
+
+  constructor (props) {
+    super(props);
+
+    // Member Variables
+    /* Need to implement this
+    this.propTypes = {
     };
-  },
+     */
+    this.state = {
+      answered: false,
+    };
 
-  flipCard: function () {
+    // Function Bindings
+    this.flipCard = this.flipCard.bind(this);
+    this.nextCard = this.nextCard.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.render = this.render.bind(this);
+  } // end constructor
+
+  flipCard () {
     this.setState( { answered: true } );
-  },
+  } // end flipCard
 
-  nextCard: function() {
+  nextCard () {
     this.setState( { answered: false } );
     this.props.nextCard();
-  },
+  } // end nextCard
 
-  handleDelete: function() {
+  handleDelete () {
     console.log("Delete pressed on: ", this.props.flashcard.cardIdx);
     this.props.handleDelete(this.props.flashcard.cardIdx);
-  },
+  } // end handleDelete
 
-  componentWillMount: function () {
-    return;
-  },
-
-  render: function () {
+  render () {
     switch(this.props.behavior) {
       case "manage":
         return(
@@ -64,7 +74,8 @@ var Flashcard = React.createClass({
           </span>
         );
     }
-  }
-});
+  } // end render
+
+}
 
 export default Flashcard;
