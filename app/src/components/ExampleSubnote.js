@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom';
 function ExampleSubnote(props) {
 
   if (typeof props.notebookPlusMeta === 'undefined' || typeof props.notebookPlusMeta.notebook === 'undefined') {
-    console.log(props)
     return (<h3>Sorry, we couldn't load that notebook</h3>)
   } else if (typeof props.notebookPlusMeta.notebook.subnotes === 'undefined') {
     return (<h3>Notebook does not contain any subnotes</h3>)

@@ -9,12 +9,8 @@ function Library(props) {
       <div>
         <h3>Your Notebooks</h3>
         <ul>
-          {console.log(Object.keys(props.library).length)}
           {Object.entries(props.library).map(item => (
             <li key={item[0]}>
-              {
-                console.log(item[1])
-              }
               <h3>{item[1]['fileName']}</h3>
               <Link to={"/notebook/" + item[0]}>view</Link>
               <span> </span>
