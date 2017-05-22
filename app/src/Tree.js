@@ -25,7 +25,7 @@ export default class Tree extends Component {
         this.addSubnote = this.addSubnote.bind(this);
         this.deleteSubnote = this.deleteSubnote.bind(this);
         this.deleteSubnoteChildren = this.deleteSubnoteChildren.bind(this);
-        this.getExpandedNodes = this.getExpandedNodes.bind(this);
+        this.setExpandedNodes = this.setExpandedNodes.bind(this);
         this.removeExpandedChildren = this.removeExpandedChildren.bind(this);
         //this.updateTreeDataState = this.updateTreeDataState.bind(this);
     } //end of constructor
@@ -124,7 +124,7 @@ export default class Tree extends Component {
         notebookFlat.subnotes[id].flashcards = treeData[i].flashcards || [];
         this.addChildrenToFlat(treeData[i], notebookFlat); //add info from all children (and children of children, etc)
       }
-      this.getExpandedNodes(treeData); //update expanded state in app
+      this.setExpandedNodes(treeData); //update expanded state in app
       return notebookFlat;
     }
 
@@ -162,7 +162,7 @@ export default class Tree extends Component {
       }
       notebookCopy.subnotes[newNode.id] = newNode; //add newNode to notebook
 
-      this.getExpandedNodes(this.state.treeData, parentID); //update expanded nodes and set parent of new node to expanded
+      this.setExpandedNodes(this.state.treeData, parentID); //update expanded nodes and set parent of new node to expanded
       this.props.updateNotebook(notebookCopy); //update notebook and write to google drive
     }
 
@@ -182,7 +182,7 @@ export default class Tree extends Component {
       }
       //no else - if we are deleting a roob subnote, there is no need to alter an array of children on the parent as there is no real parent
 
-      this.getExpandedNodes(this.state.treeData, null, currentID); //update expanded nodes
+      this.setExpandedNodes(this.state.treeData, null, currentID); //update expanded nodes
       this.props.updateNotebook(notebookCopy); //update notebook and write to google drive
     }
 
@@ -198,7 +198,7 @@ export default class Tree extends Component {
     }
 
     //uses treeData to generate an array of IDs of currently expanded nodes
-    getExpandedNodes(treeData, idToExpand, idToCollapse) {
+    setExpandedNodes(treeData, idToExpand, idToCollapse) {
       var expandedIDs = []; //array to hold IDs of expanded nodes
       var flatData = getFlatDataFromTree({treeData:treeData, getNodeKey: this.getNodeKey}); //get flat data (in array form) so we can more easily determine expanded nodes
 
@@ -265,7 +265,7 @@ export default class Tree extends Component {
             <div style={{ height: 1080 }}>
                 <SortableTree
                     treeData={this.state.treeData}
-                    onChange={treeData => {this.getExpandedNodes(treeData);
+                    onChange={treeData => {this.setExpandedNodes(treeData);
                                            this.setState({ treeData });
                                            }}
                     onMoveNode={() => this.props.updateNotebook(this.saveTreeData(this.state.treeData))} //after moving a node, changes are only reflected in treeData so we need to convert treeData back to a form we can save in the notebook
