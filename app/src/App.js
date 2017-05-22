@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Switch
 } from 'react-router-dom';
 
 // import our routes/views
@@ -27,9 +28,8 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       initialized: false,
-      library: { 
-        notebooks: {}
-      }
+      library: {},
+      notebooksLoaded: false,
     }
     this.updateLoginStatus = this.updateLoginStatus.bind(this)    
     this.getSubnotes = this.getSubnotes.bind(this)
@@ -37,19 +37,25 @@ class App extends Component {
   }
   
   getSubnotes(){
-    var notebook = {} 
+    var library = {} 
     // get list of all json files that aren't trashed from user's drive
     getFiles("trashed = false and mimeType = 'application/json'", (response) => {
       // loop through list of files
+      var numFilesProcessed = 0
+      const numFiles = Object.keys(response.result.files).length
       Object.entries(response.result.files).forEach(([key,file]) => {
         // see if file as .sn extention
-        if (typeof file.name == 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
+        if (typeof file.name === 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
           // download files with .sn extensions
           downloadNotebook(file.id, (response) => {
-             notebook = response.result
+             library[file.id] = {}
+             library[file.id]['notebook'] = response.result
+             library[file.id]['fileName'] = file.name
              // TODO validate file against schema should go here
-             // store notebook in library
-             this.setState({ library: { notebooks: { [file.id]: {notebook: notebook, fileName: file.name }}}})
+             numFilesProcessed++
+             if (numFilesProcessed == numFiles) { // last file downloaded
+               this.setState({library: library}, this.setState({notebooksLoaded: true}))
+             } 
           })
         }
       }) 
@@ -66,16 +72,26 @@ class App extends Component {
     // on logout
     else {
       // clean up state
-      this.setState({loggedIn: false})
+      this.setState({loggedIn: false, library: {}, notebooksLoaded: false})
     }
   }
-
+/*
   updateNotebook (notebookid, notebook) {
-    this.setState({library: { notebooks: { [notebookid]: notebook }}})
-    console.log("updating notebook " + notebook.fileName + " with id of " + notebookid)
+    this.setState((prev) => { 
+      var newState = Object.assign({}, prev); 
+      newState.library[notebookid]['notebook'] = notebook
+      console.log(newState) 
+      return newState
+    }
+  )
   }
+*/
+updateNotebook (notebookid, notebook) {
+  this.setState((prev) => { 
+    return prev.library[notebookid]['notebook'] = notebook
+  })
+}
 
-  // on mount
   componentDidMount() {
     initializeAuthDrive(
       getDriveConfig(), 
@@ -88,10 +104,8 @@ class App extends Component {
   }
 
   render() {
-    // if logged in and notebook is loaded
-    if (this.state.loggedIn && this.state.initialized && this.state.library)  {
-      // <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<ExampleSubnote notebook={this.state.library.notebooks[props.match.notebookid][props.match.subnoteid]} updateNotebook={this.updateNotebook} {...props} />)}/>
-      // <Route path="/notebook/:notebookid" render={(props) => (<ExampleNotebook notebook={this.state.library.notebooks[props.match.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+    // if logged in and notebooks are loaded
+    if (this.state.loggedIn && this.state.initialized && this.state.library && this.state.notebooksLoaded)  {
       return (
         <div>
           <Router>
@@ -100,14 +114,18 @@ class App extends Component {
               <ul>
                 <li><Link to="/">Library</Link></li>
               </ul>
-              <Route exact path="/" render={(props) => (<ExampleLibrary library={this.state.library} {...props} />)}/>
-              <Route path="/notebook/edit/:notebookid" render={(props) => (<ExampleEditor notebook={this.state.library.notebooks[props.match.params.notebookid]['notebook']} updateNotebook={this.updateNotebook} {...props} />)} />
+              <Switch>
+                <Route exact path="/" render={(props) => (<ExampleLibrary library={this.state.library} {...props} />)}/>
+                <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<ExampleSubnote notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)}/>
+                <Route path="/notebook/edit/:notebookid" render={(props) => (<ExampleEditor notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/notebook/:notebookid" render={(props) => (<ExampleNotebook notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+              </Switch>
             </div>
           </Router>
         </div>
       )
     }
-    // logged in but notbook is loading
+    // logged in but notebooks are still loading
     else if (this.state.loggedIn && this.state.initialized) {
       return (<h3>loading notebook</h3>)
     }

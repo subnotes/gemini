@@ -2,16 +2,19 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-function Dashboard(props) {
+function Library(props) {
   
-  if (typeof props.library.notebooks !== 'undefined') {
+  if (typeof props.library !== 'undefined') {
     return(
       <div>
-        <h3>Library</h3>
-        <h4>Your Notebooks</h4>
+        <h3>Your Notebooks</h3>
         <ul>
-          {Object.entries(props.library.notebooks).map(item => (
+          {console.log(Object.keys(props.library).length)}
+          {Object.entries(props.library).map(item => (
             <li key={item[0]}>
+              {
+                console.log(item[1])
+              }
               <h3>{item[1]['fileName']}</h3>
               <Link to={"/notebook/" + item[0]}>view</Link>
               <span> </span>
@@ -23,8 +26,8 @@ function Dashboard(props) {
     )
   }
   else {
-    return (<div>no subnotes in this notebook</div>)
+    return (<div>No notebooks in your Library</div>)
   }
 }
 
-export default Dashboard;
+export default Library;

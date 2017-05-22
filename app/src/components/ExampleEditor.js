@@ -12,7 +12,6 @@ class ExampleEditor extends Component {
   }
   
   updateNotebookFromElement (e) {
-    console.log(e)
     // we would want to check against our schema here, but in this example we're just making sure it's valid json
     try {
        this.props.updateNotebook(this.props.match.params.notebookid, JSON.parse(e.target.value))
@@ -23,16 +22,20 @@ class ExampleEditor extends Component {
   }
   
   render () {
-    return (
-      <div>
-        <h3>Example Editor</h3>
-        Temporary page to demonstrate viewing and editing a "raw" notebook. (only validates JSON not subnote schema)
+    if (typeof this.props.notebookPlusMeta === 'undefined' || typeof this.props.notebookPlusMeta.notebook === 'undefined') {
+      return (<h3>Sorry, we couldn't load that notebook</h3>)
+    } else {
+      return (
         <div>
-          <textarea rows="40" cols="75" onChange={this.updateNotebookFromElement} defaultValue={JSON.stringify(this.props.notebook, null, 2)} />
-          <div>{this.state.msg}</div>
+          <h3>Example Editor: {this.props.notebookPlusMeta.fileName}</h3>
+          Temporary page to demonstrate viewing and editing a "raw" notebook. (only validates JSON not subnote schema)
+          <div>
+            <textarea rows="40" cols="75" onChange={this.updateNotebookFromElement} defaultValue={JSON.stringify(this.props.notebookPlusMeta.notebook, null, 2)} />
+            <div>{this.state.msg}</div>
+          </div>
         </div>
-      </div>
-    )    
+      )    
+    }
   }
 }
 
