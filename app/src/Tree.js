@@ -15,7 +15,7 @@ export default class Tree extends Component {
         this.buildTree(notebookTree, this.props.notebook);
         this.state = {
             treeData: getTreeFromFlatData({flatData: notebookTree}),
-            expanded: [];
+            expanded: []
         };
 
         this.getParentKey = this.getParentKey.bind(this);

@@ -1,5 +1,5 @@
 // import node packages
-import React from 'react';
+import React, { Component } from 'react';
 
 // import related presenter
 import Flashcard from '../presenters/Flashcard';
