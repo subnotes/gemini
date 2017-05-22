@@ -14,7 +14,8 @@ export default class Tree extends Component {
         var notebookTree = [];
         this.buildTree(notebookTree, this.props.notebook);
         this.state = {
-            treeData: getTreeFromFlatData({flatData: notebookTree})
+            treeData: getTreeFromFlatData({flatData: notebookTree}),
+            expanded: [];
         };
 
         this.getParentKey = this.getParentKey.bind(this);
@@ -71,7 +72,7 @@ export default class Tree extends Component {
                             subtitle: notebook.subnotes[currentID].note,
                             tags: notebook.subnotes[currentID].tags || [],
                             flashcards: notebook.subnotes[currentID].flashcards || []
-                          });
+                          }); //add expanded?
       }
     }
 
