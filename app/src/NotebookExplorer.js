@@ -11,6 +11,8 @@ class NotebookExplorer extends Component {
       <Tree
         notebook={this.props.notebook}
         updateNotebook={this.props.updateNotebook}
+        expanded={this.props.expanded}
+        updateExpanded={this.props.updateExpanded}
       />
     </div>
   )}
