@@ -26,6 +26,7 @@ export default class Tree extends Component {
         this.deleteSubnote = this.deleteSubnote.bind(this);
         this.deleteSubnoteChildren = this.deleteSubnoteChildren.bind(this);
         this.getExpandedNodes = this.getExpandedNodes.bind(this);
+        this.removeExpandedChildren = this.removeExpandedChildren.bind(this);
         //this.updateTreeDataState = this.updateTreeDataState.bind(this);
     } //end of constructor
 
@@ -180,8 +181,8 @@ export default class Tree extends Component {
         }
       }
       //no else - if we are deleting a roob subnote, there is no need to alter an array of children on the parent as there is no real parent
-    
-      this.getExpandedNodes(this.state.treeData); //update expanded nodes (will delete all children too)
+
+      this.getExpandedNodes(this.state.treeData, null, currentID); //update expanded nodes
       this.props.updateNotebook(notebookCopy); //update notebook and write to google drive
     }
 
@@ -197,9 +198,9 @@ export default class Tree extends Component {
     }
 
     //uses treeData to generate an array of IDs of currently expanded nodes
-    getExpandedNodes(treeData, idToExpand) {
+    getExpandedNodes(treeData, idToExpand, idToCollapse) {
       var expandedIDs = []; //array to hold IDs of expanded nodes
-      var flatData = getFlatDataFromTree({treeData:treeData, getNodeKey: this.getNodeKey}); //get flat data (in array form) so we can easily determine expanded nodes
+      var flatData = getFlatDataFromTree({treeData:treeData, getNodeKey: this.getNodeKey}); //get flat data (in array form) so we can more easily determine expanded nodes
 
       for (var i = 0; i < flatData.length; i++) { //for each "root" node
         if ("expanded" in flatData[i].node) { //check for expanded field
@@ -211,7 +212,35 @@ export default class Tree extends Component {
       if (idToExpand) { //if we want to manually expand a node, we do it here (example: when adding node, we want to expand its parent node the next time the tree is created)
         expandedIDs.push(idToExpand);
       }
+      if (idToCollapse) { //manually collapse a node (used to remove a node and its children from expandedIDs)
+        var index = expandedIDs.indexOf(idToCollapse);
+        if (index !== -1) {
+          expandedIDs.splice(index, 1); //remove idToCollapse from expandedIDs
+        }
+        //remove children of idToCollapse
+        for (i = 0; i < flatData.length; i++) {
+          if (flatData[i].node.id === idToCollapse) { //if we find the node to collapse
+            console.log(flatData);
+            if ("children" in flatData[i].node) { //remove all children from expandedIDs
+              this.removeExpandedChildren(expandedIDs, flatData[i].node);
+            }
+          }
+        }
+      }
       this.props.updateExpanded(expandedIDs); //update the state in app
+    }
+
+    //remove all children of node from expandedIDs
+    removeExpandedChildren(expandedIDs, node) {
+      if ("children" in node) {
+        for (var i = 0; i < node.children.length; i++) {
+          var index = expandedIDs.indexOf(node.children[i].id); //get index of child ID
+          if (index !== -1) { //if child ID is in expandedIDs
+            expandedIDs.splice(index, 1); //remove child ID from expandedIDs
+          }
+          this.removeExpandedChildren(expandedIDs, node.children[i]); //call recursively to remove all descendants
+        }
+      }
     }
 
     getNodeKey({node, treeIndex}) {
