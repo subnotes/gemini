@@ -6,22 +6,37 @@ import FlashcardContainer from './containers/FlashcardContainer';
 import FlashcardInterface from './interfaces/FlashcardInterface';
 
 // Component for Explorer View
-var FlashcardExplorer = React.createClass({
-  getInitialState: function () {
-    return { flashcards: []};
-  },
+class FlashcardExplorer extends Component {
 
-  handleDeleteCard: function(idx) {
-    console.log(idx);
+  constructor (props) {
+    super(props);
+
+    // Member Variables
+    /* Need to get this implemented
+    this.propTypes = {
+    };
+    */
+    this.state = {
+      flashcards: [],
+    };
+
+    // Function Bindings
+    this.handleDeleteCard = this.handleDeleteCard.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
+    this.render = this.render.bind(this);
+  } // end constructor
+
+  // Class Functions
+  handleDeleteCard (idx) {
     alert("Delete from flashcard manager not yet implemented.");
-  },
+  } // end handleDeleteCard
 
-  componentWillMount: function () {
+  componentWillMount () {
     var flashcards = FlashcardInterface.getFlashcards(this.props.notebook);
     this.setState({flashcards: flashcards});
-  },
+  } // end componentWillMount
 
-  render: function () {
+  render () {
     if (this.state.flashcards.length > 0) {
       return (
         <div>
@@ -48,7 +63,7 @@ var FlashcardExplorer = React.createClass({
         </div>
       );
     }
-  }
-});
+  } // end render
+}
 
 export default FlashcardExplorer;
