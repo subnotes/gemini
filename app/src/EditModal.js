@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
-//EditBox adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
+//EditModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class EditModal extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +10,8 @@ export default class EditModal extends Component {
           showModal: false,
           subtopic: this.props.rowInfo.node.title,
           note: this.props.rowInfo.node.subtitle,
-          tags: this.props.rowInfo.node.tags
+          tags: this.props.rowInfo.node.tags || [],
+          flashcards: this.props.rowInfo.node.flashcards || []
         };
 
         this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -26,7 +27,8 @@ export default class EditModal extends Component {
         this.setState({
           subtopic: nextProps.rowInfo.node.title,
           note: nextProps.rowInfo.node.subtitle,
-          tags: nextProps.rowInfo.node.tags,
+          tags: nextProps.rowInfo.node.tags || [],
+          flashcards: nextProps.rowInfo.node.flashcards || []
         });
       }
     }
@@ -47,8 +49,8 @@ export default class EditModal extends Component {
     }
 
     handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(-1), 10); //get last character of tag name, equal to the index of the tags array (WILL BE ISSUES IF WE GET INTO DOUBLE DIGIT TAGS ON A NODE)
-      var tagsCopy = this.props.rowInfo.node.tags.slice();
+      var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
+      var tagsCopy = this.state.tags.slice();
       tagsCopy[tagNum] = target.value;
       this.setState({
         tags: tagsCopy
@@ -56,17 +58,16 @@ export default class EditModal extends Component {
     }
 
     handleSave({ target }) {
-      var newTreeData = this.props.replaceSubnote(this.props.rowInfo, this.state); //replace subnote and update treeData
-      this.props.updateTreeDataState(newTreeData); //update state of the SortableTree, causing it to re-render
+      this.props.replaceSubnote(this.props.rowInfo, this.state);
       this.handleCloseModal(); //close the modal window
     }
 
     render () {
       var tagArray = [];
       var numTags = 5; //number of tag inputs to display
-      for (var i = 0; i < this.props.rowInfo.node.tags.length; i++) { //prepopulate tags
+      for (var i = 0; i < this.state.tags.length; i++) { //prepopulate tags
         var tagLabel = "tag" + i;
-        tagArray.push(<input type="text" name={tagLabel} key={i} defaultValue={this.props.rowInfo.node.tags[i]} onChange={this.handleTagChange}/>);
+        tagArray.push(<input type="text" name={tagLabel} key={i} defaultValue={this.state.tags[i]} onChange={this.handleTagChange}/>);
       }
       for (i; i < numTags; i++) { //empty tag inputs
         tagLabel = "tag" + i;

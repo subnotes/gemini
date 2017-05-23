@@ -29,6 +29,7 @@ class App extends Component {
       notebookDriveId: "",
       tags: {},
       files: [],
+      expanded: [],
     }
     this.loginUser = this.loginUser.bind(this);
     this.logoutUser = this.logoutUser.bind(this);
@@ -38,6 +39,7 @@ class App extends Component {
     this.getDriveFiles = this.getDriveFiles.bind(this);
     this.declareNotebook = this.declareNotebook.bind(this);
     this.updateTags = this.updateTags.bind(this);
+    this.updateExpanded = this.updateExpanded.bind(this);
     //this.createDefaultNotebook = this.createDefaultNotebook.bind(this);
     //this.logGAPI = this.logGAPI.bind(this);
     //this.driveTest = this.driveTest.bind(this);
@@ -72,15 +74,15 @@ class App extends Component {
   // create "geminiNotebook" file
   createNotebook () {
     const newUUID = UUID.v4()
-    const newNotebook = { 
-      "rootSubnote": newUUID, 
-      "subnotes": { 
-        [newUUID]: { 
-          "subtopic": "Your new notebook", 
-          "note": "Start taking notes here!", 
-          "flashcards": new Array(), 
-          "tags": new Array(), 
-          "subnotes": new Array() 
+    const newNotebook = {
+      "rootSubnote": newUUID,
+      "subnotes": {
+        [newUUID]: {
+          "subtopic": "Your new notebook",
+          "note": "Start taking notes here!",
+          "flashcards": [],
+          "tags": [],
+          "subnotes": []
         }
       }
     }
@@ -152,6 +154,12 @@ class App extends Component {
     }
   }
 
+  // update array of expanded subnotes for notebook explorer
+  updateExpanded (expandedIDs) {
+    // update expanded array in state
+    this.setState({expanded: expandedIDs});
+  }
+
   // on mount
   componentDidMount() {
     // load Google API libraries, initialize them, and set up login status listener (updateLoginStatus), and anything else that should happen on page load ...
@@ -180,7 +188,7 @@ class App extends Component {
                 <li><Link to="/review">Review</Link></li>
               </ul>
               <Route exact path="/" render={(props) => (<Dashboard notebook={this.state.notebook} {...props} />)}/>
-              <Route path="/notebook" render={(props) => (<NotebookExplorer notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />
+              <Route path="/notebook" render={(props) => (<NotebookExplorer notebook={this.state.notebook} updateNotebook={this.updateNotebook} expanded={this.state.expanded} updateExpanded={this.updateExpanded} {...props} />)} />
               <Route path="/flashcards" render={(props) => (<FlashcardExplorer notebook={this.state.notebook} {...props} /> )} />
               <Route path="/review" render={(props) => (<Review notebook={this.state.notebook} {...props} />)}/>
               <Route path="/editor" render={(props) => (<ExampleEditor notebook={this.state.notebook} updateNotebook={this.updateNotebook} {...props} />)} />

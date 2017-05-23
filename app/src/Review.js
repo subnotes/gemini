@@ -1,5 +1,5 @@
 // import node packages
-import React from 'react';
+import React, { Component } from 'react';
 
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';

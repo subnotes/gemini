@@ -11,7 +11,7 @@ class ExampleSubnote extends Component {
         <h3>Note:</h3>
         <p>{this.props.notebook.subnotes[this.props.match.params.id]['note']}</p>
       </div>
-    )    
+    )
   }
 }
 

@@ -1,5 +1,5 @@
 // import node packages
-import React from 'react';
+import React, { Component } from 'react';
 
 // import related presenter
 import Flashcard from '../presenters/Flashcard';
@@ -34,7 +34,7 @@ class FlashcardContainer extends Component {
       behavior: this.props.behavior
     });
 
-    if (this.state.behavior == "review" && this.state.flashcard.qaPairs.length > 1) {
+    if (this.state.behavior === "review" && this.state.flashcard.qaPairs.length > 1) {
       // Choose random index of question to view here
     }
   } // end componentWillMount

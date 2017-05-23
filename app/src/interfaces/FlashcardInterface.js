@@ -24,7 +24,7 @@ function getFlashcards (notebook) {
   }
 
   return flashcards;
-  
+
 }
 
 function convertTreeCard (treeCard, noteId, cardIdx) {
@@ -37,7 +37,7 @@ function convertTreeCard (treeCard, noteId, cardIdx) {
 
   return flashcard;
 }
-  
+
 module.exports = {
   getFlashcards: getFlashcards,
   convertTreeCard: convertTreeCard

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
-//AddBox adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
+//AddModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class AddModal extends Component {
     constructor(props) {
         super(props);
@@ -35,7 +35,7 @@ export default class AddModal extends Component {
     }
 
     handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(-1), 10); //get last character of tag name, equal to the index of the tags array (WILL BE ISSUES IF WE GET INTO DOUBLE DIGIT TAGS ON A NODE)
+      var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
       var tagsCopy = this.state.tags.slice();
       tagsCopy[tagNum] = target.value;
       this.setState({
@@ -44,8 +44,7 @@ export default class AddModal extends Component {
     }
 
     handleSave({ target }) {
-      var newTree = this.props.addSubnote(this.props.rowInfo, this.state); //add subnote and update treeData
-      this.props.updateTreeDataState(newTree.treeData); //update state of the SortableTree, causing it to re-render
+      this.props.addSubnote(this.props.rowInfo, this.state);
       this.handleCloseModal(); //close the modal window
     }
 
