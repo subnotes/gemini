@@ -86,10 +86,11 @@ class App extends Component {
   )
   }
 */
-updateNotebook (notebookid, notebook) {
+updateNotebook (notebookId, notebook) {
   this.setState((prev) => { 
-    return prev.library[notebookid]['notebook'] = notebook
+    return prev.library[notebookId]['notebook'] = notebook
   })
+  uploadNotebook(notebook, notebookId)
 }
 
   componentDidMount() {
