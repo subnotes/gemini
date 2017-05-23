@@ -45,7 +45,7 @@ class App extends Component {
       const numFiles = Object.keys(response.result.files).length
       Object.entries(response.result.files).forEach(([key,file]) => {
         // see if file as .sn extention
-        if (typeof file.name === 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
+        if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // add '&& /\.sn$/.test(file.name)' for file extension
           // download files with .sn extensions
           downloadNotebook(file.id, (response) => {
              library[file.id] = {}
@@ -54,7 +54,7 @@ class App extends Component {
              // TODO validate file against schema should go here
              numFilesProcessed++
              if (numFilesProcessed == numFiles) { // last file downloaded
-               this.setState({library: library}, this.setState({notebooksLoaded: true}))
+               this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
              } 
           })
         }
@@ -75,22 +75,16 @@ class App extends Component {
       this.setState({loggedIn: false, library: {}, notebooksLoaded: false})
     }
   }
-/*
-  updateNotebook (notebookid, notebook) {
-    this.setState((prev) => { 
-      var newState = Object.assign({}, prev); 
-      newState.library[notebookid]['notebook'] = notebook
-      console.log(newState) 
-      return newState
-    }
-  )
-  }
-*/
+
 updateNotebook (notebookId, notebook) {
   this.setState((prev) => { 
     return prev.library[notebookId]['notebook'] = notebook
   })
+  // TODO: update notebook indexes (derived)
+  // TODO: update library indexes
+  // TODO: call cleanNotebook here
   uploadNotebook(notebook, notebookId)
+  
 }
 
   componentDidMount() {

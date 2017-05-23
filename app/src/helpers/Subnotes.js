@@ -1,37 +1,11 @@
-/*
-export function cleanNotebook(notebook, propsToDeleteFromNotebook, propsToDeleteFromSubnotes) {
-  
-}
+// reviews
 
-export function validateNotebook(notebook, schema) {
-  
-}
+// QAs
 
-export function mapSubnotes(notebook, func) {
-  
-}
+// flashcards
 
-export function addParentsToSubnote(notebook) {
-  
-}
+// subnotes
 
-export function addTagsIndexToNotebook(notebook) {
-  
-}
-*/
+// notebooks
 
-// TODO: get tags from flashcards too (currently only getting from subnotes)
-export function updateTags (notebook) {
-  var notebookTags = {}
-  if (typeof notebook.subnotes === 'object') {
-    Object.entries(notebook.subnotes).forEach(([uuid, subnote]) => {
-      if (Array.isArray(subnote.tags)) {
-        subnote.tags.forEach((tag) => {
-          notebookTags[tag] = notebookTags[tag] || []
-          notebookTags[tag].push(uuid)
-        })
-      }
-    })
-    return notebookTags
-  }
-}
+// librarys
