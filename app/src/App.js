@@ -8,12 +8,12 @@ import {
 } from 'react-router-dom';
 
 // import our routes/views
-import Login from './components/Login';
-import Logout from './components/Logout';
-import ExampleEditor from './components/ExampleEditor'
-import ExampleSubnote from './components/ExampleSubnote'
-import ExampleNotebook from './components/ExampleNotebook'
-import ExampleLibrary from './components/ExampleLibrary'
+import Login from './Login';
+import Logout from './Logout';
+import Dashboard from './Dashboard'
+import FlashcardExplorer from './FlashcardExplorer'
+import NotebookExplorer from './NotebookExplorer'
+import Review from './Review'
 
 // import helpers
 import { getDriveConfig } from './configs/driveConfigs'
@@ -45,7 +45,7 @@ class App extends Component {
       const numFiles = Object.keys(response.result.files).length
       Object.entries(response.result.files).forEach(([key,file]) => {
         // see if file as .sn extention
-        if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // add '&& /\.sn$/.test(file.name)' for file extension
+        if (typeof file.name === 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
           // download files with .sn extensions
           downloadNotebook(file.id, (response) => {
              library[file.id] = {}
@@ -110,10 +110,10 @@ updateNotebook (notebookId, notebook) {
                 <li><Link to="/">Library</Link></li>
               </ul>
               <Switch>
-                <Route exact path="/" render={(props) => (<ExampleLibrary library={this.state.library} {...props} />)}/>
-                <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<ExampleSubnote notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)}/>
-                <Route path="/notebook/edit/:notebookid" render={(props) => (<ExampleEditor notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
-                <Route path="/notebook/:notebookid" render={(props) => (<ExampleNotebook notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} {...props} />)}/>
+                <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)}/>
+                <Route path="/flashcards/:notebookid" render={(props) => (<FlashcardExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/review/:notebookid" render={(props) => (<Review notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
               </Switch>
             </div>
           </Router>

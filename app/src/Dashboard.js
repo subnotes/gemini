@@ -1,15 +1,18 @@
-// import node packages
 import React from 'react';
 import {Link} from 'react-router-dom';
 
 function Dashboard(props) {
   
-  if (typeof props.notebook.subnotes !== 'undefined') {
+  if (typeof props.library !== 'undefined') {
     return(
       <div>
         <h3>Dashboard</h3>
-        Site currently only supports one (default) notebook called "Gemini Notebook", which is stored on your Google drive.
-        In the future your notebooks would be listed here, but for now select "Notebook Explorer" to view and edit your "Gemini Notebook"
+        <h4>Your Notebooks</h4>
+        <ul>
+          {Object.entries(props.library).map(item => (
+            <li key={item[0]}><Link to={"/notebook/" + item[0]}>{item[1]['fileName']}</Link></li>
+          ))}
+        </ul>
       </div>
     )
   }
