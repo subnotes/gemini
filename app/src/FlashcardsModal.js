@@ -111,7 +111,7 @@ export default class FlashcardsModal extends Component {
         flashcardView = (
           <ul>
             {this.state.flashcards.map((card, i) => (
-              <li>
+              <li key={i}>
                 <FlashcardContainer
                   flashcard={FlashcardInterface.convertTreeCard(card, this.props.rowInfo.id, i)}
                   behavior="manage"

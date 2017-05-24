@@ -9,13 +9,18 @@ import UUID from 'uuid';
 export default class Tree extends Component {
     constructor(props) {
         super(props);
-
-        //bulid flat notebookTree and then convert to treeData for react-sortable-tree
-        var notebookTree = [];
-        this.buildTree(notebookTree, this.props.notebook, this.props.expanded);
-        this.state = {
-            treeData: getTreeFromFlatData({flatData: notebookTree})
-        };
+        if (typeof(this.props.notebookPlusMeta) !== 'undefined' && typeof(this.props.notebookPlusMeta.notebook) !== 'undefined') {
+          //bulid flat notebookTree and then convert to treeData for react-sortable-tree
+          var notebookTree = [];
+          if (typeof(this.props.match.params.subnoteid) !== 'undefined') { //if loading from url denoting a subnote
+            this.buildTree(notebookTree, this.props.notebookPlusMeta.notebook, this.props.notebookPlusMeta.expanded, this.props.match.params.subnoteid);
+          } else {
+            this.buildTree(notebookTree, this.props.notebookPlusMeta.notebook, this.props.notebookPlusMeta.expanded);
+          }
+          this.state = {
+              treeData: getTreeFromFlatData({flatData: notebookTree})
+          };
+        }
 
         this.getParentKey = this.getParentKey.bind(this);
         this.buildTree = this.buildTree.bind(this);
@@ -32,9 +37,13 @@ export default class Tree extends Component {
 
     //if we get new props, update the tree
     componentWillReceiveProps(nextProps) {
-      if(this.props !== nextProps) {
+      if(nextProps !== this.props) {
         var notebookTree = [];
-        this.buildTree(notebookTree, nextProps.notebook, nextProps.expanded);
+        if (typeof(nextProps.match.params.subnoteid) !== 'undefined' && this.state === null) { //if loading from url denoting a subnote and loading for the first time (don't want to keep expansion constant for parents of subnoteFromPath after the first render)
+          this.buildTree(notebookTree, nextProps.notebookPlusMeta.notebook, nextProps.notebookPlusMeta.expanded, nextProps.match.params.subnoteid);
+        } else {
+          this.buildTree(notebookTree, nextProps.notebookPlusMeta.notebook, nextProps.notebookPlusMeta.expanded);
+        }
         this.setState({
           treeData: getTreeFromFlatData({flatData: notebookTree})
         });
@@ -42,8 +51,12 @@ export default class Tree extends Component {
     }
 
     //returns the id of the parent node of notebook.subnotes[nodeIndex]
-    getParentKey(notebook, nodeIndex) {
-      var currentID = Object.keys(notebook.subnotes)[nodeIndex];
+    getParentKey(notebook, nodeIndex, nodeID) {
+      if (!nodeID) {
+        var currentID = Object.keys(notebook.subnotes)[nodeIndex];
+      } else {
+        var currentID = nodeID;
+      }
 
       if (currentID === notebook.rootSubnote) { //return 0 for parentID of root node
         return 0;
@@ -60,15 +73,30 @@ export default class Tree extends Component {
           }
         }
       }
-      return notebook.rootSubnote; //if no match was found, we know the parent is the root subnote
+      return notebook.rootSubnote; //if no match was found, we know the parent is the root subnote (or there was an invalid currentID)
     }
 
     //build notebookTree from notebook
-    buildTree(notebookTree, notebook, expandedIDs) {
+    buildTree(notebookTree, notebook, expandedIDs, subnoteFromPath) {
+      var expandedIDsCopy = expandedIDs.slice(); //make a copy so we aren't pushing onto an array in props
+      if (subnoteFromPath) { //if we specify a subnoteFromPath, then we must set all of its parents to expanded
+        var allParentsFound = false;
+        var idToExpand = subnoteFromPath;
+        while (allParentsFound === false) {
+          var parentKey = this.getParentKey(notebook, null, idToExpand);
+          if (parentKey !== 0) {
+            idToExpand = parentKey;
+            expandedIDsCopy.push(idToExpand);
+          } else {
+            allParentsFound = true;
+          }
+        }
+      }
+
       for (var i = 0; i < Object.keys(notebook.subnotes).length; i++) {
         var currentID = Object.keys(notebook.subnotes)[i];
         var currentExpanded = false; //holds expansion state of currentID
-        if (expandedIDs.includes(currentID)) { //if the currentID is in the array of expandedIDs, then set currentExpanded to true
+        if (expandedIDsCopy.includes(currentID)) { //if the currentID is in the array of expandedIDs, then set currentExpanded to true
           currentExpanded = true;
         }
         notebookTree.push({ id: currentID,
@@ -132,13 +160,13 @@ export default class Tree extends Component {
     replaceSubnote(rowInfo, newValues) {
       //update node information in notebook
       var currentID = rowInfo.node.id;
-      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebook)); //copy notebook (we can't simply set this equal to notebook as that is just a reference)
+      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebookPlusMeta.notebook)); //copy notebook (we can't simply set this equal to notebook as that is just a reference)
       notebookCopy.subnotes[currentID].subtopic = newValues.subtopic;
       notebookCopy.subnotes[currentID].note = newValues.note;
       notebookCopy.subnotes[currentID].tags = newValues.tags;
       notebookCopy.subnotes[currentID].flashcards = newValues.flashcards;
 
-      this.props.updateNotebook(notebookCopy); //update notebook and save to google drive
+      this.props.updateNotebook(this.props.match.params.notebookid, notebookCopy); //update notebook and save to google drive
     }
 
     //adds a new subnote under a given parent subnote
@@ -152,7 +180,7 @@ export default class Tree extends Component {
       //not creating flashcards array here, as flashcards are not being passed in newValues here and are not required for every node
 
       var parentID = rowInfo.node.id;
-      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebook));
+      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebookPlusMeta.notebook));
 
       if ("subnotes" in notebookCopy.subnotes[parentID]) { //if the parent already has children
         notebookCopy.subnotes[parentID].subnotes.push(newNode.id); //add new node id to children array
@@ -163,14 +191,14 @@ export default class Tree extends Component {
       notebookCopy.subnotes[newNode.id] = newNode; //add newNode to notebook
 
       this.setExpandedNodes(this.state.treeData, parentID); //update expanded nodes and set parent of new node to expanded
-      this.props.updateNotebook(notebookCopy); //update notebook and write to google drive
+      this.props.updateNotebook(this.props.match.params.notebookid, notebookCopy); //update notebook and write to google drive
     }
 
     //deletes a given subnote
     deleteSubnote(rowInfo) {
       var currentID = rowInfo.node.id;
       var parentID = rowInfo.node.parentId;
-      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebook));
+      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebookPlusMeta.notebook));
       this.deleteSubnoteChildren(notebookCopy, currentID); //delete all children subnotes
       delete notebookCopy.subnotes[currentID]; //delete the current subnote
 
@@ -183,7 +211,7 @@ export default class Tree extends Component {
       //no else - if we are deleting a roob subnote, there is no need to alter an array of children on the parent as there is no real parent
 
       this.setExpandedNodes(this.state.treeData, null, currentID); //update expanded nodes
-      this.props.updateNotebook(notebookCopy); //update notebook and write to google drive
+      this.props.updateNotebook(this.props.match.params.notebookid, notebookCopy); //update notebook and write to google drive
     }
 
     deleteSubnoteChildren(notebookCopy, currentID) {
@@ -204,7 +232,7 @@ export default class Tree extends Component {
 
       for (var i = 0; i < flatData.length; i++) { //for each "root" node
         if ("expanded" in flatData[i].node) { //check for expanded field
-          if (flatData[i].node.expanded === true) { //if the node is expanded
+          if (flatData[i].node.expanded === true && "children" in flatData[i].node) { //if the node is expanded and has children (no need to expand if no children)
             expandedIDs.push(flatData[i].node.id); //add the node id to expandedIDs
           }
         }
@@ -220,14 +248,13 @@ export default class Tree extends Component {
         //remove children of idToCollapse
         for (i = 0; i < flatData.length; i++) {
           if (flatData[i].node.id === idToCollapse) { //if we find the node to collapse
-            console.log(flatData);
             if ("children" in flatData[i].node) { //remove all children from expandedIDs
               this.removeExpandedChildren(expandedIDs, flatData[i].node);
             }
           }
         }
       }
-      this.props.updateExpanded(expandedIDs); //update the state in app
+      this.props.updateNotebookExpansion(this.props.match.params.notebookid, expandedIDs); //update the state in app
     }
 
     //remove all children of node from expandedIDs
@@ -261,36 +288,40 @@ export default class Tree extends Component {
     //Parent-->Child-->Grandchildren
     //Tree-->SortableTree-->edit/add/delete components
     render() {
-        return (
-            <div style={{ height: 1080 }}>
-                <SortableTree
-                    treeData={this.state.treeData}
-                    onChange={treeData => {this.setExpandedNodes(treeData);
-                                           this.setState({ treeData });
-                                           }}
-                    onMoveNode={() => this.props.updateNotebook(this.saveTreeData(this.state.treeData))} //after moving a node, changes are only reflected in treeData so we need to convert treeData back to a form we can save in the notebook
-                    generateNodeProps={rowInfo => ({
-                                buttons: [
-                                    <EditModal
-                                      rowInfo={rowInfo}
-                                      replaceSubnote={this.replaceSubnote}
-                                    />,
-                                    <AddModal
-                                      rowInfo={rowInfo}
-                                      addSubnote={this.addSubnote}
-                                    />,
-                                    <DeleteModal
-                                      rowInfo={rowInfo}
-                                      deleteSubnote={this.deleteSubnote}
-                                    />,
-                                    <FlashcardsModal
-                                      rowInfo={rowInfo}
-                                      replaceSubnote={this.replaceSubnote}
-                                    />,
-                                ],
-                    })}
-                />
-            </div>
-        );
+      if (typeof this.props.notebookPlusMeta === 'undefined' || typeof this.props.notebookPlusMeta.notebook === 'undefined') {
+        return (<h3>Sorry, we could not load that notebook.</h3>)
+      } else {
+          return (
+              <div style={{ height: 1080 }}>
+                  <SortableTree
+                      treeData={this.state.treeData}
+                      onChange={treeData => {this.setExpandedNodes(treeData);
+                                             this.setState({ treeData });
+                                             }}
+                      onMoveNode={() => this.props.updateNotebook(this.props.match.params.notebookid, this.saveTreeData(this.state.treeData))} //after moving a node, changes are only reflected in treeData so we need to convert treeData back to a form we can save in the notebook
+                      generateNodeProps={rowInfo => ({
+                                  buttons: [
+                                      <EditModal
+                                        rowInfo={rowInfo}
+                                        replaceSubnote={this.replaceSubnote}
+                                      />,
+                                      <AddModal
+                                        rowInfo={rowInfo}
+                                        addSubnote={this.addSubnote}
+                                      />,
+                                      <DeleteModal
+                                        rowInfo={rowInfo}
+                                        deleteSubnote={this.deleteSubnote}
+                                      />,
+                                      <FlashcardsModal
+                                        rowInfo={rowInfo}
+                                        replaceSubnote={this.replaceSubnote}
+                                      />,
+                                  ],
+                      })}
+                  />
+              </div>
+          );
+        }
     }
 }
