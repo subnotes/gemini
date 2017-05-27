@@ -1,5 +1,22 @@
+/**
+ * Presenter Component for a Flashcard
+ */
+
 // import node packages
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+// Component Metadata
+const propTypes = {
+  flashcard: PropTypes.object.isRequired,
+  nextCard: PropTypes.func,
+  handleDelete: PropTypes.func,
+  behavior: PropTypes.string,
+  viewIdx: PropTypes.int,
+};
+
+const defaultProps = {
+};
 
 // Flashcard Presenter component
 class Flashcard extends Component {
@@ -77,5 +94,8 @@ class Flashcard extends Component {
   } // end render
 
 }
+
+Flashcard.propTypes = propTypes;
+Flashcard.defaultProps = defaultProps;
 
 export default Flashcard;

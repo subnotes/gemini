@@ -1,21 +1,31 @@
+/**
+ * Page Component for Flashcard Manager
+ */
+
 // import node packages
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';
 import FlashcardInterface from './interfaces/FlashcardInterface';
 
-// Component for Explorer View
+// Component Metadata
+const propTypes = {
+  library: PropTypes.object.isRequired,
+};
+
+const defaultProps = {
+  library: {},
+};
+
+// Component Class for Explorer View
 class FlashcardExplorer extends Component {
 
   constructor (props) {
     super(props);
 
     // Member Variables
-    /* Need to get this implemented
-    this.propTypes = {
-    };
-    */
     this.state = {
       flashcards: [],
     };
@@ -65,5 +75,8 @@ class FlashcardExplorer extends Component {
     }
   } // end render
 }
+
+FlashcardExplorer.propTypes = propTypes;
+FlashcardExplorer.defaultProps = defaultProps;
 
 export default FlashcardExplorer;

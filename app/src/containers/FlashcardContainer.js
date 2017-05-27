@@ -1,8 +1,26 @@
+/**
+ * Container Component for a Flashcard
+ */
+
 // import node packages
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // import related presenter
 import Flashcard from '../presenters/Flashcard';
+
+// Component Metadata
+const proptypes = {
+  flashcard: PropTypes.object.isRequired,
+  behavior: PropTypes.string,
+  nextCard: PropTypes.func,
+  handleDeleteCard: PropTypes.func,
+};
+
+const defaultProps = {
+  flashcard: {},
+  behavior: "manage",
+};
 
 // Main Container Component
 class FlashcardContainer extends Component {
@@ -59,5 +77,8 @@ class FlashcardContainer extends Component {
   } // end render
 
 }
+
+FlashcardContainer.propTypes = propTypes;
+FlashcardContainer.defaultProps = defaultProps;
 
 export default FlashcardContainer;
