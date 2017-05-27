@@ -31,13 +31,14 @@ class App extends Component {
       library: {},
       notebooksLoaded: false,
     }
-    this.updateLoginStatus = this.updateLoginStatus.bind(this)    
+    this.updateLoginStatus = this.updateLoginStatus.bind(this)
     this.getSubnotes = this.getSubnotes.bind(this)
-    this.updateNotebook = this.updateNotebook.bind(this)    
+    this.updateNotebook = this.updateNotebook.bind(this)
+    this.updateNotebookExpansion = this.updateNotebookExpansion.bind(this)
   }
-  
+
   getSubnotes(){
-    var library = {} 
+    var library = {}
     // get list of all json files that aren't trashed from user's drive
     getFiles("trashed = false and mimeType = 'application/json'", (response) => {
       // loop through list of files
@@ -51,14 +52,15 @@ class App extends Component {
              library[file.id] = {}
              library[file.id]['notebook'] = response.result
              library[file.id]['fileName'] = file.name
+             library[file.id]['expanded'] = []
              // TODO validate file against schema should go here
              numFilesProcessed++
-             if (numFilesProcessed == numFiles) { // last file downloaded
+             if (numFilesProcessed === numFiles) { // last file downloaded
                this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
-             } 
+             }
           })
         }
-      }) 
+      })
     })
   }
 
@@ -76,22 +78,27 @@ class App extends Component {
     }
   }
 
-updateNotebook (notebookId, notebook) {
-  this.setState((prev) => { 
-    return prev.library[notebookId]['notebook'] = notebook
-  })
-  // TODO: update notebook indexes (derived)
-  // TODO: update library indexes
-  // TODO: call cleanNotebook here
-  uploadNotebook(notebook, notebookId)
-  
-}
+  updateNotebook (notebookId, notebook) {
+    this.setState((prev) => {
+      return prev.library[notebookId]['notebook'] = notebook
+    })
+    // TODO: update notebook indexes (derived)
+    // TODO: update library indexes
+    // TODO: call cleanNotebook here
+    uploadNotebook(notebook, notebookId)
+  }
+
+  updateNotebookExpansion (notebookId, expanded) {
+    this.setState((prev) => {
+      return prev.library[notebookId]['expanded'] = expanded
+    })
+  }
 
   componentDidMount() {
     initializeAuthDrive(
-      getDriveConfig(), 
+      getDriveConfig(),
       () => {
-        setLogInOutHandler(this.updateLoginStatus) 
+        setLogInOutHandler(this.updateLoginStatus)
         this.updateLoginStatus(isUserLoggedIn())
         this.setState({initialized: true})
       }
@@ -113,9 +120,16 @@ updateNotebook (notebookId, notebook) {
               </ul>
               <Switch>
                 <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} {...props} />)}/>
+<<<<<<< HEAD
                 <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)}/>
                 <Route path="/flashcards" render={(props) => (<FlashcardExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
                 <Route path="/review" render={(props) => (<Review notebookPlusMeta={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
+=======
+                <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
+                <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
+                <Route path="/flashcards/:notebookid" render={(props) => (<FlashcardExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/review/:notebookid" render={(props) => (<Review notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+>>>>>>> bc1c70a4f2fa32429bcf3e528adeabf3264c63b2
               </Switch>
             </div>
           </Router>

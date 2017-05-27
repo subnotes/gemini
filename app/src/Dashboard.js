@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 function Dashboard(props) {
-  
+
   if (typeof props.library !== 'undefined') {
     return(
       <div>
