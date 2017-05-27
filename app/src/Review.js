@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';
-import FlashcardInterface from './interfaces/FlashcardInterface';
+import FlashcardHelper from './helpers/FlashcardHelper';
 
 // Component Metadata
 const propTypes = {
@@ -44,7 +44,7 @@ class Review extends Component {
   } // end nextCard
 
   componentWillMount () {
-    var flashcards = FlashcardInterface.getAllCards(this.props.library);
+    var flashcards = FlashcardHelper.getAllCards(this.props.library);
     this.setState( { flashcards: flashcards } );
   } // end componentWillMount
 

@@ -4,7 +4,6 @@
 
 // Interface/Helper Functions
 function getFlashcards (notebook) {
-  console.log("Interface helper is running.");
   var flashcards = [];
 
   for (var s in notebook.subnotes) {

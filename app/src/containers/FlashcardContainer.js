@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import Flashcard from '../presenters/Flashcard';
 
 // Component Metadata
-const proptypes = {
+const propTypes = {
   flashcard: PropTypes.object.isRequired,
   behavior: PropTypes.string,
   nextCard: PropTypes.func,

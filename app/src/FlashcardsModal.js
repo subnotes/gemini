@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer.js';
-import FlashcardInterface from './interfaces/FlashcardInterface.js';
+import FlashcardHelper from './helpers/FlashcardHelper.js';
 
 // Component Metadata
 const propTypes = {
@@ -133,7 +133,7 @@ class FlashcardsModal extends Component {
           {this.state.flashcards.map((card, i) => (
             <li key={i}>
               <FlashcardContainer
-                flashcard={FlashcardInterface.convertTreeCard(card, this.props.rowInfo.id, i)}
+                flashcard={FlashcardHelper.convertTreeCard(card, this.props.rowInfo.id, i)}
                 behavior="manage"
                 handleDelete={this.handleDeleteCard}/>
             </li>

@@ -115,8 +115,8 @@ class App extends Component {
               <Logout logoutUser={logoutUser}/>
               <ul>
                 <li><Link to="/">Dashboard</Link></li>
-                <li><Link to="/">Review</Link></li>
-                <li><Link to="/">Flashcard Explorer</Link></li>
+                <li><Link to="/review">Review</Link></li>
+                <li><Link to="/flashcards">Flashcard Explorer</Link></li>
               </ul>
               <Switch>
                 <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} {...props} />)}/>
