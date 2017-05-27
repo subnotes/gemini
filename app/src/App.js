@@ -114,14 +114,16 @@ class App extends Component {
             <div>
               <Logout logoutUser={logoutUser}/>
               <ul>
-                <li><Link to="/">Library</Link></li>
+                <li><Link to="/">Dashboard</Link></li>
+                <li><Link to="/">Review</Link></li>
+                <li><Link to="/">Flashcard Explorer</Link></li>
               </ul>
               <Switch>
                 <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} {...props} />)}/>
                 <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
-                <Route path="/flashcards/:notebookid" render={(props) => (<FlashcardExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
-                <Route path="/review/:notebookid" render={(props) => (<Review notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/flashcards" render={(props) => (<FlashcardExplorer library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/review" render={(props) => (<Review library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
               </Switch>
             </div>
           </Router>
