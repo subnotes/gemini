@@ -43,7 +43,7 @@ class Flashcard extends Component {
         return(
           <div>
             <ul>
-              {this.props.flashcard.qaPairs.map(
+              {this.props.flashcard.qas.map(
                   qaPair => <li> Question: <span>{qaPair.question}</span><br />
                                  Answer: <span>{qaPair.answer}</span> </li>
                   )}
@@ -55,14 +55,14 @@ class Flashcard extends Component {
         if (!this.state.answered) {
           return(
             <span>
-              Question: <span>{this.props.flashcard.qaPairs[this.props.viewIdx].question}</span><br />
+              Question: <span>{this.props.flashcard.qas[this.props.viewIdx].question}</span><br />
               <button onClick={this.flipCard}>Flip Me</button>
             </span>
           );
         } else {
           return(
             <span>
-              Answer: <span>{this.props.flashcard.qaPairs[this.props.viewIdx].answer}</span><br />
+              Answer: <span>{this.props.flashcard.qas[this.props.viewIdx].answer}</span><br />
               <button onClick={this.nextCard}>Next Card</button>
             </span>
           );

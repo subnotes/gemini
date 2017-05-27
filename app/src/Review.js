@@ -34,7 +34,7 @@ class Review extends Component {
   } // end nextCard
 
   componentWillMount () {
-    var flashcards = FlashcardInterface.getFlashcards(this.props.notebook);
+    var flashcards = FlashcardInterface.getAllCards(this.props.library);
     this.setState( { flashcards: flashcards } );
   } // end componentWillMount
 

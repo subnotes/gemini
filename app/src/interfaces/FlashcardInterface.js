@@ -27,18 +27,43 @@ function getFlashcards (notebook) {
 
 }
 
+function getAllCards (library) {
+  var flashcards = [];
+
+  for (var n in library) {
+    var notebook = library[n];
+
+    for (var s in notebook['notebook']) {
+      var subnote = notebook['notebook'][s];
+
+      for (var f in subnote.flashcards) {
+        var flashcard = subnote.flashcards[f];
+
+        flashcard.notebookId = n;
+        flashcard.subnoteId = s;
+        flashcard.cardIdx = f;
+
+        flashcards.push(flashcard);
+      }
+    }
+  }
+
+  return flashcards;
+} // end getAllCards
+
 function convertTreeCard (treeCard, noteId, cardIdx) {
   var flashcard = {
     noteId: noteId,
     cardIdx: cardIdx,
-    qaPairs: treeCard.qas,
+    qas: treeCard.qas,
     tags: treeCard.tags
   };
 
   return flashcard;
-}
+} // end convertTreeCard
 
 module.exports = {
   getFlashcards: getFlashcards,
+  getAllCards: getAllCards,
   convertTreeCard: convertTreeCard
 }
