@@ -1,9 +1,23 @@
+/**
+ * Page Component for Flashcard Review
+ */
+
 // import node packages
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';
-import FlashcardInterface from './interfaces/FlashcardInterface';
+import FlashcardHelper from './helpers/FlashcardHelper';
+
+// Component Metadata
+const propTypes = {
+  library: PropTypes.func.isRequired,
+};
+
+const defaultProps = {
+  library: {},
+}
 
 // Component for Flashcard Review
 class Review extends Component {
@@ -12,10 +26,6 @@ class Review extends Component {
     super(props);
 
     // Member Variables
-    /* Implement this
-    this.propTypes = {
-    };
-     */
     this.state = {
       flashcards: [],
     };
@@ -34,7 +44,7 @@ class Review extends Component {
   } // end nextCard
 
   componentWillMount () {
-    var flashcards = FlashcardInterface.getFlashcards(this.props.notebook);
+    var flashcards = FlashcardHelper.getAllCards(this.props.library);
     this.setState( { flashcards: flashcards } );
   } // end componentWillMount
 
@@ -62,5 +72,8 @@ class Review extends Component {
   } // end render
 
 }
+
+Review.propTypes = propTypes;
+Review.defaultProps = defaultProps;
 
 export default Review;

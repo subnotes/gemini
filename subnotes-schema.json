@@ -1,37 +1,38 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Notebook",
+  "description": "A subnote notebook",
   "type": "object",
   "properties": {
-    "notebook": {
-      "$ref": "#/definitions/notebook"
+    "topLevelSubnotes": {
+      "description": "The UUID of the root subnote in the notebook",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/uuid"
+      }
+    },
+    "subnotes": {
+      "description": "A collection of subnote nodes, using UUID v4  as keys.",
+      "type": "object",
+      "patternProperties": {
+        "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4{1}[a-fA-F0-9]{3}-[89abAB]{1}[a-fA-F0-9]{3}-[a-fA-F0-9]{12}$": {
+          "$ref": "#/definitions/subnote"
+        }
+      }
     }
   },
-  "required": [
-    "notebook"
-  ],
   "definitions": {
-    "title": {
-      "title": "Title field",
-      "description": "The title of a notebook.",
-      "type": "string",
-      "minLength": 1
-    },
-    "topic": {
-      "title": "Topic field",
-      "description": "The topic of a notebook, subtopic, or subnote.",
+    "subtopic": {
+      "title": "subtopic field",
+      "description": "The subtopic of a subnote.",
       "type": "string",
       "minLength": 1
     },
     "note": {
       "title": "Note field",
-      "description": "A note, belonging to a notebook, subtopic, or subnote.",
+      "description": "The note portion of a subnote. Processed as Markdown.",
       "type": "string",
       "minLength": 1
-    },
-    "markdown": {
-      "title": "Markdown support field",
-      "description": "Set whether or not text in notes, questions, and answers should be parsed as markdown. When set to true in a notebook it acts as default for notes, questions, and answers.",
-      "type": "boolean"
     },
     "time": {
       "title": "Time field",
@@ -41,13 +42,13 @@
     },
     "question": {
       "title": "Question field",
-      "description": "A question in a QA node.",
+      "description": "A question in a QA node. Processed as Markdown",
       "type": "string",
       "minLength": 1
     },
     "answer": {
       "title": "Answer field",
-      "description": "An answer to a question in a QA node.",
+      "description": "An answer to a question in a QA node. Processed as Markdown",
       "type": "string",
       "minLength": 1
     },
@@ -61,174 +62,103 @@
       "title": "Review date field",
       "description": "The date of a flashcard review.",
       "type": "string",
-      "format": "date"
+      "format": "date-time"
     },
     "nextReviewDate": {
       "title": "Next review date field",
       "description": "The scheduled date of the next flashcard review.",
       "type": "string",
-      "format": "date"
+      "format": "date-time"
     },
     "response": {
       "title": "Response field",
-      "description": "The confidence of a user in their answer to a question on a 0 to 5 scale. 0, 1, and 2 represent incorrect answers. 3, 4, and 5 represent correct answers. 0, had no clue. 1, sounds familiar. 2, I should have known that. 3, that was hard. 4, took me a second. 5, that was easy.",
-      "type": "number",
+      "description": "The confidence of a user in their answer to a question on a 0 to 5 scale. 0, 1, and 2 represent incorrect answers. 3, 4, and 5 represent correct answers. 0, had no clue. 1, sounds familiar. 2, should have known that. 3, that was hard. 4, took me a second. 5, that was easy.",
+      "type": "integer",
       "minimum": 0,
       "maximum": 5
     },
     "algorithm": {
       "title": "Algorithm field",
-      "description": "The name of the algorithm used to calculate the next review date.",
+      "description": "The name of the scheduling algorithm used to calculate the next review date. TODO: Add pattern???",
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 30
     },
-    "algorithmParameter": {
-      "title": "Algorithm parameter field",
-      "description": "A string of parameters that can be used by the algorithm next review.",
-      "type": "string"
+    "algorithmDateTimeParameters": {
+      "title": "Algorithm date-time parameters",
+      "description": "An array of date-times that can be passed to the scheduling algorithm at the next review.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "algorithmNumberParameters": {
+      "title": "Algorithm number parameters",
+      "description": "An array of numbers that can be passed to the scheduling algorithm at the next review.",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
     },
     "qaNum": {
-      "title": "QA Number field",
+      "title": "QA number field",
       "description": "The index number of the QA reviewed",
-      "type": "number"
+      "type": "integer"
     },
-    "notebook": {
-      "title": "Notebook node",
-      "type": "object",
-      "properties": {
-        "title": {
-          "$ref": "#/definitions/title"
-        },
-        "topic": {
-          "$ref": "#/definitions/topic"
-        },
-        "note": {
-          "$ref": "#/definitions/note"
-        },
-        "markdown": {
-          "$ref": "#/definitions/markdown"
-        },
-        "subtopics": {
-          "$ref": "#/definitions/subtopics"
-        },
-        "subnotes": {
-          "$ref": "#/definitions/subnotes"
-        },
-        "flashcards": {
-          "$ref": "#/definitions/flashcards"
-        },
-        "tags": {
-          "$ref": "#/definitions/tags"
-        }
-      },
-      "required": [
-        "title"
-      ]
-    },
-    "subtopic": {
-      "title": "Subtopic node",
-      "type": "object",
-      "properties": {
-        "topic": {
-          "$ref": "#/definitions/topic"
-        },
-        "note": {
-          "$ref": "#/definitions/note"
-        },
-        "subtopics": {
-          "$ref": "#/definitions/subtopics"
-        },
-        "subnotes": {
-          "$ref": "#/definitions/subnotes"
-        },
-        "flashcards": {
-          "$ref": "#/definitions/flashcards"
-        },
-        "markdown": {
-          "$ref": "#/definitions/markdown"
-        },
-        "tags": {
-          "$ref": "#/definitions/tags"
-        }
-      },
-      "required": [
-        "topic"
-      ]
-    },
-    "subtopicPointer": {
-      "title": "JSON Pointer to a subtopic",
+    "uuid": {
+      "title": "UUID v4",
+      "description": "A string matching the UUID v4 format.",
       "type": "string",
-      "pattern": "#/notebook(/subtopics/[0-9]{1,}){1,}$"
-    },
-    "subtopics": {
-      "title": "Array of subtopic nodes",
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/subtopic"
-          },
-          {
-            "$ref": "#/definitions/subtopicPointer"
-          }
-        ]
-      }
+      "pattern": "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-4{1}[a-fA-F0-9]{3}-[89abAB]{1}[a-fA-F0-9]{3}-[a-fA-F0-9]{12}$"
     },
     "subnote": {
       "title": "Subnote node",
       "type": "object",
       "properties": {
+        "subtopic": {
+          "$ref": "#/definitions/subtopic"
+        },
         "note": {
           "$ref": "#/definitions/note"
-        },
-        "topic": {
-          "$ref": "#/definitions/topic"
         },
         "flashcards": {
           "$ref": "#/definitions/flashcards"
         },
-        "markdown": {
-          "$ref": "#/definitions/markdown"
-        },
         "tags": {
           "$ref": "#/definitions/tags"
+        },
+        "childSubnotes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/uuid"
+          }
         }
       },
       "required": [
         "note"
       ]
     },
-    "subnotePointer": {
-      "title": "JSON Pointer to a subnote",
-      "type": "string",
-      "pattern": "#/notebook(/subtopics/[0-9]{1,}){0,}(/subnotes/[0-9]{1,}){1}$"
-    },
     "subnotes": {
-      "title": "Array of subnote nodes",
+      "title": "Array of subnote UUIDs",
+      "description": "An array of child subnote UUIDs",
+      "type": "array",
       "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/subnote"
-          },
-          {
-            "$ref": "#/definitions/subnotePointer"
-          }
-        ]
+        "$ref": "#/definitions/uuid"
       }
     },
     "tag": {
       "title": "Tag",
-      "description": "A tag or label that can be applied to different types of nodes",
+      "description": "A tag or label that can be applied to different types of nodes. TODO: Add pattern???",
       "type": "string",
       "minLength": 1,
       "maxLength": 25
     },
     "tags": {
       "title": "Array of tags",
-      "items": [
-        {
-          "$ref": "#/definitions/tag"
-        }
-      ]
+      "items": {
+        "$ref": "#/definitions/tag"
+      }
     },
     "flashcard": {
       "title": "Flashcard node",
@@ -243,9 +173,6 @@
         "time": {
           "$ref": "#/definitions/time"
         },
-        "markdown": {
-          "$ref": "#/definitions/markdown"
-        },
         "tags": {
           "$ref": "#/definitions/tags"
         }
@@ -255,7 +182,7 @@
       ]
     },
     "flashcards": {
-      "title": "Array of flashcards",
+      "title": "Array of flashcard nodes",
       "type": "array",
       "items": {
         "$ref": "#/definitions/flashcard"
@@ -276,9 +203,6 @@
         },
         "time": {
           "$ref": "#/definitions/time"
-        },
-        "markdown": {
-          "$ref": "#/definitions/markdown"
         },
         "tags": {
           "$ref": "#/definitions/tags"
@@ -312,8 +236,11 @@
         "algorithm": {
           "$ref": "#/definitions/algorithm"
         },
-        "algorithmParameter": {
-          "$ref": "#/definitions/algorithmParameter"
+        "algorithmDateTimeParameters": {
+          "$ref": "#/definitions/algorithmDateTimeParameters"
+        },
+        "algorithmNumberParameters": {
+          "$ref": "#/definitions/algorithmNumberParameters"
         },
         "qaNum": {
           "$ref": "#/definitions/qaNum"
@@ -323,8 +250,7 @@
         "reviewDate",
         "nextReviewDate",
         "response",
-        "algorithm",
-        "algorithmParameter"
+        "algorithm"
       ]
     },
     "reviews": {

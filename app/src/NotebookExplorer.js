@@ -9,10 +9,10 @@ class NotebookExplorer extends Component {
     <div>
       <h3>Notebook Explorer</h3>
       <Tree
-        notebook={this.props.notebook}
+        notebookPlusMeta={this.props.notebookPlusMeta}
         updateNotebook={this.props.updateNotebook}
-        expanded={this.props.expanded}
-        updateExpanded={this.props.updateExpanded}
+        updateNotebookExpansion={this.props.updateNotebookExpansion}
+        match={this.props.match}
       />
     </div>
   )}

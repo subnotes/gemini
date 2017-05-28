@@ -1,3 +1,7 @@
+/**
+ * Helper Functions for Templates
+ */
+
 // import node packages
 
 // import local files
