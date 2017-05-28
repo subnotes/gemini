@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  rowInfo: PropTypes.object.isRequired,
+  replaceSubnote: PropTypes.func.isRequired
+}
 
 //EditModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class EditModal extends Component {
@@ -98,3 +104,5 @@ export default class EditModal extends Component {
       );
     }
 }
+
+EditModal.propTypes = propTypes;
