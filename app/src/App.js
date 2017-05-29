@@ -32,12 +32,12 @@ class App extends Component {
       notebooksLoaded: false,
     }
     this.updateLoginStatus = this.updateLoginStatus.bind(this)
-    this.getSubnotes = this.getSubnotes.bind(this)
+    this.loadNotebooks = this.loadNotebooks.bind(this)
     this.updateNotebook = this.updateNotebook.bind(this)
     this.updateNotebookExpansion = this.updateNotebookExpansion.bind(this)
   }
 
-  getSubnotes(){
+  loadNotebooks(){
     var library = {}
     // get list of all json files that aren't trashed from user's drive
     getFiles("trashed = false and mimeType = 'application/json'", (response) => {
@@ -69,7 +69,7 @@ class App extends Component {
     // on login
     if (isSignedIn){
       // get subnote files meta data
-      this.getSubnotes()
+      this.loadNotebooks()
     }
     // on logout
     else {
