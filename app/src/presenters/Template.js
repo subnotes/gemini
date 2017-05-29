@@ -1,5 +1,5 @@
 /**
- * Container Component for Template
+ * Presenter Component for Template
  */
 
 // import node packages

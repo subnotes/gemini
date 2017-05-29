@@ -1,26 +1,25 @@
 /**
- * Page Component for Tag Test
+ * Container Component for Tag List
  */
 
-// Import Node Packages
-import React, { Component } from 'react';
+// import node packages
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-// Import Local Components
-import TagListContainer from './containers/TagListContainer';
+// import related presenter
+import TagList from '../presenters/TagList';    
 
-// Import Helpers
+// import helpers
 
 // Component Metadata
 const propTypes = {
-  updateNotebook: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
 };
 
-// Component Class for Template Page
-class TagTest extends Component {
+// Main Container Component
+class TagListContainer extends Component {
 
   /**
    * Other Class Methods
@@ -34,6 +33,7 @@ class TagTest extends Component {
 
     // Member Variables
     this.state = {
+      template: "template",
     };
 
     // Function Bindings
@@ -62,7 +62,11 @@ class TagTest extends Component {
   } // end componentDidMount
 
   componentWillReceiveProps (nextProps) {
-    return;
+    if (this.props !== nextProps) {
+      this.setState({
+        template: nextProps.template,
+      });
+    }
   } // end componentWillReceiveProps
 
   shouldComponentUpdate () {
@@ -97,12 +101,12 @@ class TagTest extends Component {
    * Render Function
    */
   render () {
-    return <TagListContainer />;
+    return <TagList />;
   } // end render
 
 }
 
-TagTest.propTypes = propTypes;
-TagTest.defaultProps = defaultProps;
+TagListContainer.propTypes = propTypes;
+TagListContainer.defaultProps = defaultProps;
 
-export default TagTest;
+export default TagListContainer;
