@@ -29,23 +29,29 @@ function getFlashcards (notebook) {
 function getAllCards (library) {
   var flashcards = [];
 
-  for (var n in library) {
-    var notebook = library[n];
+  if (typeof library != "undefined") {
+    for (var n in library) {
+      var notebook = library[n];
 
-    for (var s in notebook['notebook']) {
-      var subnote = notebook['notebook'][s];
+      if (notebook && notebook.notebook && notebook.notebook.subnotes) {
+        for (var s in notebook.notebook.subnotes) {
+          var subnote = notebook.notebook.subnotes[s];
 
-      for (var f in subnote.flashcards) {
-        var flashcard = subnote.flashcards[f];
+          if (subnote && subnote.flashcards && subnote.flashcards.length > 0) {
+            for (var f in subnote.flashcards) {
+              var flashcard = subnote.flashcards[f];
 
-        flashcard.notebookId = n;
-        flashcard.subnoteId = s;
-        flashcard.cardIdx = f;
+              flashcard.notebookId = n;
+              flashcard.subnoteId = s;
+              flashcard.cardIdx = f;
 
-        flashcards.push(flashcard);
-      }
-    }
-  }
+              flashcards.push(flashcard);
+            } // end for in flashcards
+          } // end if flashcards exists
+        } // end for in subnotes
+      } // end if subnotes exists
+    } //end for in library
+  } // end if library exists
 
   return flashcards;
 } // end getAllCards
