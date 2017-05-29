@@ -125,7 +125,7 @@ class App extends Component {
                 <li><Link to="/flashcards">Flashcard Explorer</Link></li>
               </ul>
               <Switch>
-                <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} {...props} />)}/>
+                <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} loadNotebooks={this.loadNotebooks} {...props} />)}/>
                 <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/flashcards" render={(props) => (<FlashcardExplorer library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
