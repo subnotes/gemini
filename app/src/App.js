@@ -14,6 +14,7 @@ import Dashboard from './Dashboard'
 import FlashcardExplorer from './FlashcardExplorer'
 import NotebookExplorer from './NotebookExplorer'
 import Review from './Review'
+import TagTest from './TagTest'
 
 // import helpers
 import { getDriveConfig } from './configs/driveConfigs'
@@ -158,6 +159,7 @@ class App extends Component {
                 <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/flashcards" render={(props) => (<FlashcardExplorer library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
                 <Route path="/review" render={(props) => (<Review library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/tagtest" render={(props) => (<TagTest updateNotebook={this.updateNotebook} {...props} />)} />
               </Switch>
             </div>
           </Router>
