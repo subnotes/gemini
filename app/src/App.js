@@ -33,37 +33,46 @@ class App extends Component {
     }
     this.updateLoginStatus = this.updateLoginStatus.bind(this)
     this.loadNotebooks = this.loadNotebooks.bind(this)
+    this.downloadNotebooks = this.downloadNotebooks.bind(this)
     this.updateNotebook = this.updateNotebook.bind(this)
     this.updateNotebookExpansion = this.updateNotebookExpansion.bind(this)
   }
 
-  loadNotebooks(){
-    var library = {}
+  loadNotebooks(){ // get list of notebooks and download them
     // get list of all json files that aren't trashed from user's drive
     getFiles("trashed = false and mimeType = 'application/json'", (response) => {
       // loop through list of files
-      var numFilesProcessed = 0
-      const numFiles = Object.keys(response.result.files).length
-      Object.entries(response.result.files).forEach(([key,file]) => {
+      var notebooks = []
+      response.result.files.forEach((file) => {
         // see if file as .sn extention
-        if (typeof file.name === 'string'){ // add '&& /\.sn$/.test(file.name)' for file extension
-          // download files with .sn extensions
-          downloadNotebook(file.id, (response) => {
-             library[file.id] = {}
-             library[file.id]['notebook'] = response.result
-             library[file.id]['fileName'] = file.name
-             library[file.id]['expanded'] = []
-             // TODO validate file against schema should go here
-             numFilesProcessed++
-             if (numFilesProcessed === numFiles) { // last file downloaded
-               this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
-             }
-          })
+        if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // checks for .sn file extension
+          notebooks.push(file)
+        } 
+      })
+      this.downloadNotebooks(notebooks)
+    })
+  }
+  
+  downloadNotebooks(notebooks){
+    var library = {}
+    var counter = 1
+    notebooks.forEach((file) => {
+      downloadNotebook(file.id, (response) => {
+        // load into library if it passes checks 
+        // TODO validate file against schema should go here
+        library[file.id] = {}
+        library[file.id]['notebook'] = response.result
+        library[file.id]['fileName'] = file.name
+        library[file.id]['expanded'] = []
+        // if last file load library to state
+        if (counter == notebooks.length){
+          this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
         }
+        counter++
       })
     })
   }
-
+  
   updateLoginStatus (isSignedIn) {
     this.setState({loggedIn: isSignedIn})
     // on login
