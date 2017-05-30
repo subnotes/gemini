@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import UUID from 'uuid';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  rowInfo: PropTypes.object.isRequired,
-  addSubnote: PropTypes.func.isRequired
+  match: PropTypes.object.isRequired,
+  notebookPlusMeta: PropTypes.object,
+  updateNotebook: PropTypes.func.isRequired
 }
 
-//AddModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
-export default class AddModal extends Component {
+//AddTopLevelModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
+export default class AddTopLevelModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +25,7 @@ export default class AddModal extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.addTopLevelSubnote = this.addTopLevelSubnote.bind(this);
       } //end constructor
 
     handleOpenModal () {
@@ -50,8 +53,27 @@ export default class AddModal extends Component {
     }
 
     handleSave({ target }) {
-      this.props.addSubnote(this.props.rowInfo, this.state);
+      this.addTopLevelSubnote(this.state);
       this.handleCloseModal(); //close the modal window
+    }
+
+    addTopLevelSubnote(newValues) {
+      //create new node to add to notebook
+      var newNode = {};
+      var newNodeID = UUID.v4();
+      newNode.subtopic = newValues.subtopic;
+      newNode.note = newValues.note;
+      if (newValues.tags.length > 0) {
+        newNode.tags = newValues.tags;
+      }
+      //not creating flashcards array here, as flashcards are not being passed in newValues here and are not required for every node
+
+      var notebookCopy = JSON.parse(JSON.stringify(this.props.notebookPlusMeta.notebook));
+
+      notebookCopy.topLevelSubnotes.push(newNodeID); //add node id to topLevelSubnotes array
+      notebookCopy.subnotes[newNodeID] = newNode; //add newNode to notebook
+
+      this.props.updateNotebook(this.props.match.params.notebookid, notebookCopy); //update notebook and write to google drive
     }
 
     render () {
@@ -64,10 +86,10 @@ export default class AddModal extends Component {
 
       return (
         <div>
-          <button onClick={this.handleOpenModal}>Add</button>
+          <button onClick={this.handleOpenModal}>Add Top Level Subnote</button>
           <ReactModal
             isOpen={this.state.showModal}
-            contentLabel="Add subnote"
+            contentLabel="Add top level subnote"
           >
             <form>
               Subtopic:
@@ -87,4 +109,4 @@ export default class AddModal extends Component {
     }
 }
 
-AddModal.propTypes = propTypes;
+AddTopLevelModal.propTypes = propTypes;

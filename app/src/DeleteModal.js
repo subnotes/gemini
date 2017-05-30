@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  rowInfo: PropTypes.object.isRequired,
+  deleteSubnote: PropTypes.func.isRequired
+}
 
 //DeleteModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class DeleteModal extends Component {
@@ -45,3 +51,5 @@ export default class DeleteModal extends Component {
       );
     }
 }
+
+DeleteModal.propTypes = propTypes;

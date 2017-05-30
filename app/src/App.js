@@ -79,9 +79,12 @@ class App extends Component {
   }
 
   updateNotebook (notebookId, notebook) {
-    this.setState((prev) => {
-      return prev.library[notebookId]['notebook'] = notebook
-    })
+    // this.setState((prev) => {
+    //   return prev.library[notebookId]['notebook'] = notebook
+    // })
+    var libraryCopy = JSON.parse(JSON.stringify(this.state.library));
+    libraryCopy[notebookId]['notebook'] = notebook;
+    this.setState({library: libraryCopy});
     // TODO: update notebook indexes (derived)
     // TODO: update library indexes
     // TODO: call cleanNotebook here
@@ -89,9 +92,12 @@ class App extends Component {
   }
 
   updateNotebookExpansion (notebookId, expanded) {
-    this.setState((prev) => {
-      return prev.library[notebookId]['expanded'] = expanded
-    })
+    // this.setState((prev) => {
+    //   return prev.library[notebookId]['expanded'] = expanded
+    // })
+    var libraryCopy = JSON.parse(JSON.stringify(this.state.library));
+    libraryCopy[notebookId]['expanded'] = expanded;
+    this.setState({library: libraryCopy});
   }
 
   componentDidMount() {

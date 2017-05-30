@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  rowInfo: PropTypes.object.isRequired,
+  replaceSubnote: PropTypes.func.isRequired
+}
 
 //EditModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class EditModal extends Component {
@@ -52,12 +58,17 @@ export default class EditModal extends Component {
       var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
       var tagsCopy = this.state.tags.slice();
       tagsCopy[tagNum] = target.value;
+      if (tagsCopy[tagNum] === "") { //if tag is now an empty string, delete it
+        tagsCopy.splice(tagNum, 1);
+      }
+      console.log(tagsCopy);
       this.setState({
         tags: tagsCopy
       });
     }
 
     handleSave({ target }) {
+      console.log(this.state);
       this.props.replaceSubnote(this.props.rowInfo, this.state);
       this.handleCloseModal(); //close the modal window
     }
@@ -98,3 +109,5 @@ export default class EditModal extends Component {
       );
     }
 }
+
+EditModal.propTypes = propTypes;
