@@ -34,6 +34,7 @@ class TagTest extends Component {
 
     // Member Variables
     this.state = {
+      tags: ["tag1", "tag2", "tag3", "tag4"],
     };
 
     // Function Bindings
@@ -45,6 +46,8 @@ class TagTest extends Component {
     this.componentWillUpdate = this.componentWillUpdate.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    this.handleAddTag = this.handleAddTag.bind(this);
+    this.handleDeleteTag = this.handleDeleteTag.bind(this);
     this.render = this.render.bind(this);
 
   } // end constructor
@@ -84,6 +87,13 @@ class TagTest extends Component {
   /**
    * Click and Event Handlers
    */
+  handleAddTag () {
+    alert("Adding a tag");
+  } // end handleAddTag
+
+  handleDeleteTag () {
+    alert("Deleting a tag");
+  } // end handleDeleteTag
 
   /**
    * Getter Methods
@@ -97,7 +107,12 @@ class TagTest extends Component {
    * Render Function
    */
   render () {
-    return <TagListContainer />;
+    return (
+      <TagListContainer
+        tags={this.state.tags}
+        handleAdd={this.handleAddTag}
+        handleDelete={this.handleDeleteTag} />
+    );
   } // end render
 
 }

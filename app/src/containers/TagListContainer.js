@@ -13,9 +13,13 @@ import TagList from '../presenters/TagList';
 
 // Component Metadata
 const propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.string),
+  handleAdd: PropTypes.func,
+  handleDelete: PropTypes.func
 };
 
 const defaultProps = {
+  tags: [],
 };
 
 // Main Container Component
@@ -62,11 +66,7 @@ class TagListContainer extends Component {
   } // end componentDidMount
 
   componentWillReceiveProps (nextProps) {
-    if (this.props !== nextProps) {
-      this.setState({
-        template: nextProps.template,
-      });
-    }
+    return;
   } // end componentWillReceiveProps
 
   shouldComponentUpdate () {
@@ -101,7 +101,12 @@ class TagListContainer extends Component {
    * Render Function
    */
   render () {
-    return <TagList />;
+    return (
+      <TagList
+        tags={this.props.tags}
+        handleAdd={this.props.handleAdd}
+        handleDelete={this.props.handleDelete} />
+    );
   } // end render
 
 }

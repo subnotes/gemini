@@ -13,11 +13,13 @@ import Tag from './Tag';
 
 // Component Metadata
 const propTypes = {
-  tagList: PropTypes.array,
+  tags: PropTypes.arrayOf(PropTypes.string),
+  handleAdd: PropTypes.func,
+  handleDelete: PropTypes.func,
 };
 
 const defaultProps = {
-  tagList: [],
+  tags: [],
 };
 
 // Main Container Component
@@ -101,7 +103,9 @@ class TagList extends Component {
     return (
       <div>
         <h3> TagList </h3>
-        <Tag tag="example" />
+        {this.props.tags.map(tag => <Tag tag={tag} />)}
+        <input />
+        <button />
       </div>
     );
   } // end render
