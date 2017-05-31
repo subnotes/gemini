@@ -56,21 +56,25 @@ class App extends Component {
   downloadNotebooks(notebooks){
     var library = {}
     var counter = 1
-    notebooks.forEach((file) => {
-      downloadNotebook(file.id, (response) => {
-        // load into library if it passes checks 
-        // TODO validate file against schema should go here
-        library[file.id] = {}
-        library[file.id]['notebook'] = response.result
-        library[file.id]['fileName'] = file.name
-        library[file.id]['expanded'] = []
-        // if last file load library to state
-        if (counter == notebooks.length){
-          this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
-        }
-        counter++
-      })
-    })
+    if (notebooks.length == 0) {
+      this.setState({library: library}, this.setState({notebooksLoaded: true}))
+    } else {
+      notebooks.forEach((file) => {
+        downloadNotebook(file.id, (response) => {
+          // load into library if it passes checks 
+          // TODO validate file against schema should go here
+          library[file.id] = {}
+          library[file.id]['notebook'] = response.result
+          library[file.id]['fileName'] = file.name
+          library[file.id]['expanded'] = []
+          // if last file load library to state
+          if (counter == notebooks.length){
+            this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
+          }
+          counter++
+        })
+      })  
+    }
   }
   
   updateLoginStatus (isSignedIn) {
