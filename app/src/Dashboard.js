@@ -14,7 +14,7 @@ class Dashboard extends Component {
   
   newNotebook(e) {
     //createNotebook(e.target.value)
-    createNotebook(this.state.newName + '.sn', (response) => {uploadNotebook({}, response.result.id, this.props.loadNotebooks)})
+    createNotebook(this.state.newName + '.sn', (response) => {uploadNotebook({"subnotes":{},"topLevelSubnotes":[]}, response.result.id, this.props.loadNotebooks)})
     e.preventDefault()
     this.setState({newName: ""})
   }
