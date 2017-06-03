@@ -19,13 +19,14 @@ import Review from './Review'
 import { getDriveConfig } from './configs/driveConfigs'
 import { initializeAuthDrive } from './helpers/googleAPI'
 import { downloadNotebook, uploadNotebook, createNotebook, getFiles } from './helpers/googleDrive'
-import { loginUser, logoutUser, setLogInOutHandler, isUserLoggedIn } from './helpers/googleAuth'
+import { loginUser, logoutUser, setLogInOutHandler, isUserLoggedIn, getEmail } from './helpers/googleAuth'
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      user: "",
       loggedIn: false,
       initialized: false,
       library: {},
@@ -83,6 +84,7 @@ class App extends Component {
     if (isSignedIn){
       // get subnote files meta data
       this.loadNotebooks()
+      this.setState({user: getEmail()})
     }
     // on logout
     else {
@@ -131,7 +133,7 @@ class App extends Component {
         <div>
           <Router>
             <div>
-              <Logout logoutUser={logoutUser}/>
+              You are logged in as {this.state.user} <Logout logoutUser={logoutUser}/>
               <ul>
                 <li><Link to="/">Dashboard</Link></li>
                 <li><Link to="/review">Review</Link></li>
