@@ -10,12 +10,14 @@ export function logoutUser(callback) {
   window.gapi.auth2.getAuthInstance().signOut().then(callback);
 }
 
-// getUserName () {}
-
 export function setLogInOutHandler(logInOutHandler) {
   window.gapi.auth2.getAuthInstance().isSignedIn.listen(logInOutHandler);
 }
 
 export function isUserLoggedIn() {
   return window.gapi.auth2.getAuthInstance().isSignedIn.get()
+}
+
+export function getEmail() {
+  return window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail()
 }
