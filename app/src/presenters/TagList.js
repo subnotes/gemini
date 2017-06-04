@@ -14,8 +14,8 @@ import Tag from './Tag';
 // Component Metadata
 const propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
-  handleAdd: PropTypes.func,
-  handleDelete: PropTypes.func,
+  onAdd: PropTypes.func,
+  onDelete: PropTypes.func,
 };
 
 const defaultProps = {
@@ -37,56 +37,29 @@ class TagList extends Component {
 
     // Member Variables
     this.state = {
+      input: "",
+      tags: this.props.tags,
     };
 
     // Function Bindings
-    this.getChildContext = this.getChildContext.bind(this);
-    this.componentWillMount = this.componentWillMount.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-    this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
-    this.componentWillUpdate = this.componentWillUpdate.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this);
-    this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleAddClick = this.handleAddClick.bind(this);
     this.render = this.render.bind(this);
 
   } // end constructor
 
-  getChildContext () {
-    return;
-  } // end getChildContext
-
-  componentWillMount () {
-    return;
-  } // end componentWillMount
-
-  componentDidMount () {
-    return;
-  } // end componentDidMount
-
-  componentWillReceiveProps (nextProps) {
-    return;
-  } // end componentWillReceiveProps
-
-  shouldComponentUpdate () {
-    return;
-  } // end shouldComponentUpdate
-
-  componentWillUpdate () {
-    return;
-  } // end componentWillUpdate
-
-  componentDidUpdate () {
-    return;
-  } // end componentDidUpdate
-
-  componentWillUnmount () {
-    return;
-  } // end componentWillUnmount
-
   /**
    * Click and Event Handlers
    */
+  handleChange (e) {
+    this.setState({ input: e.target.value });
+  } // end handleChange
+
+  handleAddClick (e) {
+    var newTag = this.state.input;
+    this.setState({ input: '' });
+    this.props.handleAdd(newTag);
+  } // end handleClick
 
   /**
    * Getter Methods
@@ -103,9 +76,11 @@ class TagList extends Component {
     return (
       <div>
         <h3> TagList </h3>
-        {this.props.tags.map(tag => <Tag tag={tag} />)}
-        <input />
-        <button />
+        {this.state.tags.map(tag => <Tag tag={tag} />)}
+        <input
+          value={this.state.input}
+          onChange={this.handleChange} />
+        <button onClick={this.handleAddClick}>Add</button>
       </div>
     );
   } // end render
