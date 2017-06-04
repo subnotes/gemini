@@ -40,20 +40,32 @@ class App extends Component {
   }
 
   loadNotebooks(){ // get list of notebooks and download them
-    // get list of all json files that aren't trashed from user's drive
-    getFiles("trashed = false and mimeType = 'application/json'", (response) => {
+    // get list of all writable json files that aren't trashed from user's drive
+    var email = getEmail()
+    var notebooks = []
+    getFiles("trashed = false and mimeType = 'application/json' and '" + email + "' in writers", (response) => {
       // loop through list of files
-      var notebooks = []
       response.result.files.forEach((file) => {
         // see if file as .sn extention
         if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // checks for .sn file extension
+          file.writable = true
           notebooks.push(file)
         } 
       })
-      this.downloadNotebooks(notebooks)
+      getFiles("trashed = false and mimeType = 'application/json' and not '" + email + "' in writers", (response) => {
+        // loop through list of files
+        response.result.files.forEach((file) => {
+          // see if file as .sn extention
+          if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // checks for .sn file extension
+            file.writable = false
+            notebooks.push(file)
+          } 
+        })
+        this.downloadNotebooks(notebooks)
+      })
     })
   }
-  
+
   downloadNotebooks(notebooks){
     var library = {}
     var counter = 1
@@ -67,6 +79,7 @@ class App extends Component {
           library[file.id] = {}
           library[file.id]['notebook'] = response.result
           library[file.id]['fileName'] = file.name
+          library[file.id]['writable'] = file.writable
           library[file.id]['expanded'] = []
           // if last file load library to state
           if (counter == notebooks.length){
