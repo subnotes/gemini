@@ -1,28 +1,27 @@
 /**
- * Presenter Component for Template
+ * Page Component for Template Page with full stub ordering
  */
 
-// import node packages
-import React, {Component} from 'react';
+// Import Node Packages
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// import helpers
+// Import Local Components
+import TemplateContainer from './containers/TemplateContainer';
+
+// Import Helpers
 
 // Component Metadata
 const propTypes = {
   template: PropTypes.string.isRequired,
-  prop2: PropTypes.object,
-  prop3: PropTypes.func,
 };
 
 const defaultProps = {
   template: "Hello World",
-  prop2: {},
-  prop3: function() {return;},
 };
 
-// Main Container Component
-class Template extends Component {
+// Component Class for Template Page
+class TemplatePage extends Component {
 
   /**
    * Other Class Methods
@@ -112,16 +111,12 @@ class Template extends Component {
    * Render Function
    */
   render () {
-    return (
-      <div>
-        <h3> Template </h3>
-      </div>
-    );
+    return <Template />;
   } // end render
 
 }
 
-Template.propTypes = propTypes;
-Template.defaultProps = defaultProps;
+TemplatePage.propTypes = propTypes;
+TemplatePage.defaultProps = defaultProps;
 
-export default Template;
+export default TemplatePage;
