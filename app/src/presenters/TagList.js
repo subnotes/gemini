@@ -14,12 +14,24 @@ import Tag from './Tag';
 // Component Metadata
 const propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
-  onAdd: PropTypes.func,
-  onDelete: PropTypes.func,
+  input: PropTypes.string,
+  handleAdd: PropTypes.func,
+  handleDelete: PropTypes.func,
+  handleInputChange: PropTypes.func,
 };
 
 const defaultProps = {
   tags: [],
+  input: '',
+  handleAdd: function (tag) {
+    console.log(tag);
+  },
+  handleDelete: function (e) {
+    console.log(e.target.index);
+  },
+  handleInputChange: function (e) {
+    console.log(e);
+  }
 };
 
 // Main Container Component
@@ -37,13 +49,9 @@ class TagList extends Component {
 
     // Member Variables
     this.state = {
-      input: "",
-      tags: this.props.tags,
     };
 
     // Function Bindings
-    this.handleChange = this.handleChange.bind(this);
-    this.handleAddClick = this.handleAddClick.bind(this);
     this.render = this.render.bind(this);
 
   } // end constructor
@@ -51,15 +59,6 @@ class TagList extends Component {
   /**
    * Click and Event Handlers
    */
-  handleChange (e) {
-    this.setState({ input: e.target.value });
-  } // end handleChange
-
-  handleAddClick (e) {
-    var newTag = this.state.input;
-    this.setState({ input: '' });
-    this.props.handleAdd(newTag);
-  } // end handleClick
 
   /**
    * Getter Methods
@@ -76,11 +75,17 @@ class TagList extends Component {
     return (
       <div>
         <h3> TagList </h3>
-        {this.state.tags.map(tag => <Tag tag={tag} />)}
+        {this.props.tags.map((tag, i) => <Tag
+                                          tag={tag}
+                                          index={i}
+                                          handleDelete={this.props.handleDelete}
+                                        />
+                            )
+        }
         <input
-          value={this.state.input}
-          onChange={this.handleChange} />
-        <button onClick={this.handleAddClick}>Add</button>
+          value={this.props.input}
+          onChange={this.props.handleInputChange} />
+        <button onClick={this.props.handleAdd}>Add</button>
       </div>
     );
   } // end render

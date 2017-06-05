@@ -53,8 +53,11 @@ class TagTest extends Component {
     this.setState({tags: newTags});
   } // end handleAddTag
 
-  handleDeleteTag () {
-    alert("Deleting a tag");
+  handleDeleteTag (i) {
+    console.log(i);
+    var newTags = this.state.tags;
+    newTags.splice(i, 1);
+    this.setState({tags: newTags});
   } // end handleDeleteTag
 
   /**

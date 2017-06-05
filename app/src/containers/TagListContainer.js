@@ -37,10 +37,12 @@ class TagListContainer extends Component {
 
     // Member Variables
     this.state = {
-      tags: this.props.tags
+      input: "",
     };
 
     // Function Bindings
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
     this.render = this.render.bind(this);
 
   } // end constructor
@@ -48,6 +50,15 @@ class TagListContainer extends Component {
   /**
    * Click and Event Handlers
    */
+  handleInputChange (e) {
+    this.setState({ input: e.target.value });
+  } // end handleInputChange
+
+  handleAdd (e) {
+    var newTag = this.state.input;
+    this.setState({ input: '' });
+    this.props.handleAdd(newTag);
+  } // end handleAdd
 
   /**
    * Getter Methods
@@ -63,9 +74,12 @@ class TagListContainer extends Component {
   render () {
     return (
       <TagList
-        tags={this.state.tags}
-        handleAdd={this.props.handleAdd}
-        handleDelete={this.props.handleDelete} />
+        tags={this.props.tags}
+        input={this.state.input}
+        handleInputChange={this.handleInputChange}
+        handleAdd={this.handleAdd}
+        handleDelete={this.props.handleDelete}
+      />
     );
   } // end render
 
