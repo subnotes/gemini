@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import UUID from 'uuid';
 import PropTypes from 'prop-types';
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
 const propTypes = {
   match: PropTypes.object.isRequired,
@@ -86,21 +87,23 @@ export default class AddTopLevelModal extends Component {
 
       return (
         <div>
-          <button onClick={this.handleOpenModal}>Add Top Level Subnote</button>
+          <StyledModalDiv inline>
+            <StyledModalLaunchButton addTopLevel onClick={this.handleOpenModal}></StyledModalLaunchButton>
+            <p>Add Top Level Subnote</p>
+          </StyledModalDiv>
           <ReactModal
             isOpen={this.state.showModal}
             contentLabel="Add top level subnote"
+            style={modalStyle}
           >
-            <form>
-              Subtopic:
-              <input type="text" name="subtopic" onChange={this.handleChange}/>
-              <br />
-              Note:
-              <textarea rows="10" cols="75" name="note" onChange={this.handleChange}/>
-              <br />
-              Tags:
-              {tagArray}
-            </form>
+            <StyledModalDiv>
+            <StyledModalP subtopic> Subtopic: </StyledModalP>
+            <input type="text" name="subtopic" onChange={this.handleChange}/>
+            <StyledModalP note> Note: </StyledModalP>
+            <textarea rows="10" cols="75" name="note" onChange={this.handleChange}/>
+            <StyledModalP > Tags: </StyledModalP>
+            {tagArray}
+            </StyledModalDiv>
             <button onClick={this.handleSave}>Add Subnote</button>
             <button onClick={this.handleCloseModal}>Cancel</button>
           </ReactModal>

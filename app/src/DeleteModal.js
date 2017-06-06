@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
   deleteSubnote: PropTypes.func.isRequired
 }
+
+const StyledH3 = styled.h3`
+  color: rgb(224, 102, 102);
+`
 
 //DeleteModal adapted from example at https://reactcommunity.org/react-modal/examples/minimal.html
 export default class DeleteModal extends Component {
@@ -35,24 +41,16 @@ export default class DeleteModal extends Component {
     }
 
     render () {
-      const buttonStyle = {
-        background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_delete_black_24px.svg) no-repeat center',
-        opacity: '0.65',
-        borderRadius: '5px',
-        border: 'solid #666666 1px',
-        height: '30px',
-        width: '30px'
-      }
-
       return (
         <div>
-          <button onClick={this.handleOpenModal} style={buttonStyle}></button>
+          <StyledModalLaunchButton delete onClick={this.handleOpenModal}></StyledModalLaunchButton>
           <ReactModal
              isOpen={this.state.showModal}
              contentLabel="Delete subnote"
+             style={modalStyle}
           >
             <h3>Are you sure you want to delete this subnote?</h3>
-            <h3>WARNING: Deleting a subnote will also delete all children of that subnote!</h3>
+            <StyledH3>WARNING: Deleting a subnote will also delete all children of that subnote!</StyledH3>
             <button onClick={this.handleSave}>Delete</button>
             <button onClick={this.handleCloseModal}>Cancel</button>
           </ReactModal>

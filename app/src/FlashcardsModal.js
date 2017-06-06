@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer.js';
 import FlashcardHelper from './helpers/FlashcardHelper.js';
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton } from './presenters/ModalStyles'
 
 // Component Metadata
 const propTypes = {
@@ -119,15 +120,6 @@ class FlashcardsModal extends Component {
   } // end handleDeleteCard
 
   render () {
-    const buttonStyle = {
-      background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_filter_none_black_24px.svg) no-repeat center',
-      opacity: '0.65',
-      borderRadius: '5px',
-      border: 'solid #666666 1px',
-      height: '30px',
-      width: '30px'
-    }
-
     var tagArray = [];
     var numTags = 5;
     for (var i = 0; i < numTags; i++) {
@@ -155,7 +147,7 @@ class FlashcardsModal extends Component {
 
     return (
       <div>
-        <button onClick={this.handleOpenModal} style={buttonStyle}></button>
+        <StyledModalLaunchButton flashcards onClick={this.handleOpenModal}></StyledModalLaunchButton>
         <ReactModal
           isOpen={this.state.showModal}
           contentLabel="View Flashcards"
@@ -166,16 +158,14 @@ class FlashcardsModal extends Component {
           </div>
           {flashcardView}
           <h4>Add New Flashcard</h4>
-          <form>
-            Question:
+          <StyledModalDiv>
+            <StyledModalP question> Question: </StyledModalP>
             <textarea rows="10" cols="75" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
-            <br />
-            Answer:
+            <StyledModalP answer> Answer: </StyledModalP>
             <textarea rows="10" cols="75" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
-            <br />
-            Tags:
+            <StyledModalP> Tags: </StyledModalP>
             {tagArray}
-          </form>
+          </StyledModalDiv>>
           <button onClick={this.handleAddCard}>Add This Card</button>
           <button onClick={this.handleCloseModal}>Close Flashcards</button>
         </ReactModal>

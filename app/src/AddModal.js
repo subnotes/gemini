@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
@@ -55,15 +56,6 @@ export default class AddModal extends Component {
     }
 
     render () {
-      const buttonStyle = {
-        background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_add_black_24px.svg) no-repeat center',
-        opacity: '0.65',
-        borderRadius: '5px',
-        border: 'solid #666666 1px',
-        height: '30px',
-        width: '30px'
-      }
-
       var tagArray = [];
       var numTags = 5; //number of empty tag text inputs to display
       for (var i = 0; i < numTags; i++) {
@@ -73,21 +65,20 @@ export default class AddModal extends Component {
 
       return (
         <div>
-          <button onClick={this.handleOpenModal} style={buttonStyle}></button>
+          <StyledModalLaunchButton add onClick={this.handleOpenModal}></StyledModalLaunchButton>
           <ReactModal
             isOpen={this.state.showModal}
             contentLabel="Add subnote"
+            style={modalStyle}
           >
-            <form>
-              Subtopic:
+            <StyledModalDiv>
+              <StyledModalP subtopic> Subtopic: </StyledModalP>
               <input type="text" name="subtopic" onChange={this.handleChange}/>
-              <br />
-              Note:
+              <StyledModalP note> Note: </StyledModalP>
               <textarea rows="10" cols="75" name="note" onChange={this.handleChange}/>
-              <br />
-              Tags:
+              <StyledModalP > Tags: </StyledModalP>
               {tagArray}
-            </form>
+            </StyledModalDiv>
             <button onClick={this.handleSave}>Add Subnote</button>
             <button onClick={this.handleCloseModal}>Cancel</button>
           </ReactModal>
