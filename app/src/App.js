@@ -22,6 +22,9 @@ import { initializeAuthDrive } from './helpers/googleAPI'
 import { downloadNotebook, uploadNotebook, createNotebook, getFiles } from './helpers/googleDrive'
 import { loginUser, logoutUser, setLogInOutHandler, isUserLoggedIn, getEmail } from './helpers/googleAuth'
 
+// import style
+import './App.css'
+
 class App extends Component {
 
   constructor(props) {
@@ -51,7 +54,7 @@ class App extends Component {
         if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // checks for .sn file extension
           file.writable = true
           notebooks.push(file)
-        } 
+        }
       })
       getFiles("trashed = false and mimeType = 'application/json' and not '" + email + "' in writers", (response) => {
         // loop through list of files
@@ -60,7 +63,7 @@ class App extends Component {
           if (typeof file.name === 'string' && /\.sn$/.test(file.name)){ // checks for .sn file extension
             file.writable = false
             notebooks.push(file)
-          } 
+          }
         })
         this.downloadNotebooks(notebooks)
       })
@@ -75,7 +78,7 @@ class App extends Component {
     } else {
       notebooks.forEach((file) => {
         downloadNotebook(file.id, (response) => {
-          // load into library if it passes checks 
+          // load into library if it passes checks
           // TODO validate file against schema should go here
           library[file.id] = {}
           library[file.id]['notebook'] = response.result
@@ -88,10 +91,10 @@ class App extends Component {
           }
           counter++
         })
-      })  
+      })
     }
   }
-  
+
   updateLoginStatus (isSignedIn) {
     this.setState({loggedIn: isSignedIn})
     // on login

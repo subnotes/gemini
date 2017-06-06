@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Tree from './Tree';
 import AddTopLevelModal from './AddTopLevelModal';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const propTypes = {
   match: PropTypes.object.isRequired,
@@ -11,25 +12,66 @@ const propTypes = {
   updateNotebookExpansion: PropTypes.func.isRequired
 }
 
+const StyledTree = styled(Tree)`
+  .rst__rowTitle {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    padding-bottom: 20px;
+  }
+
+  .rst__rowSubtitle {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+  }
+
+  .rst__rowContents {
+    border: solid rgb(111,168,220) 1px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: None;
+    font-family: Ubuntu;
+  }
+
+  .rst__moveHandle {
+    background: #BBB url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_view_headline_black_24px.svg) no-repeat center;
+    border: solid rgb(111,168,220) 1px;
+    border-right: None;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: None;
+  }
+`
+
 export default class NotebookExplorer extends Component {
 
   render() {
-  return (
-    <div>
-      <h3>Notebook Explorer</h3>
-      <AddTopLevelModal
-        notebookPlusMeta={this.props.notebookPlusMeta}
-        updateNotebook={this.props.updateNotebook}
-        match={this.props.match}
-      />
-      <Tree
-        notebookPlusMeta={this.props.notebookPlusMeta}
-        updateNotebook={this.props.updateNotebook}
-        updateNotebookExpansion={this.props.updateNotebookExpansion}
-        match={this.props.match}
-      />
-    </div>
-  )}
+    if (typeof this.props.notebookPlusMeta === 'undefined' || typeof this.props.notebookPlusMeta.notebook === 'undefined') {
+      return (<h3>Sorry, we could not load that notebook.</h3>)
+    } else {
+        return (
+          <div>
+            <h3>{this.props.notebookPlusMeta.fileName}</h3>
+            <AddTopLevelModal
+              notebookPlusMeta={this.props.notebookPlusMeta}
+              updateNotebook={this.props.updateNotebook}
+              match={this.props.match}
+            />
+            <StyledTree
+              notebookPlusMeta={this.props.notebookPlusMeta}
+              updateNotebook={this.props.updateNotebook}
+              updateNotebookExpansion={this.props.updateNotebookExpansion}
+              match={this.props.match}
+            />
+          </div>
+        )
+      }
+  }
 }
 
 NotebookExplorer.propTypes = propTypes;
