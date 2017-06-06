@@ -35,9 +35,18 @@ export default class DeleteModal extends Component {
     }
 
     render () {
+      const buttonStyle = {
+        background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_delete_black_24px.svg) no-repeat center',
+        opacity: '0.75',
+        borderRadius: '5px',
+        border: 'solid #666666 1px',
+        height: '30px',
+        width: '30px'
+      }
+
       return (
         <div>
-          <button onClick={this.handleOpenModal}>Delete</button>
+          <button onClick={this.handleOpenModal} style={buttonStyle}></button>
           <ReactModal
              isOpen={this.state.showModal}
              contentLabel="Delete subnote"

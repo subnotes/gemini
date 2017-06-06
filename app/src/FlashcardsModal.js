@@ -119,6 +119,15 @@ class FlashcardsModal extends Component {
   } // end handleDeleteCard
 
   render () {
+    const buttonStyle = {
+      background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_filter_none_black_24px.svg) no-repeat center',
+      opacity: '0.75',
+      borderRadius: '5px',
+      border: 'solid #666666 1px',
+      height: '30px',
+      width: '30px'
+    }
+
     var tagArray = [];
     var numTags = 5;
     for (var i = 0; i < numTags; i++) {
@@ -146,7 +155,7 @@ class FlashcardsModal extends Component {
 
     return (
       <div>
-        <button onClick={this.handleOpenModal}>Flashcards</button>
+        <button onClick={this.handleOpenModal} style={buttonStyle}></button>
         <ReactModal
           isOpen={this.state.showModal}
           contentLabel="View Flashcards"

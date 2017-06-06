@@ -68,12 +68,20 @@ export default class EditModal extends Component {
     }
 
     handleSave({ target }) {
-      console.log(this.state);
       this.props.replaceSubnote(this.props.rowInfo, this.state);
       this.handleCloseModal(); //close the modal window
     }
 
     render () {
+      const buttonStyle = {
+        background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_create_black_24px.svg) no-repeat center',
+        opacity: '0.75',
+        borderRadius: '5px',
+        border: 'solid #666666 1px',
+        height: '30px',
+        width: '30px'
+      }
+
       var tagArray = [];
       var numTags = 5; //number of tag inputs to display
       for (var i = 0; i < this.state.tags.length; i++) { //prepopulate tags
@@ -87,7 +95,7 @@ export default class EditModal extends Component {
 
       return (
         <div>
-          <button onClick={this.handleOpenModal}>Edit</button>
+          <button onClick={this.handleOpenModal} style={buttonStyle}></button>
           <ReactModal
             isOpen={this.state.showModal}
             contentLabel="Edit subnote"
