@@ -44,6 +44,7 @@ const StyledTree = styled(Tree)`
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     box-shadow: None;
+    opacity: 0.65;
   }
 `
 

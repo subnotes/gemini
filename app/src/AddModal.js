@@ -57,7 +57,7 @@ export default class AddModal extends Component {
     render () {
       const buttonStyle = {
         background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_add_black_24px.svg) no-repeat center',
-        opacity: '0.75',
+        opacity: '0.65',
         borderRadius: '5px',
         border: 'solid #666666 1px',
         height: '30px',
