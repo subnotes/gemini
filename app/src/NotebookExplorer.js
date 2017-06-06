@@ -35,7 +35,6 @@ const StyledTree = styled(Tree)`
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     box-shadow: None;
-    font-family: Ubuntu;
   }
 
   .rst__moveHandle {
