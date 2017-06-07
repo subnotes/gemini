@@ -21,6 +21,7 @@ const TagWrapper = styled.div`
   border-radius: 5px;
   padding: 3px 5px;
   background: #eee;
+  font-size: 12px;
 `;
 
 // Component Metadata
@@ -81,7 +82,7 @@ class Tag extends Component {
    */
   render () {
     return (
-      <TagWrapper key={"tag" + this.props.tag}>
+      <TagWrapper>
         {this.props.tag}
         <CloseIcon onClick={this.handleDeleteClick}/>
       </TagWrapper>

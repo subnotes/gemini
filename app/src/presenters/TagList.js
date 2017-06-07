@@ -15,9 +15,10 @@ import Tag from './Tag';
 const propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   input: PropTypes.string,
-  handleAdd: PropTypes.func,
+  handleKeyDown: PropTypes.func,
   handleDelete: PropTypes.func,
   handleInputChange: PropTypes.func,
+  parentId: PropTypes.string,
 };
 
 const defaultProps = {
@@ -31,7 +32,8 @@ const defaultProps = {
   },
   handleInputChange: function (e) {
     console.log(e);
-  }
+  },
+  parentId: '',
 };
 
 // Main Container Component
@@ -72,20 +74,24 @@ class TagList extends Component {
    * Render Function
    */
   render () {
+    var tagElements = null;
+    if (this.props.tags.length > 0) {
+      tagElements = this.props.tags.map(
+                      (tag, i) => <Tag
+                                    tag={tag}
+                                    index={i}
+                                    handleDelete={this.props.handleDelete}
+                                    key={this.props.parentId + tag + i.toString()}
+                                  />)
+    }
     return (
       <div>
-        <h3> TagList </h3>
-        {this.props.tags.map((tag, i) => <Tag
-                                          tag={tag}
-                                          index={i}
-                                          handleDelete={this.props.handleDelete}
-                                        />
-                            )
-        }
+        {tagElements}
         <input
           value={this.props.input}
-          onChange={this.props.handleInputChange} />
-        <button onClick={this.props.handleAdd}>Add</button>
+          placeholder="Add a new tag..."
+          onChange={this.props.handleInputChange}
+          onKeyDown={this.props.handleKeyDown} />
       </div>
     );
   } // end render
