@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
+import { StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
