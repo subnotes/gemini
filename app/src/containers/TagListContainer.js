@@ -42,7 +42,7 @@ class TagListContainer extends Component {
 
     // Function Bindings
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
+    this.handleEnterKey = this.handleEnterKey.bind(this);
     this.render = this.render.bind(this);
 
   } // end constructor
@@ -54,11 +54,14 @@ class TagListContainer extends Component {
     this.setState({ input: e.target.value });
   } // end handleInputChange
 
-  handleAdd (e) {
-    var newTag = this.state.input;
-    this.setState({ input: '' });
-    this.props.handleAdd(newTag);
-  } // end handleAdd
+  handleEnterKey (e) {
+    if (e.keyCode == 13) {
+      e.preventDefault;
+      var newTag = this.state.input;
+      this.setState({ input: '' });
+      this.props.handleAdd(newTag);
+    }
+  } // end handleEnterKey
 
   /**
    * Getter Methods
@@ -77,8 +80,8 @@ class TagListContainer extends Component {
         tags={this.props.tags}
         input={this.state.input}
         handleInputChange={this.handleInputChange}
-        handleAdd={this.handleAdd}
         handleDelete={this.props.handleDelete}
+        handleKeyDown={this.handleEnterKey}
       />
     );
   } // end render
