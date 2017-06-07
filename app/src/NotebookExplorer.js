@@ -20,6 +20,7 @@ const StyledTree = styled(Tree)`
     text-overflow: ellipsis;
     max-width: 250px;
     padding-bottom: 20px;
+    color: rgb(224, 102, 102);
   }
 
   .rst__rowSubtitle {
@@ -28,6 +29,7 @@ const StyledTree = styled(Tree)`
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 250px;
+    color: rgb(111, 168, 220);
   }
 
   .rst__rowContents {
@@ -35,7 +37,6 @@ const StyledTree = styled(Tree)`
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     box-shadow: None;
-    font-family: Ubuntu;
   }
 
   .rst__moveHandle {
@@ -45,6 +46,22 @@ const StyledTree = styled(Tree)`
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     box-shadow: None;
+    opacity: 0.65;
+  }
+
+  .rst__rowLandingPad {
+      &::before {
+          background-color: rgb(111,168,220);
+      }
+  }
+
+  .rst__collapseButton, .rst__expandButton {
+      box-shadow: None;
+      border: 1px solid #666666;
+
+      &:focus {
+          box-shadow: None;
+      }
   }
 `
 
@@ -56,7 +73,7 @@ export default class NotebookExplorer extends Component {
     } else {
         return (
           <div>
-            <h3>{this.props.notebookPlusMeta.fileName}</h3>
+            <h3>Current notebook: {this.props.notebookPlusMeta.fileName}</h3>
             <AddTopLevelModal
               notebookPlusMeta={this.props.notebookPlusMeta}
               updateNotebook={this.props.updateNotebook}

@@ -6,7 +6,6 @@ import DeleteModal from './DeleteModal.js';
 import FlashcardsModal from './FlashcardsModal.js';
 import UUID from 'uuid';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 
 const propTypes = {
   match: PropTypes.object.isRequired,

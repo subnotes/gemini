@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
@@ -44,14 +45,20 @@ export default class EditModal extends Component {
     }
 
     handleCloseModal () {
-      this.setState({ showModal: false });
+      //reset state of modal and close it (prevents unsaved edits from reappearing if edit is clicked again)
+      this.setState({
+        subtopic: this.props.rowInfo.node.title,
+        note: this.props.rowInfo.node.subtitle,
+        tags: this.props.rowInfo.node.tags || [],
+        flashcards: this.props.rowInfo.node.flashcards || [],
+        showModal: false
+      });
     }
 
     handleChange({ target }) {
       this.setState({
         [target.name]: target.value
       });
-      //console.log(this.state);
     }
 
     handleTagChange({ target }) {
@@ -61,7 +68,6 @@ export default class EditModal extends Component {
       if (tagsCopy[tagNum] === "") { //if tag is now an empty string, delete it
         tagsCopy.splice(tagNum, 1);
       }
-      console.log(tagsCopy);
       this.setState({
         tags: tagsCopy
       });
@@ -73,15 +79,6 @@ export default class EditModal extends Component {
     }
 
     render () {
-      const buttonStyle = {
-        background: 'url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_create_black_24px.svg) no-repeat center',
-        opacity: '0.75',
-        borderRadius: '5px',
-        border: 'solid #666666 1px',
-        height: '30px',
-        width: '30px'
-      }
-
       var tagArray = [];
       var numTags = 5; //number of tag inputs to display
       for (var i = 0; i < this.state.tags.length; i++) { //prepopulate tags
@@ -95,23 +92,22 @@ export default class EditModal extends Component {
 
       return (
         <div>
-          <button onClick={this.handleOpenModal} style={buttonStyle}></button>
+          <StyledModalLaunchButton edit onClick={this.handleOpenModal}></StyledModalLaunchButton>
           <ReactModal
             isOpen={this.state.showModal}
             contentLabel="Edit subnote"
+            style={modalStyle}
           >
-            <form>
-              Subtopic:
+          <StyledModalDiv>
+              <StyledModalP subtopic> Subtopic: </StyledModalP>
               <input type="text" name="subtopic" defaultValue={this.props.rowInfo.node.title} onChange={this.handleChange}/>
-              <br />
-              Note:
+              <StyledModalP note> Note: </StyledModalP>
               <textarea rows="10" cols="75" name="note" defaultValue={this.props.rowInfo.node.subtitle} onChange={this.handleChange}/>
-              <br />
-              Tags:
+              <StyledModalP > Tags: </StyledModalP>
               {tagArray}
-            </form>
-            <button onClick={this.handleSave}>Save Edits</button>
-            <button onClick={this.handleCloseModal}>Cancel Edit</button>
+              <button onClick={this.handleSave}>Save Edits</button>
+              <button onClick={this.handleCloseModal}>Cancel Edit</button>
+            </StyledModalDiv>
           </ReactModal>
         </div>
       );

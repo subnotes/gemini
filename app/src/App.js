@@ -22,9 +22,6 @@ import { initializeAuthDrive } from './helpers/googleAPI'
 import { downloadNotebook, uploadNotebook, createNotebook, getFiles } from './helpers/googleDrive'
 import { loginUser, logoutUser, setLogInOutHandler, isUserLoggedIn, getEmail } from './helpers/googleAuth'
 
-// import style
-import './App.css'
-
 class App extends Component {
 
   constructor(props) {
