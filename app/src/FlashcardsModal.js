@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import FlashcardContainer from './containers/FlashcardContainer.js';
 import FlashcardHelper from './helpers/FlashcardHelper.js';
 import { StyledModalDiv, StyledModalP, StyledModalLaunchButton } from './presenters/ModalStyles'
+import TagListContainer from './containers/TagListContainer.js';
 
 // Component Metadata
 const propTypes = {
@@ -44,7 +45,8 @@ class FlashcardsModal extends Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleTagChange = this.handleTagChange.bind(this);
+    this.handleTagAdd = this.handleTagAdd.bind(this);
+    this.handleTagDelete = this.handleTagDelete.bind(this);
     this.handleAddCard = this.handleAddCard.bind(this);
     this.handleDeleteCard = this.handleDeleteCard.bind(this);
   } //end constructor
@@ -85,6 +87,18 @@ class FlashcardsModal extends Component {
     });
   } // end handleTagChange
 
+  handleTagAdd (tag) {
+    var newTags = this.state.newCardTags.slice();
+    newTags.push(tag);
+    this.setState({ newCardTags: newTags });
+  } // end handleTagAdd
+
+  handleTagDelete (idx) {
+    var newTags = this.state.newCardTags.slice();
+    newTags.splice(idx, 1);
+    this.setState({ newCardTags: newTags });
+  } // end handleTagDelete
+
   handleAddCard({ target }) {
     // Make new Flashcard
     var newCard = {
@@ -120,13 +134,6 @@ class FlashcardsModal extends Component {
   } // end handleDeleteCard
 
   render () {
-    var tagArray = [];
-    var numTags = 5;
-    for (var i = 0; i < numTags; i++) {
-      var tagLabel = "tag" + i;
-      tagArray.push(<input type="text" name={tagLabel} key={i} onChange={this.handleTagChange}/>);
-    }
-
     var flashcardView = null;
     if (typeof this.state.flashcards !== 'undefined' && this.state.flashcards.length > 0) {
       flashcardView = (
@@ -164,7 +171,10 @@ class FlashcardsModal extends Component {
             <StyledModalP answer> Answer: </StyledModalP>
             <textarea rows="10" cols="75" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
             <StyledModalP> Tags: </StyledModalP>
-            {tagArray}
+            <TagListContainer
+              tags={this.state.newCardTags}
+              handleAdd={this.handleTagAdd}
+              handleDelete={this.handleTagDelete} />
           </StyledModalDiv>>
           <button onClick={this.handleAddCard}>Add This Card</button>
           <button onClick={this.handleCloseModal}>Close Flashcards</button>

@@ -3,6 +3,8 @@ import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
+import TagListContainer from './containers/TagListContainer';
+
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
   addSubnote: PropTypes.func.isRequired
@@ -22,7 +24,8 @@ export default class AddModal extends Component {
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleTagChange = this.handleTagChange.bind(this);
+        this.handleTagAdd = this.handleTagAdd.bind(this);
+        this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
       } //end constructor
 
@@ -41,14 +44,17 @@ export default class AddModal extends Component {
       });
     }
 
-    handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
-      var tagsCopy = this.state.tags.slice();
-      tagsCopy[tagNum] = target.value;
-      this.setState({
-        tags: tagsCopy
-      });
-    }
+    handleTagAdd (tag) {
+      var newTags = this.state.tags.slice();
+      newTags.push(tag);
+      this.setState({ tags: newTags });
+    } // end handleTagAdd
+
+    handleTagDelete (idx) {
+      var newTags = this.state.tags.slice();
+      newTags.splice(idx, 1);
+      this.setState({ tags: newTags });
+    } // end handleTagDelete
 
     handleSave({ target }) {
       this.props.addSubnote(this.props.rowInfo, this.state);
@@ -56,13 +62,6 @@ export default class AddModal extends Component {
     }
 
     render () {
-      var tagArray = [];
-      var numTags = 5; //number of empty tag text inputs to display
-      for (var i = 0; i < numTags; i++) {
-        var tagLabel = "tag" + i;
-        tagArray.push(<input type="text" name={tagLabel} key={i} onChange={this.handleTagChange}/>);
-      }
-
       return (
         <div>
           <StyledModalLaunchButton add onClick={this.handleOpenModal}></StyledModalLaunchButton>
@@ -77,7 +76,10 @@ export default class AddModal extends Component {
               <StyledModalP note> Note: </StyledModalP>
               <textarea rows="10" cols="75" name="note" onChange={this.handleChange}/>
               <StyledModalP > Tags: </StyledModalP>
-              {tagArray}
+              <TagListContainer
+                tags={this.state.tags}
+                handleAdd={this.handleTagAdd}
+                handleDelete={this.handleTagDelete} />
             </StyledModalDiv>
             <button onClick={this.handleSave}>Add Subnote</button>
             <button onClick={this.handleCloseModal}>Cancel</button>

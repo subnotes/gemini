@@ -3,6 +3,8 @@ import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
 
+import TagListContainer from './containers/TagListContainer';
+
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
   replaceSubnote: PropTypes.func.isRequired
@@ -24,7 +26,8 @@ export default class EditModal extends Component {
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleTagChange = this.handleTagChange.bind(this);
+        this.handleTagAdd = this.handleTagAdd.bind(this);
+        this.handleTagDelete = this.handleTagDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
       } //end constructor
 
@@ -61,17 +64,17 @@ export default class EditModal extends Component {
       });
     }
 
-    handleTagChange({ target }) {
-      var tagNum = parseInt(target.name.substr(3), 10); //get index of tag array (gets rid of "tag" from target name)
-      var tagsCopy = this.state.tags.slice();
-      tagsCopy[tagNum] = target.value;
-      if (tagsCopy[tagNum] === "") { //if tag is now an empty string, delete it
-        tagsCopy.splice(tagNum, 1);
-      }
-      this.setState({
-        tags: tagsCopy
-      });
-    }
+    handleTagAdd (tag) {
+      var newTags = this.state.tags.slice();
+      newTags.push(tag);
+      this.setState({ tags: newTags });
+    } // end handleTagAdd
+
+    handleTagDelete (idx) {
+      var newTags = this.state.tags.slice();
+      newTags.splice(idx, 1);
+      this.setState({ tags: newTags });
+    } // end handleTagDelete
 
     handleSave({ target }) {
       this.props.replaceSubnote(this.props.rowInfo, this.state);
@@ -79,17 +82,6 @@ export default class EditModal extends Component {
     }
 
     render () {
-      var tagArray = [];
-      var numTags = 5; //number of tag inputs to display
-      for (var i = 0; i < this.state.tags.length; i++) { //prepopulate tags
-        var tagLabel = "tag" + i;
-        tagArray.push(<input type="text" name={tagLabel} key={i} defaultValue={this.state.tags[i]} onChange={this.handleTagChange}/>);
-      }
-      for (i; i < numTags; i++) { //empty tag inputs
-        tagLabel = "tag" + i;
-        tagArray.push(<input type="text" name={tagLabel} key={i} onChange={this.handleTagChange}/>);
-      }
-
       return (
         <div>
           <StyledModalLaunchButton edit onClick={this.handleOpenModal}></StyledModalLaunchButton>
@@ -104,7 +96,10 @@ export default class EditModal extends Component {
               <StyledModalP note> Note: </StyledModalP>
               <textarea rows="10" cols="75" name="note" defaultValue={this.props.rowInfo.node.subtitle} onChange={this.handleChange}/>
               <StyledModalP > Tags: </StyledModalP>
-              {tagArray}
+              <TagListContainer
+                tags={this.state.tags}
+                handleAdd={this.handleTagAdd}
+                handleDelete={this.handleTagDelete} />
               <button onClick={this.handleSave}>Save Edits</button>
               <button onClick={this.handleCloseModal}>Cancel Edit</button>
             </StyledModalDiv>
