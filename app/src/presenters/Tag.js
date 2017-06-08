@@ -15,11 +15,12 @@ import CloseIcon from './CloseIcon';
 // Styled components
 const TagWrapper = styled.div`
   position: relative;
-  display: inline-block;
+  display: inline-table;
+  border-collapse: separate;
   margin: 0 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 3px 5px;
+  padding: 2px 0px 2px 5px;
   background: #eee;
   font-size: 12px;
 `;
@@ -83,7 +84,7 @@ class Tag extends Component {
   render () {
     return (
       <TagWrapper>
-        {this.props.tag}
+        <td>{this.props.tag}</td>
         <CloseIcon onClick={this.handleDeleteClick}/>
       </TagWrapper>
     );
