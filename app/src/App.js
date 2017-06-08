@@ -1,15 +1,16 @@
  // import node packages
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
   BrowserRouter as Router,
   Route,
-  Link,
+  NavLink,
   Switch
-} from 'react-router-dom';
+} from 'react-router-dom'
+import styled from 'styled-components'
 
 // import our routes/views
-import Login from './Login';
-import Logout from './Logout';
+import Login from './Login'
+import Logout from './Logout'
 import Dashboard from './Dashboard'
 import FlashcardExplorer from './FlashcardExplorer'
 import NotebookExplorer from './NotebookExplorer'
@@ -21,6 +22,48 @@ import { getDriveConfig } from './configs/driveConfigs'
 import { initializeAuthDrive } from './helpers/googleAPI'
 import { downloadNotebook, uploadNotebook, createNotebook, getFiles } from './helpers/googleDrive'
 import { loginUser, logoutUser, setLogInOutHandler, isUserLoggedIn, getEmail } from './helpers/googleAuth'
+
+// style components
+
+const MainContainer = styled.div`
+  margin: 20px;
+`
+const TitleBar = styled.div`
+  display:flex;
+  justify-content: center;
+`
+const Title = styled.h1`
+  font-weight: bold;
+  flex: 1;
+  align-self: flex-end;
+  `
+const Red = styled.span`
+  color: #e06666;
+  `
+const Blue = styled.span`
+  color: #6fa8dc;
+`
+const UserName = styled.span`
+  flex: 1;
+  align-self: flex-end;
+  margin: auto;
+`
+const NavBar = styled.div`
+  display: flex;
+  justify-content: flex-start
+`
+const StyledLink = styled(NavLink)`
+  flex: 0 1 auto;
+  text-decoration: none;
+  color: gray;
+  margin-right: 20px;
+  &.${(props) => props.activeClassName} {
+    color: black;
+    font-weight: bold;
+  }
+`
+
+StyledLink.defaultProps = { activeClassName: 'active'}
 
 class App extends Component {
 
@@ -144,15 +187,15 @@ class App extends Component {
     // if logged in and notebooks are loaded
     if (this.state.loggedIn && this.state.initialized && this.state.library && this.state.notebooksLoaded)  {
       return (
-        <div>
+        <MainContainer>
           <Router>
             <div>
-              You are logged in as {this.state.user} <Logout logoutUser={logoutUser}/>
-              <ul>
-                <li><Link to="/">Dashboard</Link></li>
-                <li><Link to="/review">Review</Link></li>
-                <li><Link to="/flashcards">Flashcard Explorer</Link></li>
-              </ul>
+              <TitleBar> <Title><Red>sub</Red><Blue>notes</Blue></Title> <UserName> You are logged in as {this.state.user}  <Logout logoutUser={logoutUser}/> </UserName> </TitleBar>
+              <NavBar>
+                <StyledLink exact to="/">Dashboard</StyledLink>
+                <StyledLink to="/review">Review</StyledLink>
+                <StyledLink to="/flashcards">Flashcard Explorer</StyledLink>
+              </NavBar>
               <Switch>
                 <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} loadNotebooks={this.loadNotebooks} {...props} />)}/>
                 <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
@@ -163,7 +206,7 @@ class App extends Component {
               </Switch>
             </div>
           </Router>
-        </div>
+        </MainContainer>
       )
     }
     // logged in but notebooks are still loading
