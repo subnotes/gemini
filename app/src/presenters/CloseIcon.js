@@ -6,7 +6,7 @@
 // Import Node Packages
 import styled from 'styled-components';
 
-const CloseIcon = styled.span`
+const CloseIconCSS = styled.span`
   position: relative;
   display: inline-block;
   width: 14px;
@@ -36,4 +36,19 @@ const CloseIcon = styled.span`
   }
 `;
 
-export default CloseIcon;
+const CloseIconMaterial = styled.span`
+  background: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_remove_circle_outline_black_24px.svg) no-repeat center;
+  background-size: contain;
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
+  width: 14px;
+  height: 14px;
+  padding-left: 5px;
+  &:hover {
+    background: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_remove_circle_black_24px.svg) no-repeat center;
+  background-size: contain;
+  }
+`;
+
+export {CloseIconMaterial as default};
