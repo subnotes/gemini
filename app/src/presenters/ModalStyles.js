@@ -50,8 +50,11 @@ export const StyledModalP = styled.p`
   max-width: 90vw;
   overflow: auto;
   white-space: pre-wrap;
+  box-sizing: border-box;
+  padding: 10px;
   border: ${props => props.borderNote ? 'solid 1px rgb(111, 168, 220)' : ''};
-  border-radius: ${props => props.borderNote ? '5px' : ''};
+  border: ${props => props.borderSubtopic ? 'solid 1px rgb(224, 102, 102)' : ''};
+  border-radius: ${props => props.borderNote || props.borderSubtopic ? '5px' : ''};
 `
 
 export const CancelButton = styled.button`

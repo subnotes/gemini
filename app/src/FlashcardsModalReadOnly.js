@@ -93,9 +93,9 @@ class FlashcardsModalReadOnly extends Component {
         >
           <StyledFlashcardDiv>
             <StyledModalP bigText subtopic>Subtopic:</StyledModalP>
-            <StyledModalP>{this.props.rowInfo.node.title}</StyledModalP>
+            <StyledModalP borderSubtopic>{this.props.rowInfo.node.title}</StyledModalP>
             <StyledModalP bigText note>Note:</StyledModalP>
-            <StyledModalP>{this.props.rowInfo.node.subtitle}</StyledModalP>
+            <StyledModalP borderNote>{this.props.rowInfo.node.subtitle}</StyledModalP>
             <StyledModalP bigText>Flashcards:</StyledModalP>
             {flashcardView}
           </StyledFlashcardDiv>
