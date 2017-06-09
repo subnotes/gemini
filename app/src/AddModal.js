@@ -35,7 +35,10 @@ export default class AddModal extends Component {
     }
 
     handleCloseModal () {
-      this.setState({ showModal: false });
+      this.setState({ showModal: false,
+                      subtopic: "",
+                      note: "",
+                      tags: [] });
     }
 
     handleChange({ target }) {
