@@ -15,6 +15,7 @@ import Notebooks from './Notebooks'
 import FlashcardExplorer from './FlashcardExplorer'
 import NotebookExplorer from './NotebookExplorer'
 import Review from './Review'
+import Tags from './Tags'
 import TagTest from './TagTest'
 
 // import helpers
@@ -180,11 +181,7 @@ class App extends Component {
     // })
     var libraryCopy = JSON.parse(JSON.stringify(this.state.library));
     libraryCopy[notebookId]['notebook'] = notebook;
-    this.setState({library: libraryCopy});
-    // TODO: update notebook indexes (derived)
-    // TODO: update library indexes
-    this.createTagIndex()
-    // TODO: call cleanNotebook here
+    this.setState({library: libraryCopy}, this.createTagIndex);
     uploadNotebook(notebook, notebookId)
   }
 
@@ -220,6 +217,7 @@ class App extends Component {
                 <StyledLink exact to="/">Notebooks</StyledLink>
                 <StyledLink to="/review">Review</StyledLink>
                 <StyledLink to="/flashcards">Flashcard Explorer</StyledLink>
+                <StyledLink to="/tags">Tags</StyledLink>
               </NavBar>
               <Switch>
                 <Route exact path="/" render={(props) => (<Notebooks library={this.state.library} loadNotebooks={this.loadNotebooks} {...props} />)}/>
@@ -227,6 +225,7 @@ class App extends Component {
                 <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/flashcards" render={(props) => (<FlashcardExplorer library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
                 <Route path="/review" render={(props) => (<Review library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />
+                <Route path="/tags" render={(props) => (<Tags tags={this.state.tags} {...props} />)} />
                 <Route path="/tagtest" render={(props) => (<TagTest updateNotebook={this.updateNotebook} {...props} />)} />
               </Switch>
             </div>
