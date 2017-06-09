@@ -74,6 +74,7 @@ class App extends Component {
       loggedIn: false,
       initialized: false,
       library: {},
+      tags: {},
       notebooksLoaded: false,
     }
     this.updateLoginStatus = this.updateLoginStatus.bind(this)
@@ -81,8 +82,31 @@ class App extends Component {
     this.downloadNotebooks = this.downloadNotebooks.bind(this)
     this.updateNotebook = this.updateNotebook.bind(this)
     this.updateNotebookExpansion = this.updateNotebookExpansion.bind(this)
+    this.createTagIndex = this.createTagIndex.bind(this)
   }
 
+  createTagIndex() {
+    var tags = {}
+    // loop through notebooks
+    for(var [notebookid, notebookPlusMeta] of Object.entries(this.state.library)){
+      // loop through subnotes
+      for(var [subnoteid, subnote] of Object.entries(notebookPlusMeta.notebook.subnotes)){
+        // loop through tags
+        if (typeof subnote.tags != 'undefined'){
+          for(const tag of subnote.tags){
+            tags[tag] = tags[tag] || {}
+            tags[tag][notebookid] = tags[tag][notebookid] || {}
+            tags[tag][notebookid]['subnotes'] = tags[tag][notebookid]['subnotes'] || {}
+            tags[tag][notebookid]['subnotes'][subnoteid] = tags[tag][notebookid]['subnotes'][subnoteid] || {}
+            tags[tag][notebookid]['fileName'] = tags[tag][notebookid]['fileName'] || this.state.library[notebookid]['fileName']
+            tags[tag][notebookid]['subnotes'][subnoteid]['subtopic'] = tags[tag][notebookid]['subnotes'][subnoteid]['subtopic'] || this.state.library[notebookid]['notebook']['subnotes'][subnoteid]['subtopic']
+          }
+        }
+      }
+    }
+    this.setState({tags : tags})
+  }
+  
   loadNotebooks(){ // get list of notebooks and download them
     // get list of all writable json files that aren't trashed from user's drive
     var email = getEmail()
@@ -127,7 +151,7 @@ class App extends Component {
           library[file.id]['expanded'] = []
           // if last file load library to state
           if (counter == notebooks.length){
-            this.setState({library: library}, this.setState({notebooksLoaded: true})) // TODO set callback to create library indexes
+            this.setState({library: library}, () => {this.setState({notebooksLoaded: true}); this.createTagIndex()}) // TODO set callback to create library indexes
           }
           counter++
         })
@@ -146,7 +170,7 @@ class App extends Component {
     // on logout
     else {
       // clean up state
-      this.setState({loggedIn: false, library: {}, notebooksLoaded: false})
+      this.setState({loggedIn: false, library: {}, tags: {}, notebooksLoaded: false})
     }
   }
 
@@ -159,6 +183,7 @@ class App extends Component {
     this.setState({library: libraryCopy});
     // TODO: update notebook indexes (derived)
     // TODO: update library indexes
+    this.createTagIndex()
     // TODO: call cleanNotebook here
     uploadNotebook(notebook, notebookId)
   }
