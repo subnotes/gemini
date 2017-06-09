@@ -102,7 +102,7 @@ export default class EditModal extends Component {
                 handleDelete={this.handleTagDelete} />
               </StyledModalDiv>
               <SubnoteButton onClick={this.handleSave}>Save Edits</SubnoteButton>
-              <CancelButton onClick={this.handleCloseModal}>Cancel Edit</CancelButton>
+              <CancelButton onClick={this.handleCloseModal}>Cancel</CancelButton>
           </ReactModal>
         </div>
       );
