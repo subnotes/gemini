@@ -28,12 +28,12 @@ class FlashcardExplorer extends Component {
 
     // Member Variables
     this.state = {
-      flashcards: [],
+      flashcards: FlashcardHelper.getAllCards(this.props.library),
     };
 
     // Function Bindings
     this.handleDeleteCard = this.handleDeleteCard.bind(this);
-    this.componentWillMount = this.componentWillMount.bind(this);
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     this.render = this.render.bind(this);
   } // end constructor
 
@@ -42,10 +42,12 @@ class FlashcardExplorer extends Component {
     alert("Delete from flashcard manager not yet implemented.");
   } // end handleDeleteCard
 
-  componentWillMount () {
-    var flashcards = FlashcardHelper.getAllCards(this.props.library);
-    this.setState({flashcards: flashcards});
-  } // end componentWillMount
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      var newCards = FlashcardHelper.getAllCards(this.props.library);
+      this.setState({ flashcards: newCards });
+    }
+  } // end componentWillReceiveProps
 
   render () {
     if (this.state.flashcards.length > 0) {
