@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';
 import FlashcardHelper from './helpers/FlashcardHelper';
+import PageDiv from './presenters/PageDiv';
 
 // Component Metadata
 const propTypes = {
@@ -49,28 +50,24 @@ class FlashcardExplorer extends Component {
   render () {
     if (this.state.flashcards.length > 0) {
       return (
-        <div>
-          <h3>Flashcard Explorer</h3>
-          <div>
-            <ul>
-              {this.state.flashcards.map(card => (
-                <li>
-                  <FlashcardContainer
-                    flashcard={card}
-                    behavior="manage"
-                    handleDelete={this.handleDeleteCard} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <PageDiv>
+          <ul>
+            {this.state.flashcards.map(card => (
+              <li>
+                <FlashcardContainer
+                  flashcard={card}
+                  behavior="manage"
+                  handleDelete={this.handleDeleteCard} />
+              </li>
+            ))}
+          </ul>
+        </PageDiv>
       );
     } else {
       return (
-        <div>
-          <h3>Flashcard Explorer</h3>
+        <PageDiv>
           There don't appear to be any flashcards in this notebook yet.
-        </div>
+        </PageDiv>
       );
     }
   } // end render
