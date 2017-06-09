@@ -169,8 +169,8 @@ class FlashcardsModal extends Component {
             {flashcardView}
           </StyledFlashcardDiv>
 
-          <h4>Add New Flashcard:</h4>
           <StyledModalDiv>
+            <h4>Add New Flashcard:</h4>
             <StyledModalP question> Question: </StyledModalP>
             <StyledTextArea question rows="10" cols="75" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
             <StyledModalP answer> Answer: </StyledModalP>
