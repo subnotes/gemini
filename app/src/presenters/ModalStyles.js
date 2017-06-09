@@ -29,8 +29,11 @@ export const StyledModalDiv = styled.div`
 export const StyledFlashcardDiv = styled.div`
   & > ul {
     list-style-type: None;
-    padding: 0;
+    padding: 10px;
     margin: 0;
+    border: 1px solid #666666;
+    border-radius: 5px;
+    width: fit-content;
 
     > li {
       padding-bottom: 10px;
@@ -42,11 +45,16 @@ export const StyledModalP = styled.p`
   color: ${props => props.subtopic || props.question ? 'rgb(224, 102, 102)' : ''};
   color: ${props => props.note || props.answer ? 'rgb(111, 168, 220)' : ''};
   margin-bottom: 5px;
-  font-size: 18px;
+  font-size: ${props => props.bigText ? '24px' : '18px'};
   max-height: 300px;
   max-width: 90vw;
   overflow: auto;
   white-space: pre-wrap;
+  box-sizing: border-box;
+  padding: 10px;
+  border: ${props => props.borderNote ? 'solid 1px rgb(111, 168, 220)' : ''};
+  border: ${props => props.borderSubtopic ? 'solid 1px rgb(224, 102, 102)' : ''};
+  border-radius: ${props => props.borderNote || props.borderSubtopic ? '5px' : ''};
 `
 
 export const CancelButton = styled.button`
@@ -54,7 +62,7 @@ export const CancelButton = styled.button`
   color: rgb(224, 102, 102);
   border: 1px solid rgb(224, 102, 102);
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   border-radius: 5px;
   margin-top: 10px;
   margin-left: 10px;
@@ -65,7 +73,7 @@ export const SubnoteButton = styled.button`
   color: rgb(111, 168, 220);
   border: 1px solid rgb(111, 168, 220);
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   border-radius: 5px;
   margin-top: 10px;
 `

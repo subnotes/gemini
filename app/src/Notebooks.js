@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {createNotebook, uploadNotebook} from './helpers/googleDrive'
 
-class Dashboard extends Component {
+class Notebooks extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +27,6 @@ class Dashboard extends Component {
     if (typeof this.props.library !== 'undefined') {
       return(
         <div>
-          <h3>Dashboard</h3>
           <h4>Your Notebooks</h4>
           <ul>
             {Object.entries(this.props.library).map(item => (
@@ -37,10 +36,7 @@ class Dashboard extends Component {
           <h4>New Notebook</h4>
           <form onSubmit={this.newNotebook}>
             <div>            
-              <input name="newName" value={this.state.newName} type="text" onChange={this.setNewName}/>.sn
-            </div>
-            <div>
-              <input type="submit" value="Create New Notebook" />
+              <input name="newName" value={this.state.newName} type="text" onChange={this.setNewName}/> <input type="submit" value="Create New Notebook" />
             </div>
           </form>
         </div>
@@ -53,4 +49,4 @@ class Dashboard extends Component {
 
 }
 
-export default Dashboard;
+export default Notebooks;

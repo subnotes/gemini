@@ -11,7 +11,7 @@ import styled from 'styled-components'
 // import our routes/views
 import Login from './Login'
 import Logout from './Logout'
-import Dashboard from './Dashboard'
+import Notebooks from './Notebooks'
 import FlashcardExplorer from './FlashcardExplorer'
 import NotebookExplorer from './NotebookExplorer'
 import Review from './Review'
@@ -192,12 +192,12 @@ class App extends Component {
             <div>
               <TitleBar> <Title><Red>sub</Red><Blue>notes</Blue></Title> <UserName> You are logged in as {this.state.user}  <Logout logoutUser={logoutUser}/> </UserName> </TitleBar>
               <NavBar>
-                <StyledLink exact to="/">Dashboard</StyledLink>
+                <StyledLink exact to="/">Notebooks</StyledLink>
                 <StyledLink to="/review">Review</StyledLink>
                 <StyledLink to="/flashcards">Flashcard Explorer</StyledLink>
               </NavBar>
               <Switch>
-                <Route exact path="/" render={(props) => (<Dashboard library={this.state.library} loadNotebooks={this.loadNotebooks} {...props} />)}/>
+                <Route exact path="/" render={(props) => (<Notebooks library={this.state.library} loadNotebooks={this.loadNotebooks} {...props} />)}/>
                 <Route path="/notebook/:notebookid/subnote/:subnoteid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/notebook/:notebookid" render={(props) => (<NotebookExplorer notebookPlusMeta={this.state.library[props.match.params.notebookid]} updateNotebook={this.updateNotebook} updateNotebookExpansion={this.updateNotebookExpansion} {...props} />)}/>
                 <Route path="/flashcards" render={(props) => (<FlashcardExplorer library={this.state.library} updateNotebook={this.updateNotebook} {...props} />)} />

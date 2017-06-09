@@ -161,11 +161,11 @@ class FlashcardsModal extends Component {
           style={modalStyle}
         >
           <StyledFlashcardDiv>
-            <StyledModalP subtopic>Subtopic:</StyledModalP>
-            <StyledModalP>{this.props.rowInfo.node.title}</StyledModalP>
-            <StyledModalP note>Note:</StyledModalP>
-            <StyledModalP>{this.props.rowInfo.node.subtitle}</StyledModalP>
-            <StyledModalP>Flashcards:</StyledModalP>
+            <StyledModalP bigText subtopic>Subtopic:</StyledModalP>
+            <StyledModalP borderSubtopic>{this.props.rowInfo.node.title}</StyledModalP>
+            <StyledModalP bigText note>Note:</StyledModalP>
+            <StyledModalP borderNote>{this.props.rowInfo.node.subtitle}</StyledModalP>
+            <StyledModalP bigText>Flashcards:</StyledModalP>
             {flashcardView}
           </StyledFlashcardDiv>
 

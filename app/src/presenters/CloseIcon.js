@@ -44,7 +44,6 @@ const CloseIconMaterial = styled.span`
   vertical-align: middle;
   width: 14px;
   height: 14px;
-  padding-left: 5px;
   &:hover {
     background: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_remove_circle_black_24px.svg) no-repeat center;
   background-size: contain;
