@@ -347,6 +347,7 @@ export default class Tree extends Component {
                                   ],
                       })}
                       className={this.props.className}
+                      rowHeight={80}
                   />
               </div>
           );

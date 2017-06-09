@@ -26,10 +26,12 @@ const StyledTree = styled(Tree)`
 
   .rst__rowSubtitle {
     display: block;
-    white-space: nowrap;
+    white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-wrap: normal;
     max-width: 250px;
+    height: 3em;
     color: rgb(111, 168, 220);
   }
 
@@ -79,10 +81,12 @@ const StyledTreeReadOnly = styled(TreeReadOnly)`
 
   .rst__rowSubtitle {
     display: block;
-    white-space: nowrap;
+    white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-wrap: normal;
     max-width: 250px;
+    height: 3em;
     color: rgb(111, 168, 220);
   }
 

@@ -205,6 +205,7 @@ export default class TreeReadOnly extends Component {
                       })}
                       canDrag={false}
                       className={this.props.className}
+                      rowHeight={80}
                   />
               </div>
           );
