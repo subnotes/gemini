@@ -71,11 +71,11 @@ export default class AddModal extends Component {
             style={modalStyle}
           >
             <StyledModalDiv>
-              <StyledModalP subtopic> Subtopic: </StyledModalP>
+              <StyledModalP bigText subtopic> Subtopic: </StyledModalP>
               <StyledInput subtopic type="text" name="subtopic" onChange={this.handleChange}/>
-              <StyledModalP note> Note: </StyledModalP>
+              <StyledModalP bigText note> Note: </StyledModalP>
               <StyledTextArea note rows="10" cols="75" name="note" onChange={this.handleChange}/>
-              <StyledModalP > Tags: </StyledModalP>
+              <StyledModalP bigText> Tags: </StyledModalP>
               <TagListContainer
                 tags={this.state.tags}
                 handleAdd={this.handleTagAdd}
