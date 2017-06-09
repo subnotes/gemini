@@ -4,6 +4,8 @@ export const StyledTextArea = styled.textarea`
   border-radius: 5px;
   border: ${props => props.subtopic || props.question ? '1px solid rgb(224, 102, 102)' : ''};
   border: ${props => props.note || props.answer ? '1px solid rgb(111, 168, 220)' : ''};
+  box-sizing: border-box;
+  padding: 10px;
   width: 100%;
   font-size: 14px;
   font-family: inherit;
@@ -11,6 +13,8 @@ export const StyledTextArea = styled.textarea`
 
 export const StyledInput = styled.input`
   border-radius: 5px;
+  box-sizing: border-box;
+  padding: 10px;
   border: ${props => props.subtopic || props.question ? '1px solid rgb(224, 102, 102)' : ''};
   border: ${props => props.note || props.answer ? '1px solid rgb(111, 168, 220)' : ''};
   width: 100%;
@@ -24,6 +28,7 @@ export const StyledModalDiv = styled.div`
     display: ${props => props.inline ? 'inline-block' : 'block'};
     vertical-align: middle;
   }
+  padding: 10px;
 `
 
 export const StyledFlashcardDiv = styled.div`
@@ -51,10 +56,10 @@ export const StyledModalP = styled.p`
   overflow: auto;
   white-space: pre-wrap;
   box-sizing: border-box;
-  padding: 10px;
   border: ${props => props.borderNote ? 'solid 1px rgb(111, 168, 220)' : ''};
   border: ${props => props.borderSubtopic ? 'solid 1px rgb(224, 102, 102)' : ''};
   border-radius: ${props => props.borderNote || props.borderSubtopic ? '5px' : ''};
+  padding: ${props => props.borderNote || props.borderSubtopic ? '10px' : ''};
 `
 
 export const CancelButton = styled.button`
