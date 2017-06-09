@@ -15,11 +15,13 @@ import TagList from '../presenters/TagList';
 const propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   handleAdd: PropTypes.func,
-  handleDelete: PropTypes.func
+  handleDelete: PropTypes.func,
+  readOnly: PropTypes.bool,
 };
 
 const defaultProps = {
   tags: [],
+  readOnly: false,
 };
 
 // Main Container Component
@@ -82,6 +84,7 @@ class TagListContainer extends Component {
         handleInputChange={this.handleInputChange}
         handleDelete={this.props.handleDelete}
         handleKeyDown={this.handleEnterKey}
+        readOnly={this.props.readOnly}
       />
     );
   } // end render

@@ -13,16 +13,20 @@ import CloseIcon from './CloseIcon';
 // import helpers
 
 // Styled components
-const TagWrapper = styled.div`
+const TagWrapperDiv = styled.div`
   position: relative;
   display: inline-table;
   border-collapse: separate;
   margin: 0 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 2px 0px 2px 5px;
+  padding: 2px 0px;
   background: #eee;
   font-size: 12px;
+`;
+
+const TagTextTd = styled.td`
+  padding: 0px 5px;
 `;
 
 // Component Metadata
@@ -30,6 +34,7 @@ const propTypes = {
   tag: PropTypes.string.isRequired,
   index: PropTypes.number,
   handleDelete: PropTypes.func,
+  readOnly: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -37,6 +42,7 @@ const defaultProps = {
   handleDelete: function (e) {
     console.log(e.target.index);
   },
+  readOnly: false,
 };
 
 // Main Container Component
@@ -82,12 +88,20 @@ class Tag extends Component {
    * Render Function
    */
   render () {
-    return (
-      <TagWrapper>
-        <td>{this.props.tag}</td>
-        <CloseIcon onClick={this.handleDeleteClick}/>
-      </TagWrapper>
-    );
+    if (this.props.readOnly) {
+      return (
+        <TagWrapperDiv>
+          <TagTextTd>{this.props.tag}</TagTextTd>
+        </TagWrapperDiv>
+      );
+    } else {
+      return (
+        <TagWrapperDiv>
+          <TagTextTd>{this.props.tag}</TagTextTd>
+          <CloseIcon onClick={this.handleDeleteClick}/>
+        </TagWrapperDiv>
+      );
+    }
   } // end render
 
 }

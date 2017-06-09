@@ -104,6 +104,7 @@ class FlashcardsModalReadOnly extends Component {
             <StyledModalP> Tags: </StyledModalP>
             <TagListContainer
               tags={this.state.tags}
+              readOnly={true}
              />
           </StyledModalDiv>>
           <CancelButton onClick={this.handleCloseModal}>Close Flashcards</CancelButton>

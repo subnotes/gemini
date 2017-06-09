@@ -19,6 +19,7 @@ const propTypes = {
   handleDelete: PropTypes.func,
   handleInputChange: PropTypes.func,
   parentId: PropTypes.string,
+  readOnly: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -34,6 +35,7 @@ const defaultProps = {
     console.log(e);
   },
   parentId: '',
+  readOnly: false,
 };
 
 // Main Container Component
@@ -82,18 +84,28 @@ class TagList extends Component {
                                     index={i}
                                     handleDelete={this.props.handleDelete}
                                     key={this.props.parentId + tag + i.toString()}
+                                    readOnly={this.props.readOnly}
                                   />)
     }
-    return (
-      <div>
-        {tagElements}
-        <input
-          value={this.props.input}
-          placeholder="Add a new tag..."
-          onChange={this.props.handleInputChange}
-          onKeyDown={this.props.handleKeyDown} />
-      </div>
-    );
+
+    if (this.props.readOnly) {
+      return (
+        <div>
+          {tagElements}
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {tagElements}
+          <input
+            value={this.props.input}
+            placeholder="Add a new tag..."
+            onChange={this.props.handleInputChange}
+            onKeyDown={this.props.handleKeyDown} />
+        </div>
+      );
+    }
   } // end render
 
 }
