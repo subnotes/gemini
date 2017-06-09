@@ -17,7 +17,7 @@ const TagWrapperDiv = styled.div`
   position: relative;
   display: inline-table;
   border-collapse: separate;
-  margin: 0 5px;
+  margin: inherit;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 2px 0px;

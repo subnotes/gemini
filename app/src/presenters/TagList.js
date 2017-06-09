@@ -5,11 +5,22 @@
 // import node packages
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 // Import Local Components
 import Tag from './Tag';
 
 // import helpers
+
+// Local Styled Components
+const TagListDiv = styled.div`
+  max-width: 650px;
+  margin: 2px 5px;
+`;
+
+const TagInput = styled.input`
+  margin:inherit;
+`;
 
 // Component Metadata
 const propTypes = {
@@ -90,20 +101,20 @@ class TagList extends Component {
 
     if (this.props.readOnly) {
       return (
-        <div>
+        <TagListDiv>
           {tagElements}
-        </div>
+        </TagListDiv>
       );
     } else {
       return (
-        <div>
+        <TagListDiv>
           {tagElements}
-          <input
+          <TagInput
             value={this.props.input}
             placeholder="Add a new tag..."
             onChange={this.props.handleInputChange}
             onKeyDown={this.props.handleKeyDown} />
-        </div>
+        </TagListDiv>
       );
     }
   } // end render
