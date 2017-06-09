@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
+import { StyledModalLaunchButton, StyledModalDiv, SubnoteButton, CancelButton, modalStyle } from './presenters/ModalStyles'
 
 const propTypes = {
   rowInfo: PropTypes.object.isRequired,
@@ -49,10 +49,12 @@ export default class DeleteModal extends Component {
              contentLabel="Delete subnote"
              style={modalStyle}
           >
+          <StyledModalDiv>
             <h3>Are you sure you want to delete this subnote?</h3>
             <StyledH3>WARNING: Deleting a subnote will also delete all children of that subnote!</StyledH3>
-            <button onClick={this.handleSave}>Delete</button>
-            <button onClick={this.handleCloseModal}>Cancel</button>
+          </StyledModalDiv>
+            <SubnoteButton onClick={this.handleSave}>Delete</SubnoteButton>
+            <CancelButton onClick={this.handleCloseModal}>Cancel</CancelButton>
           </ReactModal>
         </div>
       );

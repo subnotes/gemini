@@ -1,6 +1,7 @@
 // import node packages
 import React, {Component} from 'react';
 import Tree from './Tree';
+import TreeReadOnly from './TreeReadOnly';
 import AddTopLevelModal from './AddTopLevelModal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -65,15 +66,51 @@ const StyledTree = styled(Tree)`
   }
 `
 
+const StyledTreeReadOnly = styled(TreeReadOnly)`
+  .rst__rowTitle {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    padding-bottom: 20px;
+    color: rgb(224, 102, 102);
+  }
+
+  .rst__rowSubtitle {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    color: rgb(111, 168, 220);
+  }
+
+  .rst__rowContents {
+    border: solid rgb(111,168,220) 1px;
+    border-radius: 5px;
+    box-shadow: None;
+  }
+
+  .rst__collapseButton, .rst__expandButton {
+      box-shadow: None;
+      border: 1px solid #666666;
+
+      &:focus {
+          box-shadow: None;
+      }
+  }
+`
+
 export default class NotebookExplorer extends Component {
 
   render() {
     if (typeof this.props.notebookPlusMeta === 'undefined' || typeof this.props.notebookPlusMeta.notebook === 'undefined') {
       return (<h3>Sorry, we could not load that notebook.</h3>)
-    } else {
+    } else if (this.props.notebookPlusMeta.writable === true) { //writable notebook
         return (
           <div>
-            <h3>Current notebook: {this.props.notebookPlusMeta.fileName}</h3>
+            <h3>Current Notebook: {this.props.notebookPlusMeta.fileName}</h3>
             <AddTopLevelModal
               notebookPlusMeta={this.props.notebookPlusMeta}
               updateNotebook={this.props.updateNotebook}
@@ -82,6 +119,18 @@ export default class NotebookExplorer extends Component {
             <StyledTree
               notebookPlusMeta={this.props.notebookPlusMeta}
               updateNotebook={this.props.updateNotebook}
+              updateNotebookExpansion={this.props.updateNotebookExpansion}
+              match={this.props.match}
+            />
+          </div>
+        )
+      }
+      else { //read-only notebook
+        return (
+          <div>
+            <h3>Current Notebook: {this.props.notebookPlusMeta.fileName} (Read-Only)</h3>
+            <StyledTreeReadOnly
+              notebookPlusMeta={this.props.notebookPlusMeta}
               updateNotebookExpansion={this.props.updateNotebookExpansion}
               match={this.props.match}
             />

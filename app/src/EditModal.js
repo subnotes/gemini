@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
-import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, StyledTextArea, StyledInput, CancelButton, SubnoteButton, modalStyle } from './presenters/ModalStyles'
 
 import TagListContainer from './containers/TagListContainer';
 
@@ -92,17 +92,17 @@ export default class EditModal extends Component {
           >
           <StyledModalDiv>
               <StyledModalP subtopic> Subtopic: </StyledModalP>
-              <input type="text" name="subtopic" defaultValue={this.props.rowInfo.node.title} onChange={this.handleChange}/>
+              <StyledInput subtopic type="text" name="subtopic" defaultValue={this.props.rowInfo.node.title} onChange={this.handleChange}/>
               <StyledModalP note> Note: </StyledModalP>
-              <textarea rows="10" cols="75" name="note" defaultValue={this.props.rowInfo.node.subtitle} onChange={this.handleChange}/>
+              <StyledTextArea note rows="10" cols="75" name="note" defaultValue={this.props.rowInfo.node.subtitle} onChange={this.handleChange}/>
               <StyledModalP > Tags: </StyledModalP>
               <TagListContainer
                 tags={this.state.tags}
                 handleAdd={this.handleTagAdd}
                 handleDelete={this.handleTagDelete} />
-              <button onClick={this.handleSave}>Save Edits</button>
-              <button onClick={this.handleCloseModal}>Cancel Edit</button>
-            </StyledModalDiv>
+              </StyledModalDiv>
+              <SubnoteButton onClick={this.handleSave}>Save Edits</SubnoteButton>
+              <CancelButton onClick={this.handleCloseModal}>Cancel Edit</CancelButton>
           </ReactModal>
         </div>
       );

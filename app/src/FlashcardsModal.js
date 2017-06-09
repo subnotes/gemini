@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer.js';
 import FlashcardHelper from './helpers/FlashcardHelper.js';
-import { StyledModalDiv, StyledModalP, StyledModalLaunchButton } from './presenters/ModalStyles'
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, SubnoteButton, CancelButton, StyledTextArea, StyledFlashcardDiv, modalStyle } from './presenters/ModalStyles'
 import TagListContainer from './containers/TagListContainer.js';
 
 // Component Metadata
@@ -158,26 +158,31 @@ class FlashcardsModal extends Component {
         <ReactModal
           isOpen={this.state.showModal}
           contentLabel="View Flashcards"
+          style={modalStyle}
         >
-          <div>
-            <h3>{this.props.rowInfo.node.title}</h3>
-            <span>{this.props.rowInfo.node.subtitle}</span>
-          </div>
-          {flashcardView}
-          <h4>Add New Flashcard</h4>
+          <StyledFlashcardDiv>
+            <StyledModalP subtopic>Subtopic:</StyledModalP>
+            <StyledModalP>{this.props.rowInfo.node.title}</StyledModalP>
+            <StyledModalP note>Note:</StyledModalP>
+            <StyledModalP>{this.props.rowInfo.node.subtitle}</StyledModalP>
+            <StyledModalP>Flashcards:</StyledModalP>
+            {flashcardView}
+          </StyledFlashcardDiv>
+
+          <h4>Add New Flashcard:</h4>
           <StyledModalDiv>
             <StyledModalP question> Question: </StyledModalP>
-            <textarea rows="10" cols="75" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
+            <StyledTextArea question rows="10" cols="75" name="newCardQ" value={this.state.newCardQ} onChange={this.handleChange}/>
             <StyledModalP answer> Answer: </StyledModalP>
-            <textarea rows="10" cols="75" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
+            <StyledTextArea answer rows="10" cols="75" name="newCardA" value={this.state.newCardA} onChange={this.handleChange}/>
             <StyledModalP> Tags: </StyledModalP>
             <TagListContainer
               tags={this.state.newCardTags}
               handleAdd={this.handleTagAdd}
               handleDelete={this.handleTagDelete} />
           </StyledModalDiv>>
-          <button onClick={this.handleAddCard}>Add This Card</button>
-          <button onClick={this.handleCloseModal}>Close Flashcards</button>
+          <SubnoteButton onClick={this.handleAddCard}>Add This Card</SubnoteButton>
+          <CancelButton onClick={this.handleCloseModal}>Close Flashcards</CancelButton>
         </ReactModal>
       </div>
     );
