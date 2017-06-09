@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import UUID from 'uuid';
 import PropTypes from 'prop-types';
-import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, modalStyle } from './presenters/ModalStyles'
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, StyledInput, StyledTextArea, CancelButton, SubnoteButton, modalStyle } from './presenters/ModalStyles';
 
 import TagListContainer from './containers/TagListContainer';
 
@@ -96,18 +96,18 @@ export default class AddTopLevelModal extends Component {
             style={modalStyle}
           >
             <StyledModalDiv>
-              <StyledModalP subtopic> Subtopic: </StyledModalP>
-              <input type="text" name="subtopic" onChange={this.handleChange}/>
-              <StyledModalP note> Note: </StyledModalP>
-              <textarea rows="10" cols="75" name="note" onChange={this.handleChange}/>
-              <StyledModalP > Tags: </StyledModalP>
+              <StyledModalP bigText subtopic> Subtopic: </StyledModalP>
+              <StyledInput subtopic type="text" name="subtopic" onChange={this.handleChange}/>
+              <StyledModalP bigText note> Note: </StyledModalP>
+              <StyledTextArea note rows="10" cols="75" name="note" onChange={this.handleChange}/>
+              <StyledModalP bigText> Tags: </StyledModalP>
               <TagListContainer
                 tags={this.state.tags}
                 handleAdd={this.handleTagAdd}
                 handleDelete={this.handleTagDelete} />
             </StyledModalDiv>
-            <button onClick={this.handleSave}>Add Subnote</button>
-            <button onClick={this.handleCloseModal}>Cancel</button>
+            <SubnoteButton onClick={this.handleSave}>Add Subnote</SubnoteButton>
+            <CancelButton onClick={this.handleCloseModal}>Cancel</CancelButton>
           </ReactModal>
         </div>
       );

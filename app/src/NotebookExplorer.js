@@ -29,9 +29,9 @@ const StyledTree = styled(Tree)`
     white-space: pre-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    word-wrap: normal;
+    word-wrap: break-word;
     max-width: 250px;
-    height: 3em;
+    max-height: 3em;
     color: rgb(111, 168, 220);
   }
 
