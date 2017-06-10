@@ -1,6 +1,19 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router-dom'
+import styled from 'styled-components'
 
+const StyledLink = styled(Link)`
+  color: #666666;
+`
+const StyledA = styled.a`
+  color: #666666;
+`
+const Red = styled.span`
+  color: #e06666;
+`
+const Black = styled.span`
+  color: black;
+`  
 class Tags extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +25,7 @@ class Tags extends Component {
   }
   
   updateTag(tag){
+    //tag.preventDefault()
     this.setState({tag : this.props.tags[tag], tagName: tag})
   }
   
@@ -20,17 +34,17 @@ class Tags extends Component {
       return (
         <div>
           <div>
-            <h2>Tags</h2>
+            <h4>Tags</h4>
             {Object.entries(this.props.tags).map(([tag]) => (
-              <li key={tag}><button onClick={() => {this.updateTag(tag)}}>{tag}</button></li>
+              <li key={tag}><StyledA href="#" onClick={() => {this.updateTag(tag)}}>{tag}</StyledA></li>
             ))}
           </div>
           <div>
-            <h2>Subnotes tagged with {this.state.tagName}</h2>
+            <h4>Subnotes tagged with <Black>{this.state.tagName}</Black></h4>
             {
               Object.entries(this.state.tag).map(([notebookid, notebook]) => (
                 Object.entries(this.state.tag[notebookid]['subnotes']).map(([subnoteid, subnote]) => (
-                  <li key={subnoteid}> <Link to={"/notebook/" + notebookid + "/subnote/" + subnoteid }>{notebook.fileName} - {subnote.subtopic} </Link> </li>
+                  <li key={subnoteid}> <StyledLink to={"/notebook/" + notebookid + "/subnote/" + subnoteid }>{notebook.fileName} - <Red>{subnote.subtopic}</Red> </StyledLink> </li>
                 ))
               ))
             }

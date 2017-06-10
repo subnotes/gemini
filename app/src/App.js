@@ -59,7 +59,7 @@ const StyledLink = styled(NavLink)`
   color: gray;
   margin-right: 20px;
   &.${(props) => props.activeClassName} {
-    color: black;
+    color: #666666;
     font-weight: bold;
   }
 `

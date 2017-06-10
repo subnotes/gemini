@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {createNotebook, uploadNotebook} from './helpers/googleDrive'
+import styled from 'styled-components';
+
+const StyledLink = styled(Link)`
+  color: #666666;
+`
 
 class Notebooks extends Component {
   constructor(props) {
@@ -30,7 +35,7 @@ class Notebooks extends Component {
           <h4>Your Notebooks</h4>
           <ul>
             {Object.entries(this.props.library).map(item => (
-              <li key={item[0]}><Link to={"/notebook/" + item[0]}>{item[1]['fileName']}</Link></li>
+              <li key={item[0]}><StyledLink to={"/notebook/" + item[0]}>{item[1]['fileName']}</StyledLink></li>
             ))}
           </ul>
           <h4>New Notebook</h4>
