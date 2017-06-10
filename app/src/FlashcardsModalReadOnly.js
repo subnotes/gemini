@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer.js';
 import FlashcardHelper from './helpers/FlashcardHelper.js';
-import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, StyledFlashcardDiv, CancelButton, modalStyle } from './presenters/ModalStyles'
+import { StyledModalDiv, StyledModalP, StyledModalLaunchButton, StyledFlashcardDiv, CancelButton, modalStyle } from './presenters/ModalStyles';
 import TagListContainer from './containers/TagListContainer.js';
 
 // Component Metadata

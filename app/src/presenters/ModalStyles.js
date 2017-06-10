@@ -67,10 +67,11 @@ export const CancelButton = styled.button`
   color: rgb(224, 102, 102);
   border: 1px solid rgb(224, 102, 102);
   text-align: center;
-  font-size: 20px;
+  font-size: ${props => props.flashcardDelete ? '14px' : '20px'};
   border-radius: 5px;
   margin-top: 10px;
   margin-left: 10px;
+  margin-bottom: ${props => props.flashcardDelete ? '10px' : ''};
 `
 
 export const SubnoteButton = styled.button`

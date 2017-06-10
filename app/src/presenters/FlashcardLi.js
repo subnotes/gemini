@@ -10,6 +10,7 @@ import styled from 'styled-components';
 // Import Local Components
 import SimpleCard from './SimpleCard';
 import TagListContainer from '../containers/TagListContainer';
+import { CancelButton } from './ModalStyles';
 
 // Import Helpers
 
@@ -77,7 +78,7 @@ class FlashcardLi extends Component {
   render () {
     var subtopic = this.props.flashcard.subtopic ? this.props.flashcard.subtopic : 'No subtopic';
     var tags = (this.props.flashcard.tags.length > 0) ? (<TagListContainer tags={this.props.flashcard.tags} readOnly={true}/>) : 'No tags attached';
-    var remove = this.props.readOnly ? null : (<button onClick={this.handleDelete}>Delete Card</button>)
+    var remove = this.props.readOnly ? null : (<CancelButton flashcardDelete onClick={this.handleDelete}>Delete Card</CancelButton>)
     return (
       <SimpleCard>
         <table style={{width: "100%"}}>
