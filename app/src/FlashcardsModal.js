@@ -142,7 +142,7 @@ class FlashcardsModal extends Component {
             <li key={i}>
               <FlashcardContainer
                 flashcard={FlashcardHelper.convertTreeCard(card, this.props.rowInfo.id, i)}
-                behavior="manage"
+                viewType="manage"
                 handleDelete={this.handleDeleteCard}/>
             </li>
           ))}

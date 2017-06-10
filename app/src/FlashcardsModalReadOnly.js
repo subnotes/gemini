@@ -73,7 +73,7 @@ class FlashcardsModalReadOnly extends Component {
             <li key={i}>
               <FlashcardContainer
                 flashcard={FlashcardHelper.convertTreeCard(card, this.props.rowInfo.id, i)}
-                behavior="review"
+                viewType="review"
               />
             </li>
           ))}

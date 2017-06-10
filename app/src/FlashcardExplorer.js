@@ -44,7 +44,7 @@ class FlashcardExplorer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
-      var newCards = FlashcardHelper.getAllCards(this.props.library);
+      var newCards = FlashcardHelper.getAllCards(nextProps.library);
       this.setState({ flashcards: newCards });
     }
   } // end componentWillReceiveProps
@@ -52,17 +52,13 @@ class FlashcardExplorer extends Component {
   render () {
     if (this.state.flashcards.length > 0) {
       return (
-        <PageDiv>
-          <ul>
-            {this.state.flashcards.map(card => (
-              <li>
-                <FlashcardContainer
-                  flashcard={card}
-                  behavior="manage"
-                  handleDelete={this.handleDeleteCard} />
-              </li>
-            ))}
-          </ul>
+        <PageDiv width='60%'>
+          {this.state.flashcards.map(card => (
+            <FlashcardContainer
+              flashcard={card}
+              viewType="li"
+              handleDelete={this.handleDeleteCard} />
+          ))}
         </PageDiv>
       );
     } else {

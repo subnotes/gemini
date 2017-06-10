@@ -14,6 +14,7 @@ import Tag from './Tag';
 
 // Local Styled Components
 const TagListDiv = styled.div`
+  display: inline-block;
   max-width: 650px;
   margin: 2px 5px;
 `;

@@ -6,7 +6,7 @@
 import styled from 'styled-components';
 
 const PageDiv = styled.div`
-  width: 80%;
+  width: ${props => props.width ? props.width : '80%'};
   margin: auto;
   margin-top: 1em;
 `;
