@@ -180,7 +180,7 @@ class FlashcardsModal extends Component {
               tags={this.state.newCardTags}
               handleAdd={this.handleTagAdd}
               handleDelete={this.handleTagDelete} />
-          </StyledModalDiv>>
+          </StyledModalDiv>
           <SubnoteButton onClick={this.handleAddCard}>Add This Card</SubnoteButton>
           <CancelButton onClick={this.handleCloseModal}>Close Flashcards</CancelButton>
         </ReactModal>
