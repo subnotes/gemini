@@ -15,12 +15,14 @@ const propTypes = {
   flashcard: PropTypes.object.isRequired,
   viewType: PropTypes.string,
   nextCard: PropTypes.func,
-  handleDeleteCard: PropTypes.func,
+  handleDelete: PropTypes.func,
+  readOnly: PropTypes.bool,
 };
 
 const defaultProps = {
   flashcard: {},
-  behavior: "li",
+  viewType: "li",
+  readOnly: false,
 };
 
 // Main Container Component
@@ -55,6 +57,8 @@ class FlashcardContainer extends Component {
         return (
           <FlashcardLi
             flashcard={this.state.flashcard}
+            readOnly={this.props.readOnly}
+            handleDelete={this.props.handleDelete}
           />
         );
       default:

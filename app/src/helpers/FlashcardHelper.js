@@ -57,10 +57,12 @@ function getAllCards (library) {
   return flashcards;
 } // end getAllCards
 
-function convertTreeCard (treeCard, noteId, cardIdx) {
+function convertTreeCard (treeCard, treeNode, cardIdx) {
   var flashcard = {
-    noteId: noteId,
+    notebookId: 'Unavailable',
+    subnoteId: treeNode.id,
     cardIdx: cardIdx,
+    subtopic: treeNode.title,
     qas: treeCard.qas,
     tags: treeCard.tags
   };

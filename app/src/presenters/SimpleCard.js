@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 // Styled Components
 const SimpleCard = styled.div`
-  display: table;
   margin: 8px 0 16px;
   background-color: #f1f1f1;
   width: 100%;

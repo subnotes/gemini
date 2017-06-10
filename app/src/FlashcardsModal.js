@@ -137,16 +137,14 @@ class FlashcardsModal extends Component {
     var flashcardView = null;
     if (typeof this.state.flashcards !== 'undefined' && this.state.flashcards.length > 0) {
       flashcardView = (
-        <ul>
+        <div style={{width: "800px"}}>
           {this.state.flashcards.map((card, i) => (
-            <li key={i}>
-              <FlashcardContainer
-                flashcard={FlashcardHelper.convertTreeCard(card, this.props.rowInfo.id, i)}
-                viewType="manage"
-                handleDelete={this.handleDeleteCard}/>
-            </li>
+            <FlashcardContainer
+              flashcard={FlashcardHelper.convertTreeCard(card, this.props.rowInfo.node, i)}
+              viewType="li"
+              handleDelete={this.handleDeleteCard}/>
           ))}
-        </ul>
+        </div>
       );
     } else {
       flashcardView = <div>There do not seem to be any flashcards in this subnote.</div>;
