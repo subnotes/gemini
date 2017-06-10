@@ -90,12 +90,10 @@ class FlashcardLi extends Component {
           </CardSectionDiv>
           <CardSectionDiv width='37%'>
             <h4>Question</h4>
-            <br/>
             {this.props.flashcard.qas[0].question}
           </CardSectionDiv>
           <CardSectionDiv width='37%'>
             <h4>Answer</h4>
-            <br/>
             {this.props.flashcard.qas[0].answer}
           </CardSectionDiv>
         </table>

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 // import local components
 import FlashcardContainer from './containers/FlashcardContainer';
 import FlashcardHelper from './helpers/FlashcardHelper';
+import PageDiv from './presenters/PageDiv';
 
 // Component Metadata
 const propTypes = {
@@ -27,46 +28,44 @@ class Review extends Component {
 
     // Member Variables
     this.state = {
-      flashcards: [],
+      flashcards: FlashcardHelper.getAllCards(this.props.library),
     };
 
     // Function Bindings
     this.nextCard = this.nextCard.bind(this);
-    this.componentWillMount = this.componentWillMount.bind(this);
+    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     this.render = this.render.bind(this);
 
   } // end constructor
 
   nextCard () {
-    var newCardArray = this.state.flashcards;
+    var newCardArray = this.state.flashcards.slice();
     newCardArray.push(newCardArray.shift());
     this.setState({flashcards: newCardArray});
   } // end nextCard
 
-  componentWillMount () {
-    var flashcards = FlashcardHelper.getAllCards(this.props.library);
-    this.setState( { flashcards: flashcards } );
-  } // end componentWillMount
+  componentWillReceiveProps (nextProps) {
+    if (this.props !== nextProps) {
+      var newCards = FlashcardHelper.getAllCards(nextProps.library);
+      this.setState({ flashcards: newCards });
+    }
+  } // end componentWillReceiveProps
 
   render () {
     if (this.state.flashcards.length > 0) {
       return (
-        <div>
-          <h3>Flashcard Review</h3>
-          <div>
-            <FlashcardContainer
-              flashcard={this.state.flashcards[0]}
-              behavior="review"
-              nextCard={this.nextCard} />
-          </div>
-        </div>
+        <PageDiv width='40%'>
+          <FlashcardContainer
+            flashcard={this.state.flashcards[0]}
+            viewType="review"
+            nextCard={this.nextCard} />
+        </PageDiv>
       );
     } else {
       return (
-        <div>
-          <h3>Flashcard Review</h3>
+        <PageDiv>
           There don't appear to be any flashcards in this notebook yet.
-        </div>
+        </PageDiv>
       );
     }
   } // end render

@@ -7,8 +7,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // Import Local Components
-import Flashcard from '../presenters/Flashcard';
 import FlashcardLi from '../presenters/FlashcardLi';
+import FlashcardReview from '../presenters/FlashcardReview';
+
+// Import Helpers
+import { getRandomInt } from '../helpers/OtherHelpers';
 
 // Component Metadata
 const propTypes = {
@@ -35,10 +38,16 @@ class FlashcardContainer extends Component {
     this.state = {
       flashcard: this.props.flashcard,
       viewIdx: 0,
+      answered: false,
+      correct: null,
     };
 
     // Function Bindings
     this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
+    this.flipCard = this.flipCard.bind(this);
+    this.nextCard = this.nextCard.bind(this);
+    this.setCorrect = this.setCorrect.bind(this);
+    this.setIncorrect = this.setIncorrect.bind(this);
     this.render = this.render.bind(this);
   } // end constructor
 
@@ -47,9 +56,31 @@ class FlashcardContainer extends Component {
     if(this.props !== nextProps) {
       this.setState({
         flashcard: nextProps.flashcard,
+        viewIdx: 0,
+        answered: false,
+        correct: null,
       });
     }
   } // end componentWillReceiveProps
+
+  flipCard () {
+    this.setState({ answered: true });
+  } // end flipCard
+
+  nextCard () {
+    // TODO:
+    // If card isn't answered, call skip prop
+    // Otherwise, call next with appropriate arguments
+    return;
+  }
+
+  setCorrect () {
+    this.setState({ correct: true });
+  } // end setCorrect
+
+  setIncorrect () {
+    this.setState({ correct: false });
+  } // end setIncorrect
 
   render () {
     switch (this.props.viewType) {
@@ -61,13 +92,25 @@ class FlashcardContainer extends Component {
             handleDelete={this.props.handleDelete}
           />
         );
+      case "review":
+        return (
+          <FlashcardReview
+            flashcard={this.state.flashcard}
+            viewIdx={this.state.viewIdx}
+            answered={this.state.answered}
+            correct={this.state.correct}
+            flipCard={this.flipCard}
+            nextCard={this.props.nextCard}
+            setCorrect={this.setCorrect}
+            setIncorrect={this.setIncorrect}
+          />
+        );
       default:
-        return <Flashcard
-          flashcard={this.state.flashcard}
-          behavior={this.props.viewType}
-          viewIdx={this.state.viewIdx}
-          nextCard={this.props.nextCard}
-          handleDelete={this.props.handleDelete}/>;
+        return (
+          <div>
+            No flashcard here
+          </div>
+        );
     }
   } // end render
 
