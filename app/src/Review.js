@@ -13,7 +13,7 @@ import PageDiv from './presenters/PageDiv';
 
 // Component Metadata
 const propTypes = {
-  library: PropTypes.func.isRequired,
+  library: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
