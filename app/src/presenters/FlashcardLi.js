@@ -78,7 +78,7 @@ class FlashcardLi extends Component {
   render () {
     var subtopic = this.props.flashcard.subtopic ? this.props.flashcard.subtopic : 'No subtopic';
     var tags = (this.props.flashcard.tags.length > 0) ? (<TagListContainer tags={this.props.flashcard.tags} readOnly={true}/>) : 'No tags attached';
-    var remove = this.props.readOnly ? null : (<CancelButton flashcardDelete onClick={this.handleDelete}>Delete Card</CancelButton>)
+    var remove = this.props.readOnly ? null : (<CancelButton flashcard onClick={this.handleDelete}>Delete Card</CancelButton>)
     return (
       <SimpleCard>
         <table style={{width: "100%"}}>

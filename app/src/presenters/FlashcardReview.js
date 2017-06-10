@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 // Import Local Components
 import SimpleCard from './SimpleCard';
+import { CancelButton, SubnoteButton } from './ModalStyles';
 
 // Import Helpers
 
@@ -18,6 +19,7 @@ const CorrectSpan = styled.span`
   width: 20px;
   height: 20px;
   background-color: ${props => props.correct ? 'Green' : 'Red'};
+  vertical-align: center;
 `;
 
 // Component Metadata
@@ -89,8 +91,8 @@ class FlashcardLi extends Component {
             <p>{this.props.flashcard.qas[this.props.viewIdx].question}</p>
           </div>
           <table style={{margin: 'auto'}}>
-            <td><button onClick={this.props.flipCard}>Flip</button></td>
-            <td><button onClick={this.props.nextCard}>Skip</button></td>
+            <td><SubnoteButton flashcard onClick={this.props.flipCard}>Flip</SubnoteButton></td>
+            <td><SubnoteButton flashcard onClick={this.props.nextCard}>Skip</SubnoteButton></td>
           </table>
         </SimpleCard>
       );
@@ -130,14 +132,20 @@ class FlashcardLi extends Component {
         <SimpleCard>
           {content}
           <table style={{margin: 'auto'}}>
-            <td>
-              <h5>Did you get it?</h5>
-              <button onClick={this.props.setCorrect}>Yes</button>
-              <button onClick={this.props.setIncorrect}>No</button>
-              {correct}
-            </td>
-            <td><button onClick={this.flipCard}>Flip</button></td>
-            <td><button onClick={this.props.nextCard}>Next</button></td>
+            <tr>
+              <td>
+                <h5>Did you get it?</h5>
+                <SubnoteButton flashcard onClick={this.props.setCorrect}>Yes</SubnoteButton>
+                <CancelButton flashcard onClick={this.props.setIncorrect}>No</CancelButton>
+                {correct}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <SubnoteButton flashcard onClick={this.flipCard}>Flip</SubnoteButton>
+                <SubnoteButton flashcard onClick={this.props.nextCard} style={{marginLeft: '5px'}}>Next</SubnoteButton>
+              </td>
+            </tr>
           </table>
         </SimpleCard>
       );
