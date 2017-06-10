@@ -25,7 +25,6 @@ class Tags extends Component {
   }
   
   updateTag(tag){
-    //tag.preventDefault()
     this.setState({tag : this.props.tags[tag], tagName: tag})
   }
   
@@ -35,19 +34,22 @@ class Tags extends Component {
         <div>
           <div>
             <h4>Tags</h4>
-            {Object.entries(this.props.tags).map(([tag]) => (
-              <li key={tag}><StyledA href="#" onClick={() => {this.updateTag(tag)}}>{tag}</StyledA></li>
-            ))}
+            <ul>
+              {Object.entries(this.props.tags).map(([tag]) => (
+                <li key={tag}><StyledA href="" onClick={(e) => {e.preventDefault(); this.updateTag(tag)}}>{tag}</StyledA></li>
+              ))}
+            </ul>
           </div>
           <div>
-            <h4>Subnotes tagged with <Black>{this.state.tagName}</Black></h4>
-            {
-              Object.entries(this.state.tag).map(([notebookid, notebook]) => (
-                Object.entries(this.state.tag[notebookid]['subnotes']).map(([subnoteid, subnote]) => (
-                  <li key={subnoteid}> <StyledLink to={"/notebook/" + notebookid + "/subnote/" + subnoteid }>{notebook.fileName} - <Red>{subnote.subtopic}</Red> </StyledLink> </li>
+            <h4>Subnotes tagged with <Black>{this.state.tagName}</Black></h4><ul>
+              {
+                Object.entries(this.state.tag).map(([notebookid, notebook]) => (
+                  Object.entries(this.state.tag[notebookid]['subnotes']).map(([subnoteid, subnote]) => (
+                    <li key={subnoteid}> <StyledLink to={"/notebook/" + notebookid + "/subnote/" + subnoteid }>{notebook.fileName} - <Red>{subnote.subtopic}</Red> </StyledLink> </li>
+                  ))
                 ))
-              ))
-            }
+              }
+            </ul>
           </div>
         </div>
       )
