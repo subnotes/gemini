@@ -13,13 +13,17 @@ const Red = styled.span`
 `
 const Black = styled.span`
   color: black;
+`
+const Note = styled.i`
+  color: #666666;
+  font-size: small;
 `  
 class Tags extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tag: {},
-      tagName: "..."
+      tagName: "(select tag from list above)"
     }
     this.updateTag = this.updateTag.bind(this)
   }
@@ -34,14 +38,17 @@ class Tags extends Component {
         <div>
           <div>
             <h4>Tags</h4>
-            <ul>
+            <Note>Click on a tag to view all subnotes with that tag</Note>
+            <p>
               {Object.entries(this.props.tags).map(([tag]) => (
-                <li key={tag}><StyledA href="" onClick={(e) => {e.preventDefault(); this.updateTag(tag)}}>{tag}</StyledA></li>
+                <span key={tag}><StyledA href="" onClick={(e) => {e.preventDefault(); this.updateTag(tag)}}>{tag}</StyledA>   </span>
               ))}
-            </ul>
+            </p>
           </div>
           <div>
-            <h4>Subnotes tagged with <Black>{this.state.tagName}</Black></h4><ul>
+            <h4>Subnotes tagged with <Black>{this.state.tagName}</Black></h4>
+            <Note>Click on a subnote to view in notebook</Note>
+            <ul>
               {
                 Object.entries(this.state.tag).map(([notebookid, notebook]) => (
                   Object.entries(this.state.tag[notebookid]['subnotes']).map(([subnoteid, subnote]) => (
