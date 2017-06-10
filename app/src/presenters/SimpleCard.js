@@ -8,8 +8,10 @@ import styled from 'styled-components';
 
 // Styled Components
 const SimpleCard = styled.div`
+  display: table;
   margin: 8px 0 16px;
   background-color: #f1f1f1;
+  width: 100%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   &:hover {

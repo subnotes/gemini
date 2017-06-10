@@ -60,7 +60,7 @@ class FlashcardContainer extends Component {
       default:
         return <Flashcard
           flashcard={this.state.flashcard}
-          behavior={this.state.viewType}
+          behavior={this.props.viewType}
           viewIdx={this.state.viewIdx}
           nextCard={this.props.nextCard}
           handleDelete={this.props.handleDelete}/>;

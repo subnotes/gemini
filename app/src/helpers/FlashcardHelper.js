@@ -44,6 +44,7 @@ function getAllCards (library) {
               flashcard.notebookId = n;
               flashcard.subnoteId = s;
               flashcard.cardIdx = f;
+              flashcard.subtopic = subnote.subtopic;
 
               flashcards.push(flashcard);
             } // end for in flashcards

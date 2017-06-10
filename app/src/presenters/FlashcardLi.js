@@ -15,8 +15,9 @@ import TagListContainer from '../containers/TagListContainer';
 
 // Local Styled Components
 const CardSectionDiv = styled.div`
-  display: inline-block;
+  display: table-cell;
   width: ${props => props.width ? props.width : '100%'};
+  padding: 2px 5px;
 `;
 
 // Component Metadata
@@ -62,18 +63,27 @@ class FlashcardLi extends Component {
    * Render Function
    */
   render () {
+    var subtopic = this.props.flashcard.subtopic ? this.props.flashcard.subtopic : 'No subtopic';
+    var tags = (this.props.flashcard.tags.length > 0) ? (<TagListContainer tags={this.props.flashcard.tags} readOnly={true}/>) : 'No tags attached';
     return (
       <SimpleCard>
         <CardSectionDiv width='26%'>
-          Some Metadata
+          <p>Subtopic: {subtopic}</p>
+          <p>Contains {this.props.flashcard.qas.length.toString()} variants</p>
+          <p>Schedule: Not Selected</p>
+          <p>Next Review: N/A</p>
+          <p>Tags: {tags}</p>
         </CardSectionDiv>
         <CardSectionDiv width='37%'>
+          <h4>Question</h4>
+          <br/>
           {this.props.flashcard.qas[0].question}
         </CardSectionDiv>
         <CardSectionDiv width='37%'>
+          <h4>Answer</h4>
+          <br/>
           {this.props.flashcard.qas[0].answer}
         </CardSectionDiv>
-        Tags: <TagListContainer tags={this.props.flashcard.tags} readOnly={true}/>
       </SimpleCard>
     );
   } // end render
