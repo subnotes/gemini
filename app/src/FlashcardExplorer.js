@@ -57,7 +57,7 @@ class FlashcardExplorer extends Component {
             <FlashcardContainer
               flashcard={card}
               viewType="li"
-              handleDelete={this.handleDeleteCard} />
+              readOnly={true} />
           ))}
         </PageDiv>
       );
